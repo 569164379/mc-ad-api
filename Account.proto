@@ -1,0 +1,105 @@
+package Account;
+
+
+message Account {
+    required string account_id;                 //账户ID
+    required string account_email;              //账户邮箱 索引
+    required string account_name;               //账户名字
+    required string account_pwd;                //密码  md5()
+    required string account_status;             //状态： enable,disable
+    required string account_created;            //创建时间  东八时区  yyyy-mm-dd
+    required string account_expire;             //过期时间  东八时区
+    required int32 account_type;               //账户角色: 待Dick确定
+
+    message AdressInfo {
+        optional string address;                //地址
+        optional string post_code;              //邮编
+        optional string telphone;               //移动电话
+        optional string fixed_tel;              //固定电话
+    }
+
+    optional AdressInfo account_contact;        //账户联系信息
+}
+
+
+message Creative {
+    required string product_id;             //产品id
+    required string creative_id;            //创意ID
+    required string creative_name;          //创意名称
+    required string creative_uploader;      //创意上传者email
+    required string creative_status;        //创意状态： 待审核waiting 审核通过passed 审核未通过refused
+    repeated string creative_tag;           //创意标签
+    optional int32 creative_level;         //创意分级 1,2,3
+
+    message Text {
+        required string ;        //编号: 生成规则待定
+        required string title;              //标题
+        repeated string desc;               //描述
+    }
+    message Image {
+        required string material_no;        //编号: 生成规则待定
+        required int32 width;              //宽
+        required int32 height;
+        required string url;                //图片地址
+    }
+    message Vedio {
+        required string material_no;        //编号: 生成规则待定
+        required string duration;           //播放长度
+        required string url;                //视频地址
+    }
+    message Audio {
+        required string material_no;        //编号: 生成规则待定
+        required string duration;           //播放长度
+        required string url;                //音频    地址
+    }
+    repeated Text texts;                //文字
+    repeated Image images;              //图片
+    repeated Vedio vedios;              //视频
+    repeated Audio audios;              //音频
+}
+
+message OperationLog {
+    required string operator_email;         //操作者email
+    required string creative_id;            //创意ID
+    required string operate_date;           //yyyy-MM-dd HH:mm:ss
+    required string operator_type;          //操作类型
+    required string operator_result;        //操作结果
+}
+
+
+//数据字典 tag(标签)  operate_result(操作结果)
+message SystemTag {
+
+}
+
+/*
+字段规则补充：
+一、创意编号：Creative:material_no
+   长度： 32位
+   组成规则：Unix TimeStamp (13) + 类型标识(3 [txt/pic/vid/sud]) +
+           长度(文字:标题2位，描述3位，以'+'连接，如'09+025'; 图片:'width+height',如'640+100';
+           视频:播放时长,如'5';音频:播放时长,如'10'; 注长度一共9位，不足再后面补'f') + 顺序号(2);
+           每个部分以'&'连接；总和32位，不足补'f'。 例子：
+           文字：'1497238524117&txt&09+025fff&01ff'；
+           图片：'1497238524117&pic&640+100ff&02ff'；
+           视频：'1497238524117&vid&5ffffffff&03ff'；
+           音频：'1497238524117&pic&10fffffff&04ff'；
+
+二、 创意审核状态: Creative:creative_status
+        待审核('waiting') 审核通过('passed') 审核未通过('refused') 过期('expired')
+
+三、 创意操作日志类型： OperationLog:operator_type
+    上传创意('upload') 编辑创意('edit') 审核创意('audit') 合并创意('merge')
+
+三、 创意操作结果： OperationLog:operator_result
+    上传时结果为：'成功'/'不成功'
+    编辑时结果为：'修改产品名'/'添加文字'/'添加图片'/'添加图片'/'添加视频'/'添加音频'  若删除则把'添加'修改为删除
+    审核结果为：'修改标签'/'修改分级'/'审核至通过'/'审核至不通过("不通过原因")'/'待审核'/'过期'
+    合并创意结果：'合并之前的创意编号'
+
+四、账户角色：Account:account_type
+   1、DSP账户： 数字 1    权限：创意上传、创意编辑（仅自己上传）、创意查看(仅自己上传)、操作记录（仅自己上传的，仅审核记录）
+   2、投放运营： 数字 11   权限：除去创意审核、创意合并和标签管理外的全部功能
+   3、审核人员： 数字 21   权限：为创意审核/分级/标签、创意合并、创意查看、标签管理
+ */
+
