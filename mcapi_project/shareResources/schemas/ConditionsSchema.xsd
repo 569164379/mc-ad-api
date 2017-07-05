@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+		<xs:element name="paraId" type="xs:string"/>
+	<xs:element name="paraType" type="xs:string"/>
+	<xs:element name="parentId" type="xs:string"/>
+	<xs:element name="paraAccountType" type="xs:string"/>
+	<xs:element name="paraStatus" type="xs:string"/>
+	<xs:element name="paraSearchValue" type="xs:string"/>
+	<xs:element name="paraObjName" type="xs:string"/>
+	<xs:element name="paraObjAlias" type="xs:string"/>
+	<xs:element name="paraSelfId" type="xs:string"/>
+	<xs:element name="requestParams">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="paraId" minOccurs="0"/>
+				<xs:element ref="paraType" minOccurs="0"/>
+				<xs:element ref="parentId" minOccurs="0"/>
+				<xs:element ref="paraAccountType" minOccurs="0"/>
+				<xs:element ref="paraStatus" minOccurs="0"/>
+				<xs:element ref="paraSearchValue" minOccurs="0"/>
+				<xs:element ref="paraObjName" minOccurs="0"/>
+				<xs:element ref="paraObjAlias" minOccurs="0"/>
+				<xs:element ref="paraSelfId" minOccurs="0"/>
+				<xs:element ref="jsonPostData" minOccurs="0"/>
+				<xs:element ref="mimeEnvelopeElement" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="jsonPostData" type="xs:string"/>
+	<xs:element name="mimeEnvelopeElement">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="mimePart" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mimePart">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="mimeHeaders"/>
+				<xs:element ref="creativeBase64"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="mimeHeaders">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="content-disposition" minOccurs="0"/>
+				<xs:element ref="content-type"/>
+				<xs:element ref="content-transfer-encoding" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="fileName" type="xs:string"/>
+	<xs:element name="content-type" type="xs:string"/>
+	<xs:element name="content-transfer-encoding" type="xs:string"/>
+	<xs:element name="content-disposition" type="xs:string"/>
+	<xs:element name="creativeBase64" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+</xs:schema>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd6"
+	 xmlns:creative="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"
+	 xmlns:material="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2"
+	 xmlns:dict="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd6"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4"/>
+	<xs:element name="CreativeVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="creative:creativeObj"/>
+				<xs:element ref="TextMetrialList" minOccurs="0"/>
+				<xs:element ref="ImageMetrialList" minOccurs="0"/>
+				<xs:element ref="VedioMetrialList" minOccurs="0"/>
+				<xs:element ref="SudMetrialList" minOccurs="0"/>
+				<xs:element ref="SeletedTagsList" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="TextMetrialList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="material:materialObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="ImageMetrialList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="material:materialObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="VedioMetrialList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="material:materialObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SudMetrialList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="material:materialObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CreativeAuditVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="creative:creativeObj" minOccurs="0"/>
+				<xs:element ref="SeletedTagsList" minOccurs="0"/>
+				<xs:element ref="AllTagList" minOccurs="0"/>
+				<xs:element ref="GradsList" minOccurs="0"/>
+				<xs:element ref="AuditStatusList" minOccurs="0"/>
+				<xs:element ref="NotPassReasonList" minOccurs="0"/>
+				<xs:element ref="OptionTypeList" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AllTagList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="SeletedTagsList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="GradsList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="AuditStatusList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="NotPassReasonList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="OptionTypeList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+</xs:schema>

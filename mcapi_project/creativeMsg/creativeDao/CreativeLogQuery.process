@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" schemaLocation="/shareResources/schemas/MaterialPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" schemaLocation="/shareResources/schemas/CreativePO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3" schemaLocation="/shareResources/schemas/CreativeLogPO.xsd"/>
+    <pd:name>creativeMsg/creativeDao/CreativeLogQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:creativeLogObj"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <pfx3:creativeLogResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx3:creativeLogObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeLogId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx3:creativeLogId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeId>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx3:creativeId>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeLogType>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx3:creativeLogType>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeLogEmail>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx3:creativeLogEmail>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeLogDate>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx3:creativeLogDate>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeLogResult>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx3:creativeLogResult>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeLogTypeName>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx3:creativeLogTypeName>
+                    </xsl:if>
+                    <pfx3:creativeLogRSName>
+                        <xsl:value-of select="column[8]/value"/>
+                    </pfx3:creativeLogRSName>
+                </pfx3:creativeLogObj>
+            </xsl:for-each>
+        </pfx3:creativeLogResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:creativeLogResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1497314592967</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>101</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT bcl.*,bd.DICT_NAME,bd2.DICT_NAME creativeLogRSName from tab_creative_log bcl INNER JOIN tab_dictionary bd on bcl.CREATIVELOG_TYPE=bd.DICT_ID&quot;,&#xA;&quot; left JOIN tab_dictionary bd2 on bcl.CREATIVELOG_RESULT = bd2.DICT_ID&quot;,&#xA;&quot; where 1=1&quot;, &#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeLogEmail) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeLogEmail) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVELOG_EMAIL like '%&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeLogEmail, &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeLogType) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeLogType) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVELOG_TYPE = '&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeLogType, &quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeId) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeId) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVE_ID like '%&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeId, &quot;%'&quot;) else &quot;&quot;,&#xA;&quot; order by CREATIVELOG_DATE desc&quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>704</pd:x>
+        <pd:y>58</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>718</pd:x>
+        <pd:y>197</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

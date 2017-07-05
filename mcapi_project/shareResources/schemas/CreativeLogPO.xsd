@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="creativeLogId" type="xs:string"/>
+	<xs:element name="creativeId" type="xs:string"/>
+	<xs:element name="creativeLogType" type="xs:string"/>
+	<xs:element name="creativeLogEmail" type="xs:string"/>
+	<xs:element name="creativeLogDate" type="xs:string"/>
+	<xs:element name="creativeLogResult" type="xs:string"/>
+	<xs:element name="creativeLogTypeName" type="xs:string"/>
+	<xs:element name="creativeLogRSName" type="xs:string"/>
+	<xs:element name="creativeLogObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="creativeLogId" minOccurs="0"/>
+				<xs:element ref="creativeId" minOccurs="0"/>
+				<xs:element ref="creativeLogType" minOccurs="0"/>
+				<xs:element ref="creativeLogEmail" minOccurs="0"/>
+				<xs:element ref="creativeLogDate" minOccurs="0"/>
+				<xs:element ref="creativeLogResult" minOccurs="0"/>
+				<xs:element ref="creativeLogTypeName" minOccurs="0"/>
+				<xs:element ref="creativeLogRSName" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="creativeLogResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="creativeLogObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

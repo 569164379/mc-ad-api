@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns3="http://www.tibco.com/namespaces/tnt/plugins/file/v2">
+    <pd:name>creativeMsg/creativeService/common/DeleteThenZipCreative.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="creativeName" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>112</pd:startX>
+    <pd:startY>182</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <responseStatus>
+                <xsl:value-of select="&quot;true&quot;"/>
+            </responseStatus>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="responseStatus" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1021</pd:endX>
+    <pd:endY>167</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1498663414108</pd:targetNamespace>
+    <pd:activity name="List Files">
+        <pd:type>com.tibco.plugin.file.ListFilesActivity</pd:type>
+        <pd:resourceType>ae.activities.ListFilesActivity</pd:resourceType>
+        <pd:x>274</pd:x>
+        <pd:y>159</pd:y>
+        <config>
+            <mode>files-and-directories</mode>
+        </config>
+        <pd:inputBindings>
+            <ns2:ListFilesActivityConfig>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/FileUploadPath, &quot;/&quot;,$Start/root/creativeName,&quot;.zip&quot;)"/>
+                </fileName>
+            </ns2:ListFilesActivityConfig>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Remove File">
+        <pd:type>com.tibco.plugin.file.FileRemoveActivity</pd:type>
+        <pd:resourceType>ae.activities.FileRemoveActivity</pd:resourceType>
+        <pd:x>450</pd:x>
+        <pd:y>44</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns2:RemoveActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns:GlobalVariables/FileUploadPath, &quot;/&quot;,$Start/root/creativeName,&quot;.zip&quot;)"/>
+                </fileName>
+            </ns2:RemoveActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ZIPFile">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>769</pd:x>
+        <pd:y>100</pd:y>
+        <config>
+            <fileName>DeleteThenZipCreativeZIPFile</fileName>
+            <packageName>creativeMsg.creativeService.common.DeleteThenZipCreative</packageName>
+            <fullsource>package creativeMsg.creativeService.common.DeleteThenZipCreative;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
+public class DeleteThenZipCreativeZIPFile{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String FileDownloadPath = "";
+	protected String creativeName = "";
+	public String getFileDownloadPath() {
+		return FileDownloadPath;
+	}
+	public void setFileDownloadPath(String val) {
+		FileDownloadPath = val;
+	}
+	public String getcreativeName() {
+		return creativeName;
+	}
+	public void setcreativeName(String val) {
+		creativeName = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public DeleteThenZipCreativeZIPFile() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String FileDownloadPath
+	In  : String creativeName
+* Available Variables: DO NOT MODIFY *****/
+	zipImage(FileDownloadPath,creativeName);
+}
+/**
+	 * 获取压缩文件流
+	 * @param creativeDirPath
+	 * @param creativeName
+	 * @return
+	 * @throws IOException
+	 */
+public void zipImage(String FileDownloadPath,String creativeName) {
+		/*if(creativeName!=null &amp;&amp; creativeName.trim().equals("")){
+						creativeName = creativeName.trim();
+		}*/
+		
+		File fileZip = new File(FileDownloadPath+"\\"+creativeName.trim()+".zip");
+		File file = new File(FileDownloadPath+"\\"+creativeName.trim());
+		
+		OutputStream out = null;		
+		BufferedOutputStream bufOut = null;
+		ZipOutputStream  zipOutputstream = null;
+		
+		InputStream in = null;
+		BufferedInputStream bufIn = null;
+			
+		
+		try {
+		out = new FileOutputStream(fileZip);		
+		bufOut = new BufferedOutputStream(out);
+		zipOutputstream = new ZipOutputStream(bufOut);
+			
+		
+		//long startTime = System.currentTimeMillis();
+		
+		if(file.isDirectory()){
+			
+			
+			File[] files = file.listFiles();
+			
+			if(files!=null &amp;&amp; files.length&gt;0){
+				for(File imageFile : files){
+					 in = new FileInputStream(imageFile);
+					 bufIn = new BufferedInputStream(in);
+					
+					
+					zipOutputstream.putNextEntry(new ZipEntry(imageFile.getName()));
+					
+					byte[] bytes= new byte[1024*10];
+					int readInt = 0;
+					while((readInt= bufIn.read(bytes, 0, 1024*10))!=-1){
+						zipOutputstream.write(bytes, 0, readInt);
+						
+					}					
+					
+				}
+			}
+			
+		}
+		//long endTime = System.currentTimeMillis();
+		//System.out.println(endTime-startTime);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);  
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			throw new RuntimeException(e);  
+		}finally{
+			try {
+				
+				if(bufIn!=null) bufIn.close();
+				
+				if(zipOutputstream!=null) zipOutputstream.close();
+				
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				throw new RuntimeException(e);
+			}
+			
+		}
+		
+	}
+
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>FileDownloadPath</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>creativeName</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>DeleteThenZipCreativeZIPFile</name>
+                    <byteCode>yv66vgAAADQAjgkAKQBNCQApAE4KACoATwgAUAoAKQBRBwBSBwBTCgAHAE8KAAcAVAgAVQoAVgBXCABYCgAHAFkKAAYAWgcAWwoADwBcBwBdCgARAF4HAF8KABMAXgoABgBgCgAGAGEHAGIKABcAXAcAYwoAGQBkBwBlCgAGAGYKABsAWgoAEwBnCgAZAGgKABMAaQoAGQBqCgATAGoHAGsKACMAbAcAbQoAJQBuBwBvCgAnAGwHAHAHAHEBABBGaWxlRG93bmxvYWRQYXRoAQASTGphdmEvbGFuZy9TdHJpbmc7AQAMY3JlYXRpdmVOYW1lAQATZ2V0RmlsZURvd25sb2FkUGF0aAEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAE3NldEZpbGVEb3dubG9hZFBhdGgBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAA9nZXRjcmVhdGl2ZU5hbWUBAA9zZXRjcmVhdGl2ZU5hbWUBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwByAQAIemlwSW1hZ2UBACcoTGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9TdHJpbmc7KVYBAA1TdGFja01hcFRhYmxlBwBwBwBzBwBSBwB0BwBdBwBfBwB1BwBjBwB2BwB3BwBrBwBvBwB4AQAKU291cmNlRmlsZQEAIURlbGV0ZVRoZW5aaXBDcmVhdGl2ZVpJUEZpbGUuamF2YQwAKwAsDAAtACwMADYANwEAAAwAOwA8AQAMamF2YS9pby9GaWxlAQAXamF2YS9sYW5nL1N0cmluZ0J1aWxkZXIMAHkAegEAAVwHAHMMAHsALwEABC56aXAMAHwALwwANgAzAQAYamF2YS9pby9GaWxlT3V0cHV0U3RyZWFtDAA2AH0BABxqYXZhL2lvL0J1ZmZlcmVkT3V0cHV0U3RyZWFtDAA2AH4BAB1qYXZhL3V0aWwvemlwL1ppcE91dHB1dFN0cmVhbQwAfwCADACBAIIBABdqYXZhL2lvL0ZpbGVJbnB1dFN0cmVhbQEAG2phdmEvaW8vQnVmZmVyZWRJbnB1dFN0cmVhbQwANgCDAQAWamF2YS91dGlsL3ppcC9aaXBFbnRyeQwAhAAvDACFAIYMAIcAiAwAiQCKDACLADcBABNqYXZhL2lvL0lPRXhjZXB0aW9uDACMADcBABpqYXZhL2xhbmcvUnVudGltZUV4Y2VwdGlvbgwANgCNAQAdamF2YS9pby9GaWxlTm90Rm91bmRFeGNlcHRpb24BAFVjcmVhdGl2ZU1zZy9jcmVhdGl2ZVNlcnZpY2UvY29tbW9uL0RlbGV0ZVRoZW5aaXBDcmVhdGl2ZS9EZWxldGVUaGVuWmlwQ3JlYXRpdmVaSVBGaWxlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABBqYXZhL2xhbmcvU3RyaW5nAQAUamF2YS9pby9PdXRwdXRTdHJlYW0BABNqYXZhL2lvL0lucHV0U3RyZWFtAQAPW0xqYXZhL2lvL0ZpbGU7AQACW0IBABNqYXZhL2xhbmcvVGhyb3dhYmxlAQAGYXBwZW5kAQAtKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1aWxkZXI7AQAEdHJpbQEACHRvU3RyaW5nAQARKExqYXZhL2lvL0ZpbGU7KVYBABkoTGphdmEvaW8vT3V0cHV0U3RyZWFtOylWAQALaXNEaXJlY3RvcnkBAAMoKVoBAAlsaXN0RmlsZXMBABEoKVtMamF2YS9pby9GaWxlOwEAGChMamF2YS9pby9JbnB1dFN0cmVhbTspVgEAB2dldE5hbWUBAAxwdXROZXh0RW50cnkBABsoTGphdmEvdXRpbC96aXAvWmlwRW50cnk7KVYBAARyZWFkAQAHKFtCSUkpSQEABXdyaXRlAQAHKFtCSUkpVgEABWNsb3NlAQAPcHJpbnRTdGFja1RyYWNlAQAYKExqYXZhL2xhbmcvVGhyb3dhYmxlOylWACEAKQAqAAAAAgAEACsALAAAAAQALQAsAAAABwABAC4ALwABADAAAAAdAAEAAQAAAAUqtAABsAAAAAEAMQAAAAYAAQAAABMAAQAyADMAAQAwAAAAIgACAAIAAAAGKiu1AAGxAAAAAQAxAAAACgACAAAAFgAFABcAAQA0AC8AAQAwAAAAHQABAAEAAAAFKrQAArAAAAABADEAAAAGAAEAAAAZAAEANQAzAAEAMAAAACIAAgACAAAABiortQACsQAAAAEAMQAAAAoAAgAAABwABQAdAAEANgA3AAEAMAAAADUAAgABAAAAESq3AAMqEgS1AAEqEgS1AAKxAAAAAQAxAAAAEgAEAAAAHwAEABAACgARABAAIAABADgANwACADAAAAApAAMAAQAAAA0qKrQAASq0AAK2AAWxAAAAAQAxAAAACgACAAAAJgAMACcAOQAAAAQAAQA6AAEAOwA8AAEAMAAAAzoABAATAAABe7sABlm7AAdZtwAIK7YACRIKtgAJLLYAC7YACRIMtgAJtgANtwAOTrsABlm7AAdZtwAIK7YACRIKtgAJLLYAC7YACbYADbcADjoEAToFAToGAToHAToIAToJuwAPWS23ABA6BbsAEVkZBbcAEjoGuwATWRkGtwAUOgcZBLYAFZkAhRkEtgAWOgoZCsYAeRkKvp4AcxkKOgsZC742DAM2DRUNFQyiAGAZCxUNMjoOuwAXWRkOtwAYOgi7ABlZGQi3ABo6CRkHuwAbWRkOtgActwAdtgAeESgAvAg6DwM2EBkJGQ8DESgAtgAfWTYQAp8AEBkHGQ8DFRC2ACCn/+SEDQGn/58ZCcYACBkJtgAhGQfGAAgZB7YAIqcAYzoKGQq2ACS7ACVZGQq3ACa/OgoZCrYAKLsAJVkZCrcAJr86ChkKtgAkuwAlWRkKtwAmvzoRGQnGAAgZCbYAIRkHxgAIGQe2ACKnABQ6EhkStgAkuwAlWRkStwAmvxkRv7EABgEDARcBGgAjAFkBAwErACcAWQEDATwAIwBZAQMBTQAAAU8BYwFmACMBKwFPAU0AAAACADEAAACqACoAAAA0ACcANQBKADcATQA4AFAAOQBTADsAVgA8AFkAQABjAEEAbgBCAHkARwCBAEoAiABMAJMATQCtAE4AuABPAMMAUgDUAFQA2wBVAN4AVgDwAFcA/QBNAQMAbAENAG4BFwB0ARoAcAEcAHIBIQBzASsAYQEtAGMBMgBkATwAZQE+AGcBQwBoAU0AagFPAGwBWQBuAWMAdAFmAHABaAByAW0AcwF6AHgAPQAAAM0AD/8AnwAOBwA+BwA/BwA/BwBABwBABwBBBwBCBwBDBwBEBwBFBwBGBwBGAQEAAP4APgcAQAcARwH4AB7/AAUACgcAPgcAPwcAPwcAQAcAQAcAQQcAQgcAQwcARAcARQAACQlCBwBIUAcASVAHAEhQBwBK/wALABIHAD4HAD8HAD8HAEAHAEAHAEEHAEIHAEMHAEQHAEUAAAAAAAAABwBKAAAJQgcASBD/AAIACgcAPgcAPwcAPwcAQAcAQAcAQQcAQgcAQwcARAcARQAAAAEASwAAAAIATA==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <FileDownloadPath>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/FileUploadPath"/>
+                </FileDownloadPath>
+                <creativeName>
+                    <xsl:value-of select="$Start/root/creativeName"/>
+                </creativeName>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>List Files</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>List Files</pd:from>
+        <pd:to>Remove File</pd:to>
+        <pd:xpathDescription>CreativeZipExist</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($List-Files/ns2:ListFilesActivityOutput/files/fileInfo)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove File</pd:from>
+        <pd:to>ZIPFile</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>List Files</pd:from>
+        <pd:to>ZIPFile</pd:to>
+        <pd:xpathDescription>isNotExists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ZIPFile</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

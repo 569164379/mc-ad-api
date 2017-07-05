@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd7"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd7"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="dcId" type="xs:string"/>
+	<xs:element name="dictId" type="xs:string"/>
+	<xs:element name="creativeId" type="xs:string"/>
+	<xs:element name="dcCreated" type="xs:string"/>
+	<xs:element name="dcCreater" type="xs:string"/>
+	<xs:element name="dcModified" type="xs:string"/>
+	<xs:element name="dcModifier" type="xs:string"/>
+	<xs:element name="dcIsDel" type="xs:string"/>
+
+	<!-- 非PO字段 -->
+	<xs:element name="dictName" type="xs:string"/>
+	<xs:element name="dictStatus" type="xs:string"/>
+	<xs:element name="creativeName" type="xs:string"/>
+	<xs:element name="dictNo" type="xs:string"/>
+	<xs:element name="dcObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dcId" minOccurs="0"/>
+				<xs:element ref="dictId" minOccurs="0"/>
+				<xs:element ref="creativeId" minOccurs="0"/>
+				<xs:element ref="dcCreated" minOccurs="0"/>
+				<xs:element ref="dcCreater" minOccurs="0"/>
+				<xs:element ref="dcModified" minOccurs="0"/>
+				<xs:element ref="dcModifier" minOccurs="0"/>
+				<xs:element ref="dcIsDel" minOccurs="0"/>
+				<xs:element ref="dictName" minOccurs="0"/>
+				<xs:element ref="creativeName" minOccurs="0"/>
+				<xs:element ref="dictNo" minOccurs="0"/>
+				<xs:element ref="dictStatus" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="dcResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dcObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

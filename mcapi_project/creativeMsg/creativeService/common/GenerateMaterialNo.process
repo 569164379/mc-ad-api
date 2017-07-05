@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>creativeMsg/creativeService/common/GenerateMaterialNo.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="materailType" type="xsd:string"/>
+                    <xsd:element name="titleLength" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="descLength" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="width" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="height" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="duration" type="xsd:string" minOccurs="0"/>
+                    <xsd:element name="maxMId" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>100</pd:startX>
+    <pd:startY>58</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <materailNo>
+                <xsl:value-of select="$Java-Code/javaCodeActivityOutput/mno"/>
+            </materailNo>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="materailNo" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>677</pd:endX>
+    <pd:endY>65</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1497339810570</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>376</pd:x>
+        <pd:y>68</pd:y>
+        <config>
+            <fullsource>package creativeMsg.creativeService.common.GenerateMaterialNo;
+import java.util.*;
+import java.io.*;
+public class GenerateMaterialNoJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String mtype = "";
+	protected String titleLength = "";
+	protected String descLength = "";
+	protected String width = "";
+	protected String height = "";
+	protected String duration = "";
+	protected String maxMaterialNo = "";
+	protected String mno = "";
+	public String getmtype() {
+		return mtype;
+	}
+	public void setmtype(String val) {
+		mtype = val;
+	}
+	public String gettitleLength() {
+		return titleLength;
+	}
+	public void settitleLength(String val) {
+		titleLength = val;
+	}
+	public String getdescLength() {
+		return descLength;
+	}
+	public void setdescLength(String val) {
+		descLength = val;
+	}
+	public String getwidth() {
+		return width;
+	}
+	public void setwidth(String val) {
+		width = val;
+	}
+	public String getheight() {
+		return height;
+	}
+	public void setheight(String val) {
+		height = val;
+	}
+	public String getduration() {
+		return duration;
+	}
+	public void setduration(String val) {
+		duration = val;
+	}
+	public String getmaxMaterialNo() {
+		return maxMaterialNo;
+	}
+	public void setmaxMaterialNo(String val) {
+		maxMaterialNo = val;
+	}
+	public String getmno() {
+		return mno;
+	}
+	public void setmno(String val) {
+		mno = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public GenerateMaterialNoJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String mtype
+	In  : String titleLength
+	In  : String descLength
+	In  : String width
+	In  : String height
+	In  : String duration
+	In  : String maxMaterialNo
+	Out : String mno
+* Available Variables: DO NOT MODIFY *****/
+	mno = getMaterialNo(mtype,titleLength,descLength,width,height,duration,maxMaterialNo);
+
+}
+
+public String getMaterialNo(String mtype, String titleLength,String descLength, String width, String height,String duration, String maxMaterialNo){
+		Date d = new Date();
+		long part1 = d.getTime();
+		String part2 = ""+mtype;
+		String part3 = "";
+		String part4 = "";
+		
+		
+		
+		if(mtype.equals("txt")){
+			part3=titleLength+"+"+descLength;
+		}
+		if(mtype.equals("pic")){
+			part3=width+"+"+height;
+		}
+		
+		if(mtype.equals("vid")){
+			part3=duration;
+		}
+		if(mtype.equals("sud")){
+			part3=duration;
+		}
+		
+		if(part3.length()&lt;9){
+			StringBuffer sb = new StringBuffer();
+			sb.append(part3);
+			for(int i=0; i&lt;9-part3.length();i++){
+				sb.append("f");
+			}
+			part3 = sb.toString();
+		}
+		int maxMaterialNo1 = 0;
+		if(maxMaterialNo!=null &amp;&amp; maxMaterialNo.trim().length()&gt;0){
+			maxMaterialNo1=Integer.parseInt(maxMaterialNo);
+		}
+		
+		if(maxMaterialNo1&gt;9999){
+			maxMaterialNo1 = 0;
+		}
+		
+		part4= String.valueOf(maxMaterialNo1+1);
+		
+		if(part4.length()&lt;4){
+			StringBuffer sb = new StringBuffer();
+			sb.append(part4);
+			for(int i=0; i&lt;4-part4.length();i++){
+				sb.append("f");
+			}
+			part4 = sb.toString();
+		}
+		
+		String mno = part1+"&amp;"+part2+"&amp;"+part3+"&amp;"+part4;
+		System.out.println("mno: "+mno);
+		
+		
+		return mno;
+	}
+}
+</fullsource>
+            <fileName>GenerateMaterialNoJavaCode</fileName>
+            <packageName>creativeMsg.creativeService.common.GenerateMaterialNo</packageName>
+            <outputData>
+                <row>
+                    <fieldName>mno</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>mtype</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>titleLength</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>descLength</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>width</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>height</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>duration</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>maxMaterialNo</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>GenerateMaterialNoJavaCode</name>
+                    <byteCode>yv66vgAAADQAlAkAJwBUCQAnAFUJACcAVgkAJwBXCQAnAFgJACcAWQkAJwBaCQAnAFsKACgAXAgAXQoAJwBeBwBfCgAMAFwKAAwAYAcAYQoADwBcCgAPAGIKAA8AYwgAZAoAZQBmCABnCABoCABpCABqCgBlAGsHAGwKABoAXAoAGgBtCABuCgAaAGMKAGUAbwoAcABxCgBlAHIKAA8AcwgAdAkAdQB2CAB3CgB4AHkHAHoHAHsBAAVtdHlwZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAC3RpdGxlTGVuZ3RoAQAKZGVzY0xlbmd0aAEABXdpZHRoAQAGaGVpZ2h0AQAIZHVyYXRpb24BAA1tYXhNYXRlcmlhbE5vAQADbW5vAQAIZ2V0bXR5cGUBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAhzZXRtdHlwZQEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADmdldHRpdGxlTGVuZ3RoAQAOc2V0dGl0bGVMZW5ndGgBAA1nZXRkZXNjTGVuZ3RoAQANc2V0ZGVzY0xlbmd0aAEACGdldHdpZHRoAQAIc2V0d2lkdGgBAAlnZXRoZWlnaHQBAAlzZXRoZWlnaHQBAAtnZXRkdXJhdGlvbgEAC3NldGR1cmF0aW9uAQAQZ2V0bWF4TWF0ZXJpYWxObwEAEHNldG1heE1hdGVyaWFsTm8BAAZnZXRtbm8BAAZzZXRtbm8BAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwB8AQANZ2V0TWF0ZXJpYWxObwEAkihMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmc7AQANU3RhY2tNYXBUYWJsZQcAegcAfQcAXwcAbAEAClNvdXJjZUZpbGUBAB9HZW5lcmF0ZU1hdGVyaWFsTm9KYXZhQ29kZS5qYXZhDAApACoMACsAKgwALAAqDAAtACoMAC4AKgwALwAqDAAwACoMADEAKgwARgBHAQAADABLAEwBAA5qYXZhL3V0aWwvRGF0ZQwAfgB/AQAXamF2YS9sYW5nL1N0cmluZ0J1aWxkZXIMAIAAgQwAggAzAQADdHh0BwB9DACDAIQBAAErAQADcGljAQADdmlkAQADc3VkDACFAIYBABZqYXZhL2xhbmcvU3RyaW5nQnVmZmVyDACAAIcBAAFmDACIADMHAIkMAIoAiwwAjACNDACAAI4BAAEmBwCPDACQAJEBAAVtbm86IAcAkgwAkwA3AQBQY3JlYXRpdmVNc2cvY3JlYXRpdmVTZXJ2aWNlL2NvbW1vbi9HZW5lcmF0ZU1hdGVyaWFsTm8vR2VuZXJhdGVNYXRlcmlhbE5vSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAEGphdmEvbGFuZy9TdHJpbmcBAAdnZXRUaW1lAQADKClKAQAGYXBwZW5kAQAtKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1aWxkZXI7AQAIdG9TdHJpbmcBAAZlcXVhbHMBABUoTGphdmEvbGFuZy9PYmplY3Q7KVoBAAZsZW5ndGgBAAMoKUkBACwoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVmZmVyOwEABHRyaW0BABFqYXZhL2xhbmcvSW50ZWdlcgEACHBhcnNlSW50AQAVKExqYXZhL2xhbmcvU3RyaW5nOylJAQAHdmFsdWVPZgEAFShJKUxqYXZhL2xhbmcvU3RyaW5nOwEAHChKKUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBABBqYXZhL2xhbmcvU3lzdGVtAQADb3V0AQAVTGphdmEvaW8vUHJpbnRTdHJlYW07AQATamF2YS9pby9QcmludFN0cmVhbQEAB3ByaW50bG4AIQAnACgAAAAIAAQAKQAqAAAABAArACoAAAAEACwAKgAAAAQALQAqAAAABAAuACoAAAAEAC8AKgAAAAQAMAAqAAAABAAxACoAAAATAAEAMgAzAAEANAAAAB0AAQABAAAABSq0AAGwAAAAAQA1AAAABgABAAAADwABADYANwABADQAAAAiAAIAAgAAAAYqK7UAAbEAAAABADUAAAAKAAIAAAASAAUAEwABADgAMwABADQAAAAdAAEAAQAAAAUqtAACsAAAAAEANQAAAAYAAQAAABUAAQA5ADcAAQA0AAAAIgACAAIAAAAGKiu1AAKxAAAAAQA1AAAACgACAAAAGAAFABkAAQA6ADMAAQA0AAAAHQABAAEAAAAFKrQAA7AAAAABADUAAAAGAAEAAAAbAAEAOwA3AAEANAAAACIAAgACAAAABiortQADsQAAAAEANQAAAAoAAgAAAB4ABQAfAAEAPAAzAAEANAAAAB0AAQABAAAABSq0AASwAAAAAQA1AAAABgABAAAAIQABAD0ANwABADQAAAAiAAIAAgAAAAYqK7UABLEAAAABADUAAAAKAAIAAAAkAAUAJQABAD4AMwABADQAAAAdAAEAAQAAAAUqtAAFsAAAAAEANQAAAAYAAQAAACcAAQA/ADcAAQA0AAAAIgACAAIAAAAGKiu1AAWxAAAAAQA1AAAACgACAAAAKgAFACsAAQBAADMAAQA0AAAAHQABAAEAAAAFKrQABrAAAAABADUAAAAGAAEAAAAtAAEAQQA3AAEANAAAACIAAgACAAAABiortQAGsQAAAAEANQAAAAoAAgAAADAABQAxAAEAQgAzAAEANAAAAB0AAQABAAAABSq0AAewAAAAAQA1AAAABgABAAAAMwABAEMANwABADQAAAAiAAIAAgAAAAYqK7UAB7EAAAABADUAAAAKAAIAAAA2AAUANwABAEQAMwABADQAAAAdAAEAAQAAAAUqtAAIsAAAAAEANQAAAAYAAQAAADkAAQBFADcAAQA0AAAAIgACAAIAAAAGKiu1AAixAAAAAQA1AAAACgACAAAAPAAFAD0AAQBGAEcAAQA0AAAAcQACAAEAAAA1KrcACSoSCrUAASoSCrUAAioSCrUAAyoSCrUABCoSCrUABSoSCrUABioSCrUAByoSCrUACLEAAAABADUAAAAqAAoAAAA/AAQABgAKAAcAEAAIABYACQAcAAoAIgALACgADAAuAA0ANABAAAEASABHAAIANAAAAEEACQABAAAAJSoqKrQAASq0AAIqtAADKrQABCq0AAUqtAAGKrQAB7YAC7UACLEAAAABADUAAAAKAAIAAABMACQATgBJAAAABAABAEoAAQBLAEwAAQA0AAACfwADABEAAAGFuwAMWbcADToIGQi2AA43CbsAD1m3ABASCrYAESu2ABG2ABI6CxIKOgwSCjoNKxITtgAUmQAcuwAPWbcAECy2ABESFbYAES22ABG2ABI6DCsSFrYAFJkAHrsAD1m3ABAZBLYAERIVtgARGQW2ABG2ABI6DCsSF7YAFJkABxkGOgwrEhi2ABSZAAcZBjoMGQy2ABkQCaIAObsAGlm3ABs6DhkOGQy2ABxXAzYPFQ8QCRkMtgAZZKIAERkOEh22ABxXhA8Bp//oGQ62AB46DAM2DhkHxgAVGQe2AB+2ABmeAAoZB7gAIDYOFQ4RJw+kAAYDNg4VDgRguAAhOg0ZDbYAGQeiADi7ABpZtwAbOg8ZDxkNtgAcVwM2EBUQBxkNtgAZZKIAERkPEh22ABxXhBABp//pGQ+2AB46DbsAD1m3ABAWCbYAIhIjtgARGQu2ABESI7YAERkMtgAREiO2ABEZDbYAEbYAEjoPsgAkuwAPWbcAEBIltgARGQ+2ABG2ABK2ACYZD7AAAAACADUAAACSACQAAABRAAkAUgAQAFMAJQBUACkAVQAtAFkANgBaAE8AXABYAF0AcwBgAHwAYQCAAGMAiQBkAI0AZwCXAGgAoABpAKgAagC4AGsAwABqAMYAbQDNAG8A0ABwAOAAcQDnAHQA7wB1APIAeAD7AHoBBAB7AQ0AfAEVAH0BJAB+ASwAfQEyAIABOQCDAWgAhAGCAIcATQAAAFAADP8ATwANBwBOBwBPBwBPBwBPBwBPBwBPBwBPBwBPBwBQBAcATwcATwcATwAAIwwM/QAdBwBRAfoAGvoABvwAGQEK/QAlBwBRAfoAGfoABgABAFIAAAACAFM=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <mtype>
+                    <xsl:value-of select="$Start/root/materailType"/>
+                </mtype>
+                <xsl:if test="$Start/root/titleLength">
+                    <titleLength>
+                        <xsl:value-of select="$Start/root/titleLength"/>
+                    </titleLength>
+                </xsl:if>
+                <xsl:if test="$Start/root/descLength">
+                    <descLength>
+                        <xsl:value-of select="$Start/root/descLength"/>
+                    </descLength>
+                </xsl:if>
+                <xsl:if test="$Start/root/width">
+                    <width>
+                        <xsl:value-of select="$Start/root/width"/>
+                    </width>
+                </xsl:if>
+                <xsl:if test="$Start/root/height">
+                    <height>
+                        <xsl:value-of select="$Start/root/height"/>
+                    </height>
+                </xsl:if>
+                <xsl:if test="$Start/root/duration">
+                    <duration>
+                        <xsl:value-of select="$Start/root/duration"/>
+                    </duration>
+                </xsl:if>
+                <maxMaterialNo>
+                    <xsl:value-of select="$Start/root/maxMId"/>
+                </maxMaterialNo>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

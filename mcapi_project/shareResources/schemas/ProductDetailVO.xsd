@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd8"
+	 xmlns:product="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2"
+	 xmlns:creative="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd8"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"/>
+	<xs:element name="productDetailVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="product:productObj"/>
+				<xs:element ref="creative:creativeResults"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

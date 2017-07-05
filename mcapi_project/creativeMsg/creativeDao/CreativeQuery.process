@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" schemaLocation="/shareResources/schemas/MaterialPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" schemaLocation="/shareResources/schemas/CreativePO.xsd"/>
+    <pd:name>creativeMsg/creativeDao/CreativeQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:creativeObj"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <pfx:creativeResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx:creativeObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx:creativeId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:productId>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx:productId>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeName>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx:creativeName>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeUploader>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx:creativeUploader>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeStatus>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx:creativeStatus>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeTag>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx:creativeTag>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeLevel>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx:creativeLevel>
+                    </xsl:if>
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeCreated>
+                            <xsl:value-of select="column[8]/value"/>
+                        </pfx:creativeCreated>
+                    </xsl:if>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeModified>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx:creativeModified>
+                    </xsl:if>
+                    <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:productName>
+                            <xsl:value-of select="column[10]/value"/>
+                        </pfx:productName>
+                    </xsl:if>
+                    <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:levelName>
+                            <xsl:value-of select="column[11]/value"/>
+                        </pfx:levelName>
+                    </xsl:if>
+                    <xsl:if test="not((column[12]/value/@xsi:nil=(&quot;true&quot;)) or (column[12]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:creativeStatusName>
+                            <xsl:value-of select="column[12]/value"/>
+                        </pfx:creativeStatusName>
+                    </xsl:if>
+                    <xsl:if test="not((column[13]/value/@xsi:nil=(&quot;true&quot;)) or (column[13]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:tagNames>
+                            <xsl:value-of select="column[13]/value"/>
+                        </pfx:tagNames>
+                    </xsl:if>
+                    <xsl:if test="not((column[16]/value/@xsi:nil=(&quot;true&quot;)) or (column[16]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx:uploadAccountMail>
+                            <xsl:value-of select="column[16]/value"/>
+                        </pfx:uploadAccountMail>
+                    </xsl:if>
+                </pfx:creativeObj>
+            </xsl:for-each>
+        </pfx:creativeResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx:creativeResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1497314592967</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>101</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT * from (SELECT bc.*, bp.PRODUCT_NAME,bd.DICT_NAME levelName,bd2.DICT_NAME creativeStatusName, GROUP_CONCAT(bd3.DICT_NAME) tagNames,bd.dict_status dictStatus, bd2.dict_status dictStatus2, ba.ACCOUNT_EMAIL accountEmail   from tab_creative bc left JOIN tab_product bp on bc.PRODUCT_ID = bp.PRODUCT_ID&quot;,  &#xA;&quot; left JOIN tab_dictionary bd on bc.CREATIVE_LEVEL = bd.DICT_ID&quot;,&#xA;&quot; left JOIN tab_dictionary bd2 on bc.CREATIVE_STATUS = bd2.DICT_ID&quot;,&#xA;&quot; left JOIN tab_dict_creative bdc on bc.CREATIVE_ID = bdc.CREATIVE_ID&quot;,&#xA;&quot; LEFT JOIN tab_account ba on bc.CREATIVE_UPLOADER = ba.ACCOUNT_ID&quot;,&#xA;&quot; left JOIN tab_dictionary bd3 on bd3.DICT_ID = bdc.DICT_ID  and bdc.DC_ISDEL=0 &quot;,&#xA;&quot; GROUP BY bc.CREATIVE_ID) a where 1=1 &quot;, &#xA;if (exists($Start/pfx:creativeObj/pfx:productName) and tib:trim($Start/pfx:creativeObj/pfx:productName) !=&quot;&quot;) then concat(&quot; and a.PRODUCT_NAME like '%&quot;, tib:trim($Start/pfx:creativeObj/pfx:productName), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:creativeName) and tib:trim($Start/pfx:creativeObj/pfx:creativeName) !=&quot;&quot;) then concat(&quot; and a.CREATIVE_NAME like '%&quot;, tib:trim($Start/pfx:creativeObj/pfx:creativeName), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:creativeId) and tib:trim($Start/pfx:creativeObj/pfx:creativeId) !=&quot;&quot;) then concat(&quot; and a.CREATIVE_ID = &quot;, $Start/pfx:creativeObj/pfx:creativeId ) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:productId) and tib:trim($Start/pfx:creativeObj/pfx:productId) !=&quot;&quot;) then concat(&quot; and a.PRODUCT_ID = &quot;, $Start/pfx:creativeObj/pfx:productId ) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:creativeIdSearchVal) and tib:trim($Start/pfx:creativeObj/pfx:creativeIdSearchVal) !=&quot;&quot;) then concat(&quot; and a.CREATIVE_ID like '%&quot;, tib:trim($Start/pfx:creativeObj/pfx:creativeIdSearchVal), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:creativeTag) and tib:trim($Start/pfx:creativeObj/pfx:creativeTag) !=&quot;&quot;) then concat(&quot; and a.tagNames like '%&quot;, tib:trim($Start/pfx:creativeObj/pfx:creativeTag), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:creativeLevel) and tib:trim($Start/pfx:creativeObj/pfx:creativeLevel) !=&quot;&quot;) then concat(&quot; and a.CREATIVE_LEVEL like '%&quot;, tib:trim($Start/pfx:creativeObj/pfx:creativeLevel), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:creativeUploader) and tib:trim($Start/pfx:creativeObj/pfx:creativeUploader) !=&quot;&quot;) then concat(&quot; and a.CREATIVE_UPLOADER like '%&quot;, tib:trim($Start/pfx:creativeObj/pfx:creativeUploader), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx:creativeObj/pfx:creativeStatus) and tib:trim($Start/pfx:creativeObj/pfx:creativeStatus) !=&quot;&quot;) then concat(&quot; and a.CREATIVE_STATUS= '&quot;, tib:trim($Start/pfx:creativeObj/pfx:creativeStatus), &quot;'&quot;) else &quot;&quot;,&#xA;&quot; order by a.creative_id desc&quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>704</pd:x>
+        <pd:y>58</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>718</pd:x>
+        <pd:y>197</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

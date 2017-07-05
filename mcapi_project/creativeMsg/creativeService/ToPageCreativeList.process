@@ -1,0 +1,296 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd6" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" schemaLocation="/shareResources/schemas/MaterialPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" schemaLocation="/shareResources/schemas/CreativePO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd6" schemaLocation="/shareResources/schemas/CreativeVO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <pd:name>creativeMsg/creativeService/ToPageCreativeList.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:requestParams"/>
+    <pd:startX>134</pd:startX>
+    <pd:startY>160</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1170</pd:endX>
+    <pd:endY>171</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1497423440644</pd:targetNamespace>
+    <pd:activity name="GradesQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>758</pd:x>
+        <pd:y>145</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/DictionaryQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:dictObj>
+                <ns2:dictParentNo>
+                    <xsl:value-of select="&quot;002&quot;"/>
+                </ns2:dictParentNo>
+                <ns2:dictStatus>
+                    <xsl:value-of select="0"/>
+                </ns2:dictStatus>
+            </ns2:dictObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>905</pd:x>
+        <pd:y>156</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx4:CreativeAuditVO"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx4:CreativeAuditVO>
+                    <pfx4:GradsList>
+                        <xsl:for-each select="$GradesQuery/ns2:dictsResutls/ns2:dictObj">
+                            <ns2:dictObj>
+                                <xsl:if test="ns2:dictId">
+                                    <ns2:dictId>
+                                        <xsl:value-of select="ns2:dictId"/>
+                                    </ns2:dictId>
+                                </xsl:if>
+                                <xsl:if test="ns2:dictName">
+                                    <ns2:dictName>
+                                        <xsl:value-of select="ns2:dictName"/>
+                                    </ns2:dictName>
+                                </xsl:if>
+                            </ns2:dictObj>
+                        </xsl:for-each>
+                    </pfx4:GradsList>
+                    <pfx4:AuditStatusList>
+                        <xsl:for-each select="$AuditStatusQuery/ns2:dictsResutls/ns2:dictObj">
+                            <ns2:dictObj>
+                                <xsl:if test="ns2:dictId">
+                                    <ns2:dictId>
+                                        <xsl:value-of select="ns2:dictId"/>
+                                    </ns2:dictId>
+                                </xsl:if>
+                                <xsl:if test="ns2:dictName">
+                                    <ns2:dictName>
+                                        <xsl:value-of select="ns2:dictName"/>
+                                    </ns2:dictName>
+                                </xsl:if>
+                            </ns2:dictObj>
+                        </xsl:for-each>
+                    </pfx4:AuditStatusList>
+                    <xsl:if test="$InitialTokenInfo/javaCodeActivityOutput/tokenInfo">
+                        <pfx4:tokenInfo>
+                            <xsl:value-of select="$InitialTokenInfo/javaCodeActivityOutput/tokenInfo"/>
+                        </pfx4:tokenInfo>
+                    </xsl:if>
+                </pfx4:CreativeAuditVO>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AuditStatusQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>557</pd:x>
+        <pd:y>150</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/DictionaryQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns2:dictObj>
+                <ns2:dictParentNo>
+                    <xsl:value-of select="&quot;003&quot;"/>
+                </ns2:dictParentNo>
+                <ns2:dictStatus>
+                    <xsl:value-of select="0"/>
+                </ns2:dictStatus>
+            </ns2:dictObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InitialTokenInfo">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>486</pd:x>
+        <pd:y>315</pd:y>
+        <config>
+            <fileName>ToPageCreativeListInitialTokenInfo</fileName>
+            <packageName>creativeMsg.creativeService.ToPageCreativeList</packageName>
+            <fullsource>package creativeMsg.creativeService.ToPageCreativeList;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import com.tm.mc.redis.MCRedisInstance;
+
+import redis.clients.jedis.Jedis;
+public class ToPageCreativeListInitialTokenInfo{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String userId = "";
+	protected String userName = "";
+	protected String tokenInfo = "";
+	public String getuserId() {
+		return userId;
+	}
+	public void setuserId(String val) {
+		userId = val;
+	}
+	public String getuserName() {
+		return userName;
+	}
+	public void setuserName(String val) {
+		userName = val;
+	}
+	public String gettokenInfo() {
+		return tokenInfo;
+	}
+	public void settokenInfo(String val) {
+		tokenInfo = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ToPageCreativeListInitialTokenInfo() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String userId
+	In  : String userName
+	In  : String tokenInfo
+	Out : String tokenInfo
+* Available Variables: DO NOT MODIFY *****/
+Jedis jedis = MCRedisInstance.getInstance().getJedis();
+//System.out.println("jedis==============:"+jedis);
+		Map&lt;String, String&gt; m = new HashMap&lt;String, String&gt;();
+		//m.put("userId",userId);
+		//m.put("userName",userName);
+		String currTimeMillis = String.valueOf(System.currentTimeMillis());
+		m.put("validateRepeat",currTimeMillis );
+
+		System.out.println("First initial validateRepeatas ：==============:"+currTimeMillis);
+		String uuId = UUID.randomUUID().toString();
+		jedis.hmset(uuId, m);
+		//jedis.expire(uuId, 1800);
+		jedis.expire(uuId, 10800);
+		tokenInfo = uuId ;
+		jedis.close();}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>userId</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>userName</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>tokenInfo</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>tokenInfo</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>ToPageCreativeListInitialTokenInfo</name>
+                    <byteCode>yv66vgAAADQAbwkAGgAxCQAaADIJABoAMwoAGwA0CAA1CgA2ADcKADYAOAcAOQoACAA0CgA6ADsKADwAPQgAPgsAPwBACQA6AEEHAEIKAA8ANAgAQwoADwBECgAPAEUKAEYARwoASABJCgBIAEUKAEoASwoASgBMCgBKAE0HAE4HAE8BAAZ1c2VySWQBABJMamF2YS9sYW5nL1N0cmluZzsBAAh1c2VyTmFtZQEACXRva2VuSW5mbwEACWdldHVzZXJJZAEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEACXNldHVzZXJJZAEAFShMamF2YS9sYW5nL1N0cmluZzspVgEAC2dldHVzZXJOYW1lAQALc2V0dXNlck5hbWUBAAxnZXR0b2tlbkluZm8BAAxzZXR0b2tlbkluZm8BAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwBQAQAKU291cmNlRmlsZQEAJ1RvUGFnZUNyZWF0aXZlTGlzdEluaXRpYWxUb2tlbkluZm8uamF2YQwAHAAdDAAeAB0MAB8AHQwAKgArAQAABwBRDABSAFMMAFQAVQEAEWphdmEvdXRpbC9IYXNoTWFwBwBWDABXAFgHAFkMAFoAWwEADnZhbGlkYXRlUmVwZWF0BwBcDABdAF4MAF8AYAEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyAQAvRmlyc3QgaW5pdGlhbCB2YWxpZGF0ZVJlcGVhdGFzID89PT09PT09PT09PT09PToMAGEAYgwAYwAhBwBkDABlACUHAGYMAGcAaAcAaQwAagBrDABsAG0MAG4AKwEAUWNyZWF0aXZlTXNnL2NyZWF0aXZlU2VydmljZS9Ub1BhZ2VDcmVhdGl2ZUxpc3QvVG9QYWdlQ3JlYXRpdmVMaXN0SW5pdGlhbFRva2VuSW5mbwEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAfY29tL3RtL21jL3JlZGlzL01DUmVkaXNJbnN0YW5jZQEAC2dldEluc3RhbmNlAQAjKClMY29tL3RtL21jL3JlZGlzL01DUmVkaXNJbnN0YW5jZTsBAAhnZXRKZWRpcwEAHSgpTHJlZGlzL2NsaWVudHMvamVkaXMvSmVkaXM7AQAQamF2YS9sYW5nL1N5c3RlbQEAEWN1cnJlbnRUaW1lTWlsbGlzAQADKClKAQAQamF2YS9sYW5nL1N0cmluZwEAB3ZhbHVlT2YBABUoSilMamF2YS9sYW5nL1N0cmluZzsBAA1qYXZhL3V0aWwvTWFwAQADcHV0AQA4KExqYXZhL2xhbmcvT2JqZWN0O0xqYXZhL2xhbmcvT2JqZWN0OylMamF2YS9sYW5nL09iamVjdDsBAANvdXQBABVMamF2YS9pby9QcmludFN0cmVhbTsBAAZhcHBlbmQBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAAh0b1N0cmluZwEAE2phdmEvaW8vUHJpbnRTdHJlYW0BAAdwcmludGxuAQAOamF2YS91dGlsL1VVSUQBAApyYW5kb21VVUlEAQASKClMamF2YS91dGlsL1VVSUQ7AQAZcmVkaXMvY2xpZW50cy9qZWRpcy9KZWRpcwEABWhtc2V0AQA1KExqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL3V0aWwvTWFwOylMamF2YS9sYW5nL1N0cmluZzsBAAZleHBpcmUBACUoTGphdmEvbGFuZy9TdHJpbmc7SSlMamF2YS9sYW5nL0xvbmc7AQAFY2xvc2UAIQAaABsAAAADAAQAHAAdAAAABAAeAB0AAAAEAB8AHQAAAAgAAQAgACEAAQAiAAAAHQABAAEAAAAFKrQAAbAAAAABACMAAAAGAAEAAAAQAAEAJAAlAAEAIgAAACIAAgACAAAABiortQABsQAAAAEAIwAAAAoAAgAAABMABQAUAAEAJgAhAAEAIgAAAB0AAQABAAAABSq0AAKwAAAAAQAjAAAABgABAAAAFgABACcAJQABACIAAAAiAAIAAgAAAAYqK7UAArEAAAABACMAAAAKAAIAAAAZAAUAGgABACgAIQABACIAAAAdAAEAAQAAAAUqtAADsAAAAAEAIwAAAAYAAQAAABwAAQApACUAAQAiAAAAIgACAAIAAAAGKiu1AAOxAAAAAQAjAAAACgACAAAAHwAFACAAAQAqACsAAQAiAAAAPwACAAEAAAAXKrcABCoSBbUAASoSBbUAAioSBbUAA7EAAAABACMAAAAWAAUAAAAiAAQADAAKAA0AEAAOABYAIwABACwAKwACACIAAACaAAMABQAAAF64AAa2AAdMuwAIWbcACU24AAq4AAtOLBIMLbkADQMAV7IADrsAD1m3ABASEbYAEi22ABK2ABO2ABS4ABW2ABY6BCsZBCy2ABdXKxkEESowtgAYVyoZBLUAAyu2ABmxAAAAAQAjAAAAKgAKAAAAKwAHAC0ADwAwABYAMQAgADMAOQA0AEEANQBJADcAUwA4AFkAOQAtAAAABAABAC4AAQAvAAAAAgAw</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/pfx2:requestParams/pfx2:tokenInfo">
+                    <tokenInfo>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx2:requestParams/pfx2:tokenInfo"/>
+                    </tokenInfo>
+                </xsl:if>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>272</pd:x>
+        <pd:y>158</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx2:requestParams"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx2:requestParams/pfx2:jsonPostData"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>GradesQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InitialTokenInfo</pd:from>
+        <pd:to>AuditStatusQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AuditStatusQuery</pd:to>
+        <pd:xpathDescription>existsTokenInfo</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Parse-JSON/ns:ActivityOutputClass/pfx2:requestParams/pfx2:tokenInfo) and tib:trim($Parse-JSON/ns:ActivityOutputClass/pfx2:requestParams/pfx2:tokenInfo)!=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>InitialTokenInfo</pd:to>
+        <pd:xpathDescription>NoTokenInfo</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AuditStatusQuery</pd:from>
+        <pd:to>GradesQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

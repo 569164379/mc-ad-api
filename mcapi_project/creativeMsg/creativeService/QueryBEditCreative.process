@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd6" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd6" schemaLocation="/shareResources/schemas/CreativeVO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" schemaLocation="/shareResources/schemas/CreativePO.xsd"/>
+    <pd:name>creativeMsg/creativeService/QueryBEditCreative.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:requestParams"/>
+    <pd:startX>53</pd:startX>
+    <pd:startY>216</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="$Render-JSON/ns2:ActivityOutputClass/jsonString"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>969</pd:endX>
+    <pd:endY>84</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1498012057257</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>235</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="ns:creativeObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx3:requestParams/pfx3:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>805</pd:x>
+        <pd:y>140</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx2:CreativeVO"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <pfx2:CreativeVO>
+                    <ns:creativeObj>
+                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:creativeId">
+                            <ns:creativeId>
+                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:creativeId"/>
+                            </ns:creativeId>
+                        </xsl:if>
+                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:productId">
+                            <ns:productId>
+                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:productId"/>
+                            </ns:productId>
+                        </xsl:if>
+                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:creativeName">
+                            <ns:creativeName>
+                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:creativeName"/>
+                            </ns:creativeName>
+                        </xsl:if>
+                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:creativeUploader">
+                            <ns:creativeUploader>
+                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:creativeUploader"/>
+                            </ns:creativeUploader>
+                        </xsl:if>
+                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:productName">
+                            <ns:productName>
+                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:productName"/>
+                            </ns:productName>
+                        </xsl:if>
+                    </ns:creativeObj>
+                    <pfx2:TextMetrialList>
+                        <xsl:for-each select="$MaterialTextQuery/pfx:materialResults/pfx:materialObj">
+                            <pfx:materialObj>
+                                <xsl:if test="pfx:materialId">
+                                    <pfx:materialId>
+                                        <xsl:value-of select="pfx:materialId"/>
+                                    </pfx:materialId>
+                                </xsl:if>
+                                <xsl:if test="pfx:creativeId">
+                                    <pfx:creativeId>
+                                        <xsl:value-of select="pfx:creativeId"/>
+                                    </pfx:creativeId>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialNo">
+                                    <pfx:materialNo>
+                                        <xsl:value-of select="pfx:materialNo"/>
+                                    </pfx:materialNo>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialType">
+                                    <pfx:materialType>
+                                        <xsl:value-of select="pfx:materialType"/>
+                                    </pfx:materialType>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialTitle">
+                                    <pfx:materialTitle>
+                                        <xsl:value-of select="pfx:materialTitle"/>
+                                    </pfx:materialTitle>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialDesc">
+                                    <pfx:materialDesc>
+                                        <xsl:value-of select="pfx:materialDesc"/>
+                                    </pfx:materialDesc>
+                                </xsl:if>
+                                <pfx:materialTextLenth>
+                                    <xsl:value-of select="string-length(pfx:materialDesc)"/>
+                                </pfx:materialTextLenth>
+                            </pfx:materialObj>
+                        </xsl:for-each>
+                    </pfx2:TextMetrialList>
+                    <pfx2:ImageMetrialList>
+                        <xsl:for-each select="$MaterialImageQuery/pfx:materialResults/pfx:materialObj">
+                            <pfx:materialObj>
+                                <xsl:if test="pfx:materialId">
+                                    <pfx:materialId>
+                                        <xsl:value-of select="pfx:materialId"/>
+                                    </pfx:materialId>
+                                </xsl:if>
+                                <xsl:if test="pfx:creativeId">
+                                    <pfx:creativeId>
+                                        <xsl:value-of select="pfx:creativeId"/>
+                                    </pfx:creativeId>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialNo">
+                                    <pfx:materialNo>
+                                        <xsl:value-of select="pfx:materialNo"/>
+                                    </pfx:materialNo>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialType">
+                                    <pfx:materialType>
+                                        <xsl:value-of select="pfx:materialType"/>
+                                    </pfx:materialType>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialWidth">
+                                    <pfx:materialWidth>
+                                        <xsl:value-of select="pfx:materialWidth"/>
+                                    </pfx:materialWidth>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialHeight">
+                                    <pfx:materialHeight>
+                                        <xsl:value-of select="pfx:materialHeight"/>
+                                    </pfx:materialHeight>
+                                </xsl:if>
+                                <pfx:materialUrl>
+                                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath,pfx:materialUrl)"/>
+                                </pfx:materialUrl>
+                            </pfx:materialObj>
+                        </xsl:for-each>
+                    </pfx2:ImageMetrialList>
+                    <pfx2:VedioMetrialList>
+                        <xsl:for-each select="$MaterialVedioQuery/pfx:materialResults/pfx:materialObj">
+                            <pfx:materialObj>
+                                <xsl:if test="pfx:materialId">
+                                    <pfx:materialId>
+                                        <xsl:value-of select="pfx:materialId"/>
+                                    </pfx:materialId>
+                                </xsl:if>
+                                <xsl:if test="pfx:creativeId">
+                                    <pfx:creativeId>
+                                        <xsl:value-of select="pfx:creativeId"/>
+                                    </pfx:creativeId>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialNo">
+                                    <pfx:materialNo>
+                                        <xsl:value-of select="pfx:materialNo"/>
+                                    </pfx:materialNo>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialType">
+                                    <pfx:materialType>
+                                        <xsl:value-of select="pfx:materialType"/>
+                                    </pfx:materialType>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialDuration">
+                                    <pfx:materialDuration>
+                                        <xsl:value-of select="pfx:materialDuration"/>
+                                    </pfx:materialDuration>
+                                </xsl:if>
+                                <pfx:materialUrl>
+                                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath,pfx:materialUrl)"/>
+                                </pfx:materialUrl>
+                            </pfx:materialObj>
+                        </xsl:for-each>
+                    </pfx2:VedioMetrialList>
+                    <pfx2:SudMetrialList>
+                        <xsl:for-each select="$MaterialSudQuery/pfx:materialResults/pfx:materialObj">
+                            <pfx:materialObj>
+                                <xsl:if test="pfx:materialId">
+                                    <pfx:materialId>
+                                        <xsl:value-of select="pfx:materialId"/>
+                                    </pfx:materialId>
+                                </xsl:if>
+                                <xsl:if test="pfx:creativeId">
+                                    <pfx:creativeId>
+                                        <xsl:value-of select="pfx:creativeId"/>
+                                    </pfx:creativeId>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialNo">
+                                    <pfx:materialNo>
+                                        <xsl:value-of select="pfx:materialNo"/>
+                                    </pfx:materialNo>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialType">
+                                    <pfx:materialType>
+                                        <xsl:value-of select="pfx:materialType"/>
+                                    </pfx:materialType>
+                                </xsl:if>
+                                <xsl:if test="pfx:materialDuration">
+                                    <pfx:materialDuration>
+                                        <xsl:value-of select="pfx:materialDuration"/>
+                                    </pfx:materialDuration>
+                                </xsl:if>
+                                <pfx:materialUrl>
+                                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath,pfx:materialUrl)"/>
+                                </pfx:materialUrl>
+                            </pfx:materialObj>
+                        </xsl:for-each>
+                    </pfx2:SudMetrialList>
+                </pfx2:CreativeVO>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CreativeQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>486</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/CreativeQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:creativeObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId">
+                    <ns:creativeId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId"/>
+                    </ns:creativeId>
+                </xsl:if>
+            </ns:creativeObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MaterialTextQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>495</pd:x>
+        <pd:y>135</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/MaterialQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:materialObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId">
+                    <pfx:creativeId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId"/>
+                    </pfx:creativeId>
+                </xsl:if>
+                <pfx:materialType>
+                    <xsl:value-of select="'txt'"/>
+                </pfx:materialType>
+                <pfx:materialIsdel>
+                    <xsl:value-of select="0"/>
+                </pfx:materialIsdel>
+            </pfx:materialObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MaterialImageQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>503</pd:x>
+        <pd:y>234</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/MaterialQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:materialObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId">
+                    <pfx:creativeId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId"/>
+                    </pfx:creativeId>
+                </xsl:if>
+                <pfx:materialType>
+                    <xsl:value-of select="'pic'"/>
+                </pfx:materialType>
+                <pfx:materialIsdel>
+                    <xsl:value-of select="0"/>
+                </pfx:materialIsdel>
+            </pfx:materialObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MaterialVedioQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>510</pd:x>
+        <pd:y>336</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/MaterialQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:materialObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId">
+                    <pfx:creativeId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId"/>
+                    </pfx:creativeId>
+                </xsl:if>
+                <pfx:materialType>
+                    <xsl:value-of select="'vid'"/>
+                </pfx:materialType>
+                <pfx:materialIsdel>
+                    <xsl:value-of select="0"/>
+                </pfx:materialIsdel>
+            </pfx:materialObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MaterialSudQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>520</pd:x>
+        <pd:y>444</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/MaterialQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:materialObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId">
+                    <pfx:creativeId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:creativeObj/ns:creativeId"/>
+                    </pfx:creativeId>
+                </xsl:if>
+                <pfx:materialType>
+                    <xsl:value-of select="'sud'"/>
+                </pfx:materialType>
+                <pfx:materialIsdel>
+                    <xsl:value-of select="0"/>
+                </pfx:materialIsdel>
+            </pfx:materialObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>CreativeQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>MaterialTextQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>MaterialImageQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>MaterialVedioQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreativeQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MaterialTextQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MaterialImageQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MaterialVedioQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>MaterialSudQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MaterialSudQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

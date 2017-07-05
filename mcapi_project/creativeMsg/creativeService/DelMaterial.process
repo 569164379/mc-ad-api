@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" schemaLocation="/shareResources/schemas/MaterialPO.xsd"/>
+    <pd:name>creativeMsg/creativeService/DelMaterial.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>27</pd:startX>
+    <pd:startY>110</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="'{&quot;responseStatus&quot;:&quot;success&quot;}'"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1208</pd:endX>
+    <pd:endY>88</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1497429470042</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>149</pd:x>
+        <pd:y>115</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="ns:materialResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>238</pd:x>
+        <pd:y>25</pd:y>
+        <pd:width>690</pd:width>
+        <pd:height>208</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-JSON/ns2:ActivityOutputClass/ns:materialResults/ns:materialObj</pd:over>
+            <pd:iterationElementSlot>materialItem</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>DelMaterial</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MaterialDetailQuery</pd:from>
+            <pd:to>end</pd:to>
+            <pd:xpathDescription>DelTextOrFileIsNotExits</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Remove File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DelMaterial</pd:from>
+            <pd:to>MaterialDetailQuery</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>MaterialDetailQuery</pd:from>
+            <pd:to>Remove File</pd:to>
+            <pd:xpathDescription>Otherwise</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$materialItem/ns:materialObj/ns:materialType!="txt"</pd:xpath>
+        </pd:transition>
+        <pd:activity name="DelMaterial">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>384</pd:x>
+            <pd:y>89</pd:y>
+            <config>
+                <processName>/creativeMsg/creativeDao/MaterialUpdate.process</processName>
+            </config>
+            <pd:inputBindings>
+                <ns:materialObj>
+                    <ns:materialId>
+                        <xsl:value-of select="$materialItem/ns:materialObj/ns:materialId"/>
+                    </ns:materialId>
+                    <ns:materialIsdel>
+                        <xsl:value-of select="1"/>
+                    </ns:materialIsdel>
+                    <ns:materialModified>
+                        <xsl:value-of select="tib:format-dateTime('yyyy-MM-dd HH:mm:ss', current-dateTime())"/>
+                    </ns:materialModified>
+                </ns:materialObj>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Remove File">
+            <pd:type>com.tibco.plugin.file.FileRemoveActivity</pd:type>
+            <pd:resourceType>ae.activities.FileRemoveActivity</pd:resourceType>
+            <pd:x>767</pd:x>
+            <pd:y>179</pd:y>
+            <config/>
+            <pd:inputBindings>
+                <ns0:RemoveActivityInputClass xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/file">
+                    <fileName>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath, $MaterialDetailQuery/ns:materialResults/ns:materialObj[1]/ns:materialUrl)"/>
+                    </fileName>
+                </ns0:RemoveActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="MaterialDetailQuery">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>531</pd:x>
+            <pd:y>99</pd:y>
+            <config>
+                <processName>/creativeMsg/creativeDao/MaterialQuery.process</processName>
+            </config>
+            <pd:inputBindings>
+                <ns:materialObj>
+                    <xsl:if test="$materialItem/ns:materialObj/ns:materialId">
+                        <ns:materialId>
+                            <xsl:value-of select="$materialItem/ns:materialObj/ns:materialId"/>
+                        </ns:materialId>
+                    </xsl:if>
+                </ns:materialObj>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="CreativeLogAdd">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1089</pd:x>
+        <pd:y>196</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/CreativeLogAdd.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:creativeLogObj>
+                <ns3:creativeId>
+                    <xsl:value-of select="if (tib:trim($Parse-JSON/ns2:ActivityOutputClass/ns:materialResults/ns:creativeId)!=&quot;&quot;) then $Parse-JSON/ns2:ActivityOutputClass/ns:materialResults/ns:creativeId else &quot;null&quot;"/>
+                </ns3:creativeId>
+                <ns3:creativeLogType>
+                    <xsl:value-of select="16"/>
+                </ns3:creativeLogType>
+                <ns3:creativeLogEmail>
+                    <xsl:value-of select="1"/>
+                </ns3:creativeLogEmail>
+                <ns3:creativeLogDate>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </ns3:creativeLogDate>
+                <xsl:choose>
+                    <xsl:when test="$materialItem/ns:materialObj/ns:materialType=&quot;txt&quot;">
+                        <ns3:creativeLogResult>
+                            <xsl:value-of select="26"/>
+                        </ns3:creativeLogResult>
+                    </xsl:when>
+                    <xsl:when test="$materialItem/ns:materialObj/ns:materialType=&quot;pic&quot;">
+                        <ns3:creativeLogResult>
+                            <xsl:value-of select="27"/>
+                        </ns3:creativeLogResult>
+                    </xsl:when>
+                    <xsl:when test="$materialItem/ns:materialObj/ns:materialType=&quot;vid&quot;">
+                        <ns3:creativeLogResult>
+                            <xsl:value-of select="28"/>
+                        </ns3:creativeLogResult>
+                    </xsl:when>
+                    <xsl:when test="$materialItem/ns:materialObj/ns:materialType=&quot;sud&quot;">
+                        <ns3:creativeLogResult>
+                            <xsl:value-of select="29"/>
+                        </ns3:creativeLogResult>
+                    </xsl:when>
+                </xsl:choose>
+            </ns3:creativeLogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>CreativeLogAdd</pd:to>
+        <pd:xpathDescription>Editor</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($Parse-JSON/ns2:ActivityOutputClass/ns:materialResults/ns:creativeId)!=""</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CreativeLogAdd</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Upload</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

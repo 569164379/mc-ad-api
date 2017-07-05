@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="creativeId" type="xs:string"/>
+	<xs:element name="productId" type="xs:string"/>
+	<xs:element name="creativeName" type="xs:string"/>
+	<xs:element name="creativeUploader" type="xs:string"/>
+	<xs:element name="creativeStatus" type="xs:string"/>
+	<xs:element name="creativeTag" type="xs:string"/>
+	<xs:element name="creativeLevel" type="xs:string"/>
+	<xs:element name="creativeCreated" type="xs:string"/>
+	<xs:element name="creativeModified" type="xs:string"/>
+
+	<!-- 非PO字段 -->
+	<xs:element name="productName" type="xs:string"/>
+	<xs:element name="levelName" type="xs:string"/>
+	<xs:element name="creativeStatusName" type="xs:string"/>
+	<xs:element name="tagNames" type="xs:string"/>
+	<xs:element name="uploadAccountMail" type="xs:string"/>
+	<xs:element name="creativeLogResult" type="xs:string"/>
+	<xs:element name="creativeIdSearchVal" type="xs:string"/>
+	<xs:element name="creativeDownloadUrl" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="creativeObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="creativeId" minOccurs="0"/>
+				<xs:element ref="productId" minOccurs="0"/>
+				<xs:element ref="creativeName" minOccurs="0"/>
+				<xs:element ref="creativeUploader" minOccurs="0"/>
+				<xs:element ref="creativeStatus" minOccurs="0"/>
+				<xs:element ref="creativeTag" minOccurs="0"/>
+				<xs:element ref="creativeLevel" minOccurs="0"/>
+				<xs:element ref="creativeCreated" minOccurs="0"/>
+				<xs:element ref="creativeModified" minOccurs="0"/>
+				<xs:element ref="productName" minOccurs="0"/>
+				<xs:element ref="levelName" minOccurs="0"/>
+				<xs:element ref="creativeStatusName" minOccurs="0"/>
+				<xs:element ref="tagNames" minOccurs="0"/>
+				<xs:element ref="uploadAccountMail" minOccurs="0"/>
+				<xs:element ref="creativeLogResult" minOccurs="0"/>
+				<xs:element ref="creativeIdSearchVal" minOccurs="0"/>
+				<xs:element ref="creativeDownloadUrl" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="creativeResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="creativeObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

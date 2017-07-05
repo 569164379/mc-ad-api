@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2"
+	 targetNamespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+
+	<!--Product Element end-->
+	<!--Product Element Start-->
+	<xs:element name="productId" type="xs:string"/>
+	<xs:element name="productName" type="xs:string"/>
+	<xs:element name="productType" type="xs:string"/>
+	<xs:element name="productOS" type="xs:string"/>
+	<xs:element name="productLp" type="xs:string"/>
+	<xs:element name="productDcp" type="xs:string"/>
+	<xs:element name="productAppPackage" type="xs:string"/>
+	<xs:element name="productStatus" type="xs:string"/>
+	<xs:element name="productIconUrl" type="xs:string"/>
+	<xs:element name="productCreateTime" type="xs:string"/>
+	<xs:element name="productCreater" type="xs:string"/>
+	<xs:element name="productModifyTime" type="xs:string"/>
+	<xs:element name="productModifier" type="xs:string"/>
+	<xs:element name="searchVal" type="xs:string"/>
+	<xs:element name="productSatusColor" type="xs:string"/>
+	<xs:element name="productObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="productId" minOccurs="0"/>
+				<xs:element ref="productName" minOccurs="0"/>
+				<xs:element ref="productType" minOccurs="0"/>
+				<xs:element ref="productOS" minOccurs="0"/>
+				<xs:element ref="productLp" minOccurs="0"/>
+				<xs:element ref="productDcp" minOccurs="0"/>
+				<xs:element ref="productAppPackage" minOccurs="0"/>
+				<xs:element ref="productStatus" minOccurs="0"/>
+				<xs:element ref="productIconUrl" minOccurs="0"/>
+				<xs:element ref="productCreateTime" minOccurs="0"/>
+				<xs:element ref="productCreater" minOccurs="0"/>
+				<xs:element ref="productModifyTime" minOccurs="0"/>
+				<xs:element ref="productModifier" minOccurs="0"/>
+				<xs:element ref="searchVal" minOccurs="0"/>
+				<xs:element ref="productSatusColor" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="productResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="productObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+</xs:schema>

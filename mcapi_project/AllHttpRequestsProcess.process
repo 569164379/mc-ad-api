@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns1="http://xmlns.tibco.com/encodings/mime">
+    <pd:name>AllHttpRequestsProcess.process</pd:name>
+    <pd:startName>HTTP Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings/>
+    <pd:starter name="HTTP Receiver">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>163</pd:x>
+        <pd:y>83</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>ISO8859_1</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/shareResources/connections/HTTP Connection.sharedhttp</sharedChannel>
+            <parsePostData>false</parsePostData>
+            <customField/>
+            <policies>
+                <incomingAttachmentPolicy>
+                    <writeToFile>false</writeToFile>
+                    <writeToFileDir>F:\MC\MCCreative</writeToFileDir>
+                    <createNonExistDir>true</createNonExistDir>
+                </incomingAttachmentPolicy>
+            </policies>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endX>812</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1497344237112</pd:targetNamespace>
+    <pd:activity name="Dynamic Call Process">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>415</pd:x>
+        <pd:y>89</pd:y>
+        <config>
+            <processNameXPath>concat(
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/addMaterialText") ) then "/creativeMsg/creativeService/AddMaterial" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/addMaterialImage") ) then "/creativeMsg/creativeService/UploadMaterialImage" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/addMaterialVS") ) then "/creativeMsg/creativeService/UploadMaterialVS" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/queryMaterial") ) then "/creativeMsg/creativeService/QueryMaterial" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/deleteMaterial") ) then "/creativeMsg/creativeService/DelMaterial" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/addCreative") ) then "/creativeMsg/creativeService/AddCreative" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/creativeList") ) then "/creativeMsg/creativeService/QueryCreative" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/creativeLogList") ) then "/creativeMsg/creativeService/QueryCreativeLog" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/queryTags") ) then "/creativeMsg/creativeService/QueryDict" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/addTags") ) then "/creativeMsg/creativeService/AddTags" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/queryBEditCreative") ) then "/creativeMsg/creativeService/QueryBEditCreative" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/editCreative") ) then "/creativeMsg/creativeService/EditCreative" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/queryBAuditCreative") ) then "/creativeMsg/creativeService/QueryBAuditCreative" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/queryCreativeDetail") ) then "/creativeMsg/creativeService/QueryCreativeDetail" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/auditCreative") ) then "/creativeMsg/creativeService/AuditCreative" else
+
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/toPageCreativeList") ) then "/creativeMsg/creativeService/ToPageCreativeList" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/toPageCreativeLogList") ) then "/creativeMsg/creativeService/ToPageCreativeLogList" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/toAddCreative") ) then "/creativeMsg/creativeService/ToAddCreative" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/resetCreative") ) then "/creativeMsg/creativeService/ResetWhenUploadCreative" else
+
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/listProducts") ) then "/offerMg/offerService/ListProducts" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/queryProductDetail") ) then "/offerMg/offerService/QueryProductDetail" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/queryProductList") ) then "/offerMg/offerService/QueryProductList" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/queryProductBEdit") ) then "/offerMg/offerService/QueryProductBEdit" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/editProduct") ) then "/offerMg/offerService/EditProduct" else
+
+
+
+
+
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/toPageTokenInfo")) then "/commonFunction/ToPageTokenInfo" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/loginOut")) then "/accountMg/accountService/LoginOut" else
+ "/creativeMsg/creativeService/QueryCreativet", ".process"
+)</processNameXPath>
+            <processName>/creativeMsg/creativeService/QueryCreative.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:requestParams>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/PostData">
+                    <pfx:jsonPostData>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/PostData"/>
+                    </pfx:jsonPostData>
+                </xsl:if>
+                <pfx:mimeEnvelopeElement>
+                    <xsl:for-each select="$HTTP-Receiver/ProcessStarterOutput/ns1:mimeEnvelopeElement/mimePart">
+                        <pfx:mimePart>
+                            <xsl:for-each select="mimeHeaders">
+                                <pfx:mimeHeaders>
+                                    <xsl:if test="content-disposition">
+                                        <pfx:content-disposition>
+                                            <xsl:value-of select="content-disposition"/>
+                                        </pfx:content-disposition>
+                                    </xsl:if>
+                                    <pfx:content-type>
+                                        <xsl:value-of select="content-type"/>
+                                    </pfx:content-type>
+                                    <xsl:if test="content-transfer-encoding">
+                                        <pfx:content-transfer-encoding>
+                                            <xsl:value-of select="content-transfer-encoding"/>
+                                        </pfx:content-transfer-encoding>
+                                    </xsl:if>
+                                </pfx:mimeHeaders>
+                            </xsl:for-each>
+                            <pfx:creativeBase64>
+                                <xsl:value-of select="binaryContent"/>
+                            </pfx:creativeBase64>
+                        </pfx:mimePart>
+                    </xsl:for-each>
+                </pfx:mimeEnvelopeElement>
+            </pfx:requestParams>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>879</pd:x>
+        <pd:y>444</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="ErrorHandlerJson">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>881</pd:x>
+        <pd:y>334</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="responseStatus" type="xsd:string"/>
+                            <xsd:element name="error">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="statusCode" type="xsd:string"/>
+                                        <xsd:element name="reasonMsg" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <root>
+                    <responseStatus>
+                        <xsl:value-of select="&quot;error&quot;"/>
+                    </responseStatus>
+                    <error>
+                        <statusCode>
+                            <xsl:value-of select="$_error/ns:ErrorReport/MsgCode"/>
+                        </statusCode>
+                        <reasonMsg>
+                            <xsl:value-of select="$_error/ns:ErrorReport/Msg"/>
+                        </reasonMsg>
+                    </error>
+                </root>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send-HTTP-Response-1">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>873</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Access-Control-Allow-Origin" type="xsd:string"/>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="$ErrorHandlerJson/ns2:ActivityOutputClass/jsonString"/>
+                </asciiContent>
+                <Headers>
+                    <Access-Control-Allow-Origin>
+                        <xsl:value-of select="&quot;*&quot;"/>
+                    </Access-Control-Allow-Origin>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send HTTP Response">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>636</pd:x>
+        <pd:y>89</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Access-Control-Allow-Origin" type="xsd:string"/>
+                            <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of select="$Dynamic-Call-Process/responseJsonStr"/>
+                </asciiContent>
+                <Headers>
+                    <Access-Control-Allow-Origin>
+                        <xsl:value-of select="&quot;*&quot;"/>
+                    </Access-Control-Allow-Origin>
+                    <Content-Type>
+                        <xsl:value-of select="&quot;text/json; charset=utf-8&quot;"/>
+                    </Content-Type>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Dynamic Call Process</pd:from>
+        <pd:to>Send HTTP Response</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send HTTP Response</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>ErrorHandlerJson</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ErrorHandlerJson</pd:from>
+        <pd:to>Send-HTTP-Response-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send-HTTP-Response-1</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>Dynamic Call Process</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

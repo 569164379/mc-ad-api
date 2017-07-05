@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/shareResources/schemas/ProductPOSchema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" schemaLocation="/shareResources/schemas/ProductPOSchema.xsd"/>
+    <pd:name>offerMg/offerDao/ProductQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:productObj"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <pfx:productResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx:productObj>
+                    <pfx:productId>
+                        <xsl:value-of select="column[1]/value"/>
+                    </pfx:productId>
+                    <pfx:productName>
+                        <xsl:value-of select="column[2]/value"/>
+                    </pfx:productName>
+                    <pfx:productType>
+                        <xsl:value-of select="column[3]/value"/>
+                    </pfx:productType>
+                    <pfx:productOS>
+                        <xsl:value-of select="column[4]/value"/>
+                    </pfx:productOS>
+                    <xsl:if test="column[5]/value">
+                        <pfx:productLp>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx:productLp>
+                    </xsl:if>
+                    <xsl:if test="column[6]/value">
+                        <pfx:productDcp>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx:productDcp>
+                    </xsl:if>
+                    <xsl:if test="column[7]/value">
+                        <pfx:productAppPackage>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx:productAppPackage>
+                    </xsl:if>
+                    <pfx:productStatus>
+                        <xsl:value-of select="column[8]/value"/>
+                    </pfx:productStatus>
+                    <xsl:if test="column[9]/value">
+                        <pfx:productIconUrl>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx:productIconUrl>
+                    </xsl:if>
+                    <pfx:productCreateTime>
+                        <xsl:value-of select="column[10]/value"/>
+                    </pfx:productCreateTime>
+                    <xsl:if test="column[11]/value">
+                        <pfx:productCreater>
+                            <xsl:value-of select="column[11]/value"/>
+                        </pfx:productCreater>
+                    </xsl:if>
+                    <xsl:if test="column[12]/value">
+                        <pfx:productModifyTime>
+                            <xsl:value-of select="column[12]/value"/>
+                        </pfx:productModifyTime>
+                    </xsl:if>
+                    <xsl:if test="column[13]/value">
+                        <pfx:productModifier>
+                            <xsl:value-of select="column[13]/value"/>
+                        </pfx:productModifier>
+                    </xsl:if>
+                </pfx:productObj>
+            </xsl:for-each>
+        </pfx:productResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:productResults"/>
+    <pd:endX>449</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489456146496</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>288</pd:x>
+        <pd:y>103</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>0</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;select * from tab_product where 1=1&quot;,&#xA;if (exists( $Start/pfx:productObj/pfx:productId) and tib:trim($Start/pfx:productObj/pfx:productId) !=&quot;&quot;) then concat(&quot; and PRODUCT_ID=&quot;,$Start/pfx:productObj/pfx:productId) else &quot;&quot;,&#xA;if (exists( $Start/pfx:productObj/pfx:productName) and tib:trim($Start/pfx:productObj/pfx:productName) !=&quot;&quot;) then concat(&quot; and PRODUCT_NAME='&quot;, tib:trim($Start/pfx:productObj/pfx:productName),&quot;' &quot;)  else &quot;&quot;,&#xA;if (exists( $Start/pfx:productObj/pfx:productCreater) and  tib:trim($Start/pfx:productObj/pfx:productCreater) !=&quot;&quot;) then concat(&quot; and product_creater=&quot;,$Start/pfx:productObj/pfx:productCreater) else &quot;&quot;,&#xA;if(exists($Start/pfx:productObj/pfx:productStatus) and    tib:trim($Start/pfx:productObj/pfx:productStatus) !=&quot;&quot;) then concat(&quot; and product_status='&quot;,$Start/pfx:productObj/pfx:productStatus,&quot;'&quot;) else &quot;&quot;,&#xA;if(exists($Start/pfx:productObj/pfx:searchVal) and  tib:trim($Start/pfx:productObj/pfx:searchVal)!=&quot;&quot;) then concat(&quot; and  (product_name like '%&quot;, tib:trim($Start/pfx:productObj/pfx:searchVal) ,&quot;%' or PRODUCT_ID like '%&quot;,tib:trim($Start/pfx:productObj/pfx:searchVal),&quot;%' )&quot;) else &quot;&quot;&#xA;,&quot; ORDER BY PRODUCT_ID desc&quot;)"/>
+                </statement>
+                <maxRows>
+                    <xsl:value-of select="0"/>
+                </maxRows>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>600</pd:x>
+        <pd:y>125</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>801</pd:x>
+        <pd:y>124</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

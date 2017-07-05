@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="materialId" type="xs:string"/>
+	<xs:element name="creativeId" type="xs:string"/>
+	<xs:element name="materialNo" type="xs:string"/>
+	<xs:element name="materialType" type="xs:string"/>
+	<xs:element name="materialTitle" type="xs:string"/>
+	<xs:element name="materialWidth" type="xs:string"/>
+	<xs:element name="materialHeight" type="xs:string"/>
+	<xs:element name="materialDuration" type="xs:string"/>
+	<xs:element name="materialUrl" type="xs:string"/>
+	<xs:element name="materialDesc" type="xs:string"/>
+	<xs:element name="materialIsdel" type="xs:string"/>
+	<xs:element name="materialCreated" type="xs:string"/>
+	<xs:element name="materialModified" type="xs:string"/>
+	<xs:element name="materialCreater" type="xs:string"/>
+	<xs:element name="materialModifier" type="xs:string"/>
+
+	<!-- 非PO字段-->
+	<xs:element name="materialIsUpload" type="xs:string"/>
+	<xs:element name="materialTextLenth" type="xs:string"/>
+	<xs:element name="creativeName" type="xs:string"/>
+	<xs:element name="productId" type="xs:string"/>
+	<xs:element name="productLabel" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="materialObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="materialId" minOccurs="0"/>
+				<xs:element ref="creativeId" minOccurs="0"/>
+				<xs:element ref="materialNo" minOccurs="0"/>
+				<xs:element ref="materialType" minOccurs="0"/>
+				<xs:element ref="materialTitle" minOccurs="0"/>
+				<xs:element ref="materialWidth" minOccurs="0"/>
+				<xs:element ref="materialHeight" minOccurs="0"/>
+				<xs:element ref="materialDuration" minOccurs="0"/>
+				<xs:element ref="materialUrl" minOccurs="0"/>
+				<xs:element ref="materialDesc" minOccurs="0"/>
+				<xs:element ref="materialIsdel" minOccurs="0"/>
+				<xs:element ref="materialCreated" minOccurs="0"/>
+				<xs:element ref="materialModified" minOccurs="0"/>
+				<xs:element ref="materialCreater" minOccurs="0"/>
+				<xs:element ref="materialModifier" minOccurs="0"/>
+				<xs:element ref="materialTextLenth" minOccurs="0"/>
+				<xs:element ref="materialIsUpload" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="materialResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="creativeId" minOccurs="0"/>
+				<xs:element ref="creativeName" minOccurs="0"/>
+				<xs:element ref="productId" minOccurs="0"/>
+				<xs:element ref="productLabel" minOccurs="0"/>
+				<xs:element ref="materialObj" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

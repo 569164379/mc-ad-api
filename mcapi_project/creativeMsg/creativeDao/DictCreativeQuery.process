@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd7" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" schemaLocation="/shareResources/schemas/MaterialPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" schemaLocation="/shareResources/schemas/CreativePO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3" schemaLocation="/shareResources/schemas/CreativeLogPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4" schemaLocation="/shareResources/schemas/DictionalPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd7" schemaLocation="/shareResources/schemas/DictCreativePO.xsd"/>
+    <pd:name>creativeMsg/creativeDao/DictCreativeQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx5:dcObj"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <pfx5:dcResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx5:dcObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dcId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx5:dcId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dictId>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx5:dictId>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:creativeId>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx5:creativeId>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dcCreated>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx5:dcCreated>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dcCreater>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx5:dcCreater>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dcModified>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx5:dcModified>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dcModifier>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx5:dcModifier>
+                    </xsl:if>
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dcIsDel>
+                            <xsl:value-of select="column[8]/value"/>
+                        </pfx5:dcIsDel>
+                    </xsl:if>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dictName>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx5:dictName>
+                    </xsl:if>
+                    <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:creativeName>
+                            <xsl:value-of select="column[10]/value"/>
+                        </pfx5:creativeName>
+                    </xsl:if>
+                    <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dictNo>
+                            <xsl:value-of select="column[11]/value"/>
+                        </pfx5:dictNo>
+                    </xsl:if>
+                </pfx5:dcObj>
+            </xsl:for-each>
+        </pfx5:dcResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx5:dcResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1497314592967</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>299</pd:x>
+        <pd:y>101</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT bdc.*, bd.DICT_NAME,bc.CREATIVE_NAME,bd.DICT_NO  from tab_dictionary bd INNER JOIN tab_dict_creative bdc on bd.DICT_ID = bdc.DICT_ID&quot;,&#xA;&quot; INNER JOIN tab_creative bc on bc.CREATIVE_ID = bdc.CREATIVE_ID where 1=1 &quot;,&#xA;if (exists($Start/pfx5:dcObj/pfx5:dictId) and tib:trim($Start/pfx5:dcObj/pfx5:dictId) !=&quot;&quot;) then concat(&quot; and bd.DICT_ID =&quot;,  $Start/pfx5:dcObj/pfx5:dictId) else &quot;&quot;,&#xA;if (exists($Start/pfx5:dcObj/pfx5:creativeId) and tib:trim($Start/pfx5:dcObj/pfx5:creativeId) !=&quot;&quot;) then concat(&quot; and  bc.CREATIVE_ID=&quot;,  $Start/pfx5:dcObj/pfx5:creativeId) else &quot;&quot;,&#xA;if (exists($Start/pfx5:dcObj/pfx5:dictName) and tib:trim($Start/pfx5:dcObj/pfx5:dictName) !=&quot;&quot;) then concat(&quot; and bd.DICT_NAME like '%&quot;,  tib:trim($Start/pfx5:dcObj/pfx5:dictName), &quot;%' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:dcObj/pfx5:creativeName) and tib:trim($Start/pfx5:dcObj/pfx5:creativeName) !=&quot;&quot;) then concat(&quot; and bc.CREATIVE_NAME like '%&quot;,  tib:trim($Start/pfx5:dcObj/pfx5:creativeName), &quot;%' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:dcObj/pfx5:dictStatus) and tib:trim($Start/pfx5:dcObj/pfx5:dictStatus) !=&quot;&quot;) then concat(&quot; and bd.dict_status =&quot;,  $Start/pfx5:dcObj/pfx5:dictStatus) else &quot;&quot;,&#xA;if (exists($Start/pfx5:dcObj/pfx5:dcIsDel) and tib:trim($Start/pfx5:dcObj/pfx5:dcIsDel) !=&quot;&quot;) then concat(&quot; and bdc.DC_ISDEL =&quot;,  $Start/pfx5:dcObj/pfx5:dcIsDel) else &quot;&quot;&#xA;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>704</pd:x>
+        <pd:y>58</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>718</pd:x>
+        <pd:y>197</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
