@@ -170,6 +170,11 @@
                                     <xsl:value-of select="pfx3:tagNames"/>
                                 </pfx3:tagNames>
                             </xsl:if>
+                            <xsl:if test="pfx3:uploadAccountMail">
+                                <pfx3:uploadAccountMail>
+                                    <xsl:value-of select="pfx3:uploadAccountMail"/>
+                                </pfx3:uploadAccountMail>
+                            </xsl:if>
                             <pfx3:creativeDownloadUrl>
                                 <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/CreativeFileHostPath, &quot;/&quot;,current()/pfx3:creativeName,&quot;.zip&quot;)"/>
                             </pfx3:creativeDownloadUrl>
