@@ -67,29 +67,6 @@
         <config/>
         <pd:inputBindings/>
     </pd:activity>
-    <pd:activity name="Log">
-        <pd:type>com.tibco.pe.core.WriteToLogActivity</pd:type>
-        <pd:resourceType>ae.activities.log</pd:resourceType>
-        <pd:x>443</pd:x>
-        <pd:y>171</pd:y>
-        <config>
-            <role>User</role>
-        </config>
-        <pd:inputBindings>
-            <ns:ActivityInput>
-                <message>
-                    <xsl:value-of select="concat(&quot;insert into tab_creative VALUE(&quot;, $Start/pfx:creativeObj/pfx:creativeId,&quot;,'&quot;, $Start/pfx:creativeObj/pfx:productId,&quot;','&quot;, $Start/pfx:creativeObj/pfx:creativeName,&quot;','&quot;, $Start/pfx:creativeObj/pfx:creativeUploader, &quot;','&quot;, $Start/pfx:creativeObj/pfx:creativeStatus, &quot;',&quot;, $Start/pfx:creativeObj/pfx:creativeTag, &quot;,'&quot;, $Start/pfx:creativeObj/pfx:creativeLevel, &quot;','&quot;, $Start/pfx:creativeObj/pfx:creativeCreated, &quot;','&quot;, $Start/pfx:creativeObj/pfx:creativeModified, &quot;')&quot;)"/>
-                </message>
-            </ns:ActivityInput>
-        </pd:inputBindings>
-    </pd:activity>
-    <pd:transition>
-        <pd:from>SQL Direct</pd:from>
-        <pd:to>Log</pd:to>
-        <pd:lineType>Default</pd:lineType>
-        <pd:lineColor>-16777216</pd:lineColor>
-        <pd:conditionType>always</pd:conditionType>
-    </pd:transition>
     <pd:transition>
         <pd:from>Catch</pd:from>
         <pd:to>Rethrow</pd:to>
@@ -105,7 +82,7 @@
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>Log</pd:from>
+        <pd:from>SQL Direct</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

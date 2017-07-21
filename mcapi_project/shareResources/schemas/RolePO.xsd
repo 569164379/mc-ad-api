@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd16"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd16"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="roleId" type="xs:string"/>
+	<xs:element name="roleName" type="xs:string"/>
+	<xs:element name="roleParentId" type="xs:string"/>
+	<xs:element name="roleStatus" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="roleObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="roleId" minOccurs="0"/>
+				<xs:element ref="roleName" minOccurs="0"/>
+				<xs:element ref="roleParentId" minOccurs="0"/>
+				<xs:element ref="roleStatus" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="roleResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="roleObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

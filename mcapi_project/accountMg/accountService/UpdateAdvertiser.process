@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <pd:name>accountMg/accountService/UpdateAdvertiser.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="'{&quot;responseStatus&quot;:&quot;success&quot;}'"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1097</pd:endX>
+    <pd:endY>84</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="ns:accountObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AccountUpdate">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>774</pd:x>
+        <pd:y>126</pd:y>
+        <config>
+            <processName>/accountMg/accountDao/AccountUpdate.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:accountObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountId">
+                    <ns:accountId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountId"/>
+                    </ns:accountId>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountEmail">
+                    <ns:accountEmail>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountEmail"/>
+                    </ns:accountEmail>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountName">
+                    <ns:accountName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountName"/>
+                    </ns:accountName>
+                </xsl:if>
+                <ns:accountPwd>
+                    <xsl:value-of select="if (exists($Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountPwd)) then $Java-Code/javaCodeActivityOutput/userPwdOut else &quot;&quot;"/>
+                </ns:accountPwd>
+                <ns:accountStatus>
+                    <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountStatus"/>
+                </ns:accountStatus>
+                <ns:accountRoleId>
+                    <xsl:value-of select="1"/>
+                </ns:accountRoleId>
+                <ns:updateTime>
+                    <xsl:value-of select="tib:format-dateTime('yyyy-MM-dd HH:mm:ss', current-dateTime())"/>
+                </ns:updateTime>
+            </ns:accountObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AdvertiserUpdate">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>496</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <processName>/accountMg/accountDao/AdvertiserUpdate.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns1:advertiserObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adId">
+                    <ns1:adId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adId"/>
+                    </ns1:adId>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyName">
+                    <ns1:adCompanyName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyName"/>
+                    </ns1:adCompanyName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyAddr">
+                    <ns1:adCompanyAddr>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyAddr"/>
+                    </ns1:adCompanyAddr>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactName">
+                    <ns1:adContactName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactName"/>
+                    </ns1:adContactName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactTel">
+                    <ns1:adContactTel>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactTel"/>
+                    </ns1:adContactTel>
+                </xsl:if>
+                <ns1:updateTime>
+                    <xsl:value-of select="tib:format-dateTime('yyyy-MM-dd HH:mm:ss', current-dateTime())"/>
+                </ns1:updateTime>
+            </ns1:advertiserObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>468</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <fileName>UpdateAdvertiserJavaCode</fileName>
+            <packageName>accountMg.accountService.UpdateAdvertiser</packageName>
+            <fullsource>package accountMg.accountService.UpdateAdvertiser;
+import java.util.*;
+import java.io.*;
+import com.tm.mc.util.MD5Util;
+public class UpdateAdvertiserJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String userPwd = "";
+	protected String userPwdOut = "";
+	public String getuserPwd() {
+		return userPwd;
+	}
+	public void setuserPwd(String val) {
+		userPwd = val;
+	}
+	public String getuserPwdOut() {
+		return userPwdOut;
+	}
+	public void setuserPwdOut(String val) {
+		userPwdOut = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public UpdateAdvertiserJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String userPwd
+	Out : String userPwdOut
+* Available Variables: DO NOT MODIFY *****/
+
+userPwdOut = MD5Util.getMD5String(userPwd);}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>userPwd</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>userPwdOut</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>UpdateAdvertiserJavaCode</name>
+                    <byteCode>yv66vgAAADQAJgkABgAaCQAGABsKAAcAHAgAHQoAHgAfBwAgBwAhAQAHdXNlclB3ZAEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACnVzZXJQd2RPdXQBAApnZXR1c2VyUHdkAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAKc2V0dXNlclB3ZAEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADWdldHVzZXJQd2RPdXQBAA1zZXR1c2VyUHdkT3V0AQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAIgEAClNvdXJjZUZpbGUBAB1VcGRhdGVBZHZlcnRpc2VySmF2YUNvZGUuamF2YQwACAAJDAAKAAkMABMAFAEAAAcAIwwAJAAlAQBCYWNjb3VudE1nL2FjY291bnRTZXJ2aWNlL1VwZGF0ZUFkdmVydGlzZXIvVXBkYXRlQWR2ZXJ0aXNlckphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABZjb20vdG0vbWMvdXRpbC9NRDVVdGlsAQAMZ2V0TUQ1U3RyaW5nAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZzsAIQAGAAcAAAACAAQACAAJAAAABAAKAAkAAAAGAAEACwAMAAEADQAAAB0AAQABAAAABSq0AAGwAAAAAQAOAAAABgABAAAACgABAA8AEAABAA0AAAAiAAIAAgAAAAYqK7UAAbEAAAABAA4AAAAKAAIAAAANAAUADgABABEADAABAA0AAAAdAAEAAQAAAAUqtAACsAAAAAEADgAAAAYAAQAAABAAAQASABAAAQANAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAOAAAACgACAAAAEwAFABQAAQATABQAAQANAAAANQACAAEAAAARKrcAAyoSBLUAASoSBLUAArEAAAABAA4AAAASAAQAAAAWAAQABwAKAAgAEAAXAAEAFQAUAAIADQAAACQAAgABAAAADCoqtAABuAAFtQACsQAAAAEADgAAAAYAAQAAAB4AFgAAAAQAAQAXAAEAGAAAAAIAGQ==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountPwd">
+                    <userPwd>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountPwd"/>
+                    </userPwd>
+                </xsl:if>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>AccountUpdate</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>AccountUpdate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountPwd)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdvertiserUpdate</pd:from>
+        <pd:to>AccountUpdate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AdvertiserUpdate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

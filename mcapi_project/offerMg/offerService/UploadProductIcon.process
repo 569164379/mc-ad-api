@@ -1,0 +1,270 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" xmlns:pfx2="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd3" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pfx5="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" schemaLocation="/share_resources/schema_resources/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd3" schemaLocation="/share_resources/schema_resources/CreativePOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" schemaLocation="/shareResources/schemas/MaterialPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" schemaLocation="/shareResources/schemas/ProductPOSchema.xsd"/>
+    <pd:name>offerMg/offerService/UploadProductIcon.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:requestParams"/>
+    <pd:startX>38</pd:startX>
+    <pd:startY>90</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/CreativeFileHostPath, &quot;/&quot;,$_globalVariables/ns1:GlobalVariables/ProductIconFolder,&quot;/&quot;,$Write-File/ns2:WriteActivityOutputClass/fileInfo/fileName)"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1174</pd:endX>
+    <pd:endY>55</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <fileNumVar>
+            <xsd:element name="fileNum" type="xsd:int"/>
+        </fileNumVar>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1490097155242</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1447</pd:x>
+        <pd:y>65</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>1496</pd:x>
+        <pd:y>223</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>141</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx3:materialResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx4:requestParams/pfx4:jsonPostData"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:description>当前音/视频每次上传数量限制为1</pd:description>
+        <pd:x>501</pd:x>
+        <pd:y>163</pd:y>
+        <pd:width>398</pd:width>
+        <pd:height>309</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/pfx4:requestParams/pfx4:mimeEnvelopeElement/pfx4:mimePart[pfx4:mimeHeaders/pfx4:content-type!="text/plain"]</pd:over>
+            <pd:iterationElementSlot>mimeItem</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>DecodeFileName</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Write File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DecodeFileName</pd:from>
+            <pd:to>Write File</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Write File">
+            <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+            <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+            <pd:x>787</pd:x>
+            <pd:y>240</pd:y>
+            <config>
+                <encoding>binary</encoding>
+                <compressFile>None</compressFile>
+                <createMissingDirectories>true</createMissingDirectories>
+            </config>
+            <pd:inputBindings>
+                <ns2:WriteActivityInputBinaryClass>
+                    <fileName>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath,&quot;/&quot;,$_globalVariables/ns1:GlobalVariables/ProductIconFolder, &quot;/&quot;,$DecodeFileName/javaCodeActivityOutput/outCreativeName)"/>
+                    </fileName>
+                    <binaryContent>
+                        <xsl:value-of select="$mimeItem/pfx4:mimePart/pfx4:creativeBase64"/>
+                    </binaryContent>
+                </ns2:WriteActivityInputBinaryClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="DecodeFileName">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:x>627</pd:x>
+            <pd:y>258</pd:y>
+            <config>
+                <fileName>UploadProductIconDecodeFileName</fileName>
+                <packageName>offerMg.offerService.UploadProductIcon</packageName>
+                <fullsource>package offerMg.offerService.UploadProductIcon;
+import java.util.*;
+import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+public class UploadProductIconDecodeFileName{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String inCreativeName = "";
+	protected String outCreativeName = "";
+	public String getinCreativeName() {
+		return inCreativeName;
+	}
+	public void setinCreativeName(String val) {
+		inCreativeName = val;
+	}
+	public String getoutCreativeName() {
+		return outCreativeName;
+	}
+	public void setoutCreativeName(String val) {
+		outCreativeName = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public UploadProductIconDecodeFileName() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String inCreativeName
+	Out : String outCreativeName
+* Available Variables: DO NOT MODIFY *****/
+	outCreativeName = new String(inCreativeName.getBytes("ISO8859-1"),"UTF-8");
+	//String s1 = URLEncoder.encode(inCreativeName,"UTF-8");
+	
+	//outCreativeName =URLDecoder.decode(s1,"UTF-8");
+	//outCreativeName =URLDecoder.decode(inCreativeName,"UTF-8").trim();
+
+}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>inCreativeName</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </inputData>
+                <outputData>
+                    <row>
+                        <fieldName>outCreativeName</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </outputData>
+                <byteCode>
+                    <class>
+                        <name>UploadProductIconDecodeFileName</name>
+                        <byteCode>yv66vgAAADQALQkACgAeCQAKAB8KAAsAIAgAIQcAIggAIwoABQAkCAAlCgAFACYHACcHACgBAA5pbkNyZWF0aXZlTmFtZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAD291dENyZWF0aXZlTmFtZQEAEWdldGluQ3JlYXRpdmVOYW1lAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQARc2V0aW5DcmVhdGl2ZU5hbWUBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBABJnZXRvdXRDcmVhdGl2ZU5hbWUBABJzZXRvdXRDcmVhdGl2ZU5hbWUBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwApAQAKU291cmNlRmlsZQEAJFVwbG9hZFByb2R1Y3RJY29uRGVjb2RlRmlsZU5hbWUuamF2YQwADAANDAAOAA0MABcAGAEAAAEAEGphdmEvbGFuZy9TdHJpbmcBAAlJU084ODU5LTEMACoAKwEABVVURi04DAAXACwBAEZvZmZlck1nL29mZmVyU2VydmljZS9VcGxvYWRQcm9kdWN0SWNvbi9VcGxvYWRQcm9kdWN0SWNvbkRlY29kZUZpbGVOYW1lAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BAAhnZXRCeXRlcwEAFihMamF2YS9sYW5nL1N0cmluZzspW0IBABcoW0JMamF2YS9sYW5nL1N0cmluZzspVgAhAAoACwAAAAIABAAMAA0AAAAEAA4ADQAAAAYAAQAPABAAAQARAAAAHQABAAEAAAAFKrQAAbAAAAABABIAAAAGAAEAAAALAAEAEwAUAAEAEQAAACIAAgACAAAABiortQABsQAAAAEAEgAAAAoAAgAAAA4ABQAPAAEAFQAQAAEAEQAAAB0AAQABAAAABSq0AAKwAAAAAQASAAAABgABAAAAEQABABYAFAABABEAAAAiAAIAAgAAAAYqK7UAArEAAAABABIAAAAKAAIAAAAUAAUAFQABABcAGAABABEAAAA1AAIAAQAAABEqtwADKhIEtQABKhIEtQACsQAAAAEAEgAAABIABAAAABcABAAIAAoACQAQABgAAQAZABgAAgARAAAAMwAFAAEAAAAXKrsABVkqtAABEga2AAcSCLcACbUAArEAAAABABIAAAAKAAIAAAAeABYAJAAaAAAABAABABsAAQAcAAAAAgAd</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <inCreativeName>
+                        <xsl:value-of select="substring(substring-after($mimeItem/pfx4:mimePart/pfx4:mimeHeaders/pfx4:content-disposition, &quot;filename=&quot;), 2, string-length(substring-after($mimeItem/pfx4:mimePart/pfx4:mimeHeaders/pfx4:content-disposition, &quot;filename=&quot;))-2)"/>
+                    </inCreativeName>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="validateRepeatSubmit">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>266</pd:x>
+        <pd:y>141</pd:y>
+        <config>
+            <processName>/commonFunction/ValidateRepeatSubmit.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tokenInfo>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx3:materialResults/pfx3:tokenInfo"/>
+                </tokenInfo>
+                <validateRepeatSubmit>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx3:materialResults/pfx3:validateRepeat"/>
+                </validateRepeatSubmit>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>validateRepeatSubmit</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>validateRepeatSubmit</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>validateRepeatSubmit</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

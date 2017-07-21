@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd8" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd8" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns1="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" xmlns:ns3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4">
     <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" schemaLocation="/share_resources/schema_resources/ConditionsSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" schemaLocation="/shareResources/schemas/ProductPOSchema.xsd"/>
@@ -97,6 +97,38 @@
                             </ns1:productIconUrl>
                         </xsl:if>
                     </ns1:productObj>
+                    <pfx3:gradsList>
+                        <xsl:for-each select="$GradesQuery/ns3:dictsResutls/ns3:dictObj">
+                            <ns3:dictObj>
+                                <xsl:if test="ns3:dictId">
+                                    <ns3:dictId>
+                                        <xsl:value-of select="ns3:dictId"/>
+                                    </ns3:dictId>
+                                </xsl:if>
+                                <xsl:if test="ns3:dictName">
+                                    <ns3:dictName>
+                                        <xsl:value-of select="ns3:dictName"/>
+                                    </ns3:dictName>
+                                </xsl:if>
+                            </ns3:dictObj>
+                        </xsl:for-each>
+                    </pfx3:gradsList>
+                    <pfx3:auditStatusList>
+                        <xsl:for-each select="$AuditStatusQuery/ns3:dictsResutls/ns3:dictObj">
+                            <ns3:dictObj>
+                                <xsl:if test="ns3:dictId">
+                                    <ns3:dictId>
+                                        <xsl:value-of select="ns3:dictId"/>
+                                    </ns3:dictId>
+                                </xsl:if>
+                                <xsl:if test="ns3:dictName">
+                                    <ns3:dictName>
+                                        <xsl:value-of select="ns3:dictName"/>
+                                    </ns3:dictName>
+                                </xsl:if>
+                            </ns3:dictObj>
+                        </xsl:for-each>
+                    </pfx3:auditStatusList>
                     <pfx4:creativeResults>
                         <xsl:for-each select="$CreativeQuery/pfx4:creativeResults/pfx4:creativeObj">
                             <pfx4:creativeObj>
@@ -190,6 +222,44 @@
             </pfx4:creativeObj>
         </pd:inputBindings>
     </pd:activity>
+    <pd:activity name="GradesQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>432</pd:x>
+        <pd:y>282</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/DictionaryQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:dictObj>
+                <ns3:dictParentNo>
+                    <xsl:value-of select="&quot;002&quot;"/>
+                </ns3:dictParentNo>
+                <ns3:dictStatus>
+                    <xsl:value-of select="0"/>
+                </ns3:dictStatus>
+            </ns3:dictObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AuditStatusQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>439</pd:x>
+        <pd:y>408</pd:y>
+        <config>
+            <processName>/creativeMsg/creativeDao/DictionaryQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:dictObj>
+                <ns3:dictParentNo>
+                    <xsl:value-of select="&quot;003&quot;"/>
+                </ns3:dictParentNo>
+                <ns3:dictStatus>
+                    <xsl:value-of select="0"/>
+                </ns3:dictStatus>
+            </ns3:dictObj>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Start</pd:from>
         <pd:to>Parse JSON</pd:to>
@@ -234,6 +304,34 @@
     </pd:transition>
     <pd:transition>
         <pd:from>CreativeQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>GradesQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>GradesQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AuditStatusQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AuditStatusQuery</pd:from>
         <pd:to>Render JSON</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

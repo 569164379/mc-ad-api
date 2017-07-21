@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="adId" type="xs:string"/>
+	<xs:element name="accountId" type="xs:string"/>
+	<xs:element name="adCompanyName" type="xs:string"/>
+	<xs:element name="adCompanyAddr" type="xs:string"/>
+	<xs:element name="adContactName" type="xs:string"/>
+	<xs:element name="adContactTel" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="advertiserObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adId" minOccurs="0"/>
+				<xs:element ref="accountId" minOccurs="0"/>
+				<xs:element ref="adCompanyName" minOccurs="0"/>
+				<xs:element ref="adCompanyAddr" minOccurs="0"/>
+				<xs:element ref="adContactName" minOccurs="0"/>
+				<xs:element ref="adContactTel" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="advertiserResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="advertiserObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

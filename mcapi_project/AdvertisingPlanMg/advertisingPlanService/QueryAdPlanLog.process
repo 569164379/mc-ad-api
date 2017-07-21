@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" schemaLocation="/shareResources/schemas/AdplanlogPO.xsd"/>
+    <pd:name>AdvertisingPlanMg/advertisingPlanService/QueryAdPlanLog.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="$Render-JSON/ns2:ActivityOutputClass/jsonString"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1015</pd:endX>
+    <pd:endY>95</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="AdPlanLogQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>400</pd:x>
+        <pd:y>85</pd:y>
+        <config>
+            <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanLogQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:adplanlogObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanlogTime">
+                    <pfx3:adplanlogTime>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanlogTime"/>
+                    </pfx3:adplanlogTime>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanlogType">
+                    <pfx3:adplanlogType>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanlogType"/>
+                    </pfx3:adplanlogType>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanlogOperatorName">
+                    <pfx3:adplanlogOperatorName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanlogOperatorName"/>
+                    </pfx3:adplanlogOperatorName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanName">
+                    <pfx3:adplanName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:adplanlogObj/pfx3:adplanName"/>
+                    </pfx3:adplanName>
+                </xsl:if>
+            </pfx3:adplanlogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx3:adplanlogObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>668</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx3:adplanlogResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <pfx3:adplanlogResults>
+                    <xsl:for-each select="$AdPlanLogQuery/pfx3:adplanlogResults/pfx3:adplanlogObj">
+                        <pfx3:adplanlogObj>
+                            <xsl:if test="pfx3:adplanlogTime">
+                                <pfx3:adplanlogTime>
+                                    <xsl:value-of select="pfx3:adplanlogTime"/>
+                                </pfx3:adplanlogTime>
+                            </xsl:if>
+                            <xsl:if test="pfx3:adplanId">
+                                <pfx3:adplanId>
+                                    <xsl:value-of select="pfx3:adplanId"/>
+                                </pfx3:adplanId>
+                            </xsl:if>
+                            <xsl:if test="pfx3:adplanlogType">
+                                <pfx3:adplanlogType>
+                                    <xsl:value-of select="pfx3:adplanlogType"/>
+                                </pfx3:adplanlogType>
+                            </xsl:if>
+                            <xsl:if test="pfx3:adplanlogResultValue">
+                                <pfx3:adplanlogResultValue>
+                                    <xsl:value-of select="pfx3:adplanlogResultValue"/>
+                                </pfx3:adplanlogResultValue>
+                            </xsl:if>
+                            <xsl:if test="pfx3:adplanlogOperatorName">
+                                <pfx3:adplanlogOperatorName>
+                                    <xsl:value-of select="pfx3:adplanlogOperatorName"/>
+                                </pfx3:adplanlogOperatorName>
+                            </xsl:if>
+                            <xsl:if test="pfx3:adplanlogResultName">
+                                <pfx3:adplanlogResultName>
+                                    <xsl:value-of select="pfx3:adplanlogResultName"/>
+                                </pfx3:adplanlogResultName>
+                            </xsl:if>
+                            <xsl:if test="pfx3:adplanName">
+                                <pfx3:adplanName>
+                                    <xsl:value-of select="pfx3:adplanName"/>
+                                </pfx3:adplanName>
+                            </xsl:if>
+                        </pfx3:adplanlogObj>
+                    </xsl:for-each>
+                </pfx3:adplanlogResults>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AdPlanLogQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdPlanLogQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

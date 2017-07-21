@@ -106,6 +106,16 @@
                                     <xsl:value-of select="pfx4:creativeLogRSName"/>
                                 </pfx4:creativeLogRSName>
                             </xsl:if>
+                            <xsl:if test="pfx4:operatorAccountName">
+                                <pfx4:operatorAccountName>
+                                    <xsl:value-of select="pfx4:operatorAccountName"/>
+                                </pfx4:operatorAccountName>
+                            </xsl:if>
+                            <xsl:if test="pfx4:creativeName">
+                                <pfx4:creativeName>
+                                    <xsl:value-of select="pfx4:creativeName"/>
+                                </pfx4:creativeName>
+                            </xsl:if>
                         </pfx4:creativeLogObj>
                     </xsl:for-each>
                 </pfx4:creativeLogResults>

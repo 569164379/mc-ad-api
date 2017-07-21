@@ -100,10 +100,10 @@
                                 <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:tagNames"/>
                             </ns:tagNames>
                         </xsl:if>
-                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:uploadAccountMail">
-                            <ns:uploadAccountMail>
-                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:uploadAccountMail"/>
-                            </ns:uploadAccountMail>
+                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:uploadAccountName">
+                            <ns:uploadAccountName>
+                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:uploadAccountName"/>
+                            </ns:uploadAccountName>
                         </xsl:if>
                         <ns:creativeDownloadUrl>
                             <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/CreativeFileHostPath, &quot;/&quot;,$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:creativeName,&quot;.zip&quot;)"/>

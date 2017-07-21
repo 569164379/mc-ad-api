@@ -79,6 +79,11 @@
                                 <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:productName"/>
                             </ns:productName>
                         </xsl:if>
+                        <xsl:if test="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:uploadAccountName">
+                            <ns:uploadAccountName>
+                                <xsl:value-of select="$CreativeQuery/ns:creativeResults/ns:creativeObj[1]/ns:uploadAccountName"/>
+                            </ns:uploadAccountName>
+                        </xsl:if>
                     </ns:creativeObj>
                     <pfx2:TextMetrialList>
                         <xsl:for-each select="$MaterialTextQuery/pfx:materialResults/pfx:materialObj">

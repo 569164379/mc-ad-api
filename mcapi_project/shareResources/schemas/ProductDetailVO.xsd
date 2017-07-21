@@ -4,16 +4,34 @@
 	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd8"
 	 xmlns:product="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2"
 	 xmlns:creative="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"
+	 xmlns:dict="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4"
 	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd8"
 	 elementFormDefault="qualified"
 	 attributeFormDefault="unqualified">
 	<xs:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2"/>
 	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd4"/>
 	<xs:element name="productDetailVO">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="product:productObj"/>
+				<xs:element ref="gradsList"/>
+				<xs:element ref="auditStatusList"/>
 				<xs:element ref="creative:creativeResults"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="gradsList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="auditStatusList">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="dict:dictObj" minOccurs="0" maxOccurs="unbounded"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

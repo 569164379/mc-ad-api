@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" schemaLocation="/shareResources/schemas/AdplanlogPO.xsd"/>
+    <pd:name>AdvertisingPlanMg/advertisingPlanDao/AdPlanLogQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:adplanlogObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <pfx4:adplanlogResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx4:adplanlogObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx4:adplanlogId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogTime>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx4:adplanlogTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogOperator>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx4:adplanlogOperator>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanId>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx4:adplanId>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogType>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx4:adplanlogType>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogResult>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx4:adplanlogResult>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogResultValue>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx4:adplanlogResultValue>
+                    </xsl:if>
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:mcVersion>
+                            <xsl:value-of select="column[8]/value"/>
+                        </pfx4:mcVersion>
+                    </xsl:if>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogOperatorName>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx4:adplanlogOperatorName>
+                    </xsl:if>
+                    <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanlogResultName>
+                            <xsl:value-of select="column[10]/value"/>
+                        </pfx4:adplanlogResultName>
+                    </xsl:if>
+                    <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:adplanName>
+                            <xsl:value-of select="column[11]/value"/>
+                        </pfx4:adplanName>
+                    </xsl:if>
+                </pfx4:adplanlogObj>
+            </xsl:for-each>
+        </pfx4:adplanlogResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx4:adplanlogResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>277</pd:x>
+        <pd:y>93</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;select bapl.*,ba.ACCOUNT_NAME ,bd.DICT_NAME,bap.ADPLAN_NAME   from tab_ad_plan_log bapl &quot;,&#xA;&quot; INNER JOIN tab_ad_plan bap on bapl.ADPLAN_ID = bap.ADPLAN_ID&quot;,&#xA;&quot; INNER JOIN tab_account ba on bapl.ADPLANLOG_OPERATOR = ba.ACCOUNT_ID&quot;,&#xA;&quot; INNER JOIN tab_dictionary bd on bapl.ADPLANLOG_RESULT = bd.DICT_ID    where 1=1 &quot;,&#xA;if (exists($Start/pfx4:adplanlogObj/pfx4:adplanlogId) and &quot;&quot; !=tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogId)) then concat(&quot; and bap.ADPLAN_ID = &quot;, tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogId)) else &quot;&quot;,&#xA;if (exists($Start/pfx4:adplanlogObj/pfx4:adplanlogTime) and &quot;&quot; !=tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogTime)) then concat(&quot; and bapl.ADPLANLOG_TIME like '%&quot;, tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogTime), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:adplanlogObj/pfx4:adplanlogOperatorName) and &quot;&quot; !=tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogOperatorName)) then concat(&quot; and ba.ACCOUNT_NAME like '%&quot;, tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogOperatorName), &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:adplanlogObj/pfx4:adplanName) and &quot;&quot; !=tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanName)) then concat(&quot; and (bap.ADPLAN_NAME like '%&quot;, tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanName), &quot;%' or  bap.ADPLAN_ID like  '%&quot;, tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanName), &quot;%')&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:adplanlogObj/pfx4:adplanlogType) and &quot;&quot; !=tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogType)) then concat(&quot; and bapl.ADPLANLOG_TYPE = &quot;, tib:trim($Start/pfx4:adplanlogObj/pfx4:adplanlogType)) else &quot;&quot;,&#xA;&quot; ORDER BY bapl.ADPLANLOG_TIME desc&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

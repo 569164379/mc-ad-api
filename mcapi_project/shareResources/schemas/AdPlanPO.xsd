@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="adplanId" type="xs:string"/>
+	<xs:element name="productId" type="xs:string"/>
+	<xs:element name="advertiserId" type="xs:string"/>
+	<xs:element name="adplanName" type="xs:string"/>
+	<xs:element name="adplanStartDate" type="xs:string"/>
+	<xs:element name="adplanEndDate" type="xs:string"/>
+	<xs:element name="adplanPayType" type="xs:string"/>
+	<xs:element name="adplanTotalBudget" type="xs:string"/>
+	<xs:element name="adplanStatus" type="xs:string"/>
+	<xs:element name="adplanDcp" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+
+	<!---非PO字段-->
+	<xs:element name="productName" type="xs:string"/>
+	<xs:element name="advertiserName" type="xs:string"/>
+	<xs:element name="productSearchVal" type="xs:string"/>
+	<xs:element name="advertiserSearchVal" type="xs:string"/>
+	<xs:element name="adplanNameSearchVal" type="xs:string"/>
+	<xs:element name="adplanSelfId" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="adplanObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adplanId" minOccurs="0"/>
+				<xs:element ref="productId" minOccurs="0"/>
+				<xs:element ref="advertiserId" minOccurs="0"/>
+				<xs:element ref="adplanName" minOccurs="0"/>
+				<xs:element ref="adplanStartDate" minOccurs="0"/>
+				<xs:element ref="adplanEndDate" minOccurs="0"/>
+				<xs:element ref="adplanPayType" minOccurs="0"/>
+				<xs:element ref="adplanTotalBudget" minOccurs="0"/>
+				<xs:element ref="adplanStatus" minOccurs="0"/>
+				<xs:element ref="adplanDcp" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="advertiserName" minOccurs="0"/>
+				<xs:element ref="productName" minOccurs="0"/>
+				<xs:element ref="advertiserSearchVal" minOccurs="0"/>
+				<xs:element ref="productSearchVal" minOccurs="0"/>
+				<xs:element ref="adplanNameSearchVal" minOccurs="0"/>
+				<xs:element ref="adplanSelfId" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adplanResutls">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adplanObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

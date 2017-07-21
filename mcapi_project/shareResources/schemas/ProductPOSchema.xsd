@@ -22,6 +22,7 @@
 	<xs:element name="productModifyTime" type="xs:string"/>
 	<xs:element name="productModifier" type="xs:string"/>
 	<xs:element name="searchVal" type="xs:string"/>
+	<xs:element name="selfProductID" type="xs:string"/>
 	<xs:element name="productSatusColor" type="xs:string"/>
 	<xs:element name="productObj">
 		<xs:complexType>
@@ -40,6 +41,7 @@
 				<xs:element ref="productModifyTime" minOccurs="0"/>
 				<xs:element ref="productModifier" minOccurs="0"/>
 				<xs:element ref="searchVal" minOccurs="0"/>
+				<xs:element ref="selfProductID" minOccurs="0"/>
 				<xs:element ref="productSatusColor" minOccurs="0"/>
 				<xs:element ref="validateRepeat" minOccurs="0"/>
 				<xs:element ref="tokenInfo" minOccurs="0"/>

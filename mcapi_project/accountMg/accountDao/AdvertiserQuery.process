@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <pd:name>accountMg/accountDao/AdvertiserQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:accountObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <pfx2:accountResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx2:accountObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:accountId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx2:accountId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:accountEmail>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx2:accountEmail>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:accountName>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx2:accountName>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:accountPwd>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx2:accountPwd>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:accountStatus>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx2:accountStatus>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:accountRoleId>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx2:accountRoleId>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:createTime>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx2:createTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:updateTime>
+                            <xsl:value-of select="column[8]/value"/>
+                        </pfx2:updateTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx2:mcVersion>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx2:mcVersion>
+                    </xsl:if>
+                    <ns:advertiserObj>
+                        <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:adId>
+                                <xsl:value-of select="column[10]/value"/>
+                            </ns:adId>
+                        </xsl:if>
+                        <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:accountId>
+                                <xsl:value-of select="column[11]/value"/>
+                            </ns:accountId>
+                        </xsl:if>
+                        <xsl:if test="not((column[12]/value/@xsi:nil=(&quot;true&quot;)) or (column[12]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:adCompanyName>
+                                <xsl:value-of select="column[12]/value"/>
+                            </ns:adCompanyName>
+                        </xsl:if>
+                        <xsl:if test="not((column[13]/value/@xsi:nil=(&quot;true&quot;)) or (column[13]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:adCompanyAddr>
+                                <xsl:value-of select="column[13]/value"/>
+                            </ns:adCompanyAddr>
+                        </xsl:if>
+                        <xsl:if test="not((column[14]/value/@xsi:nil=(&quot;true&quot;)) or (column[14]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:adContactName>
+                                <xsl:value-of select="column[14]/value"/>
+                            </ns:adContactName>
+                        </xsl:if>
+                        <xsl:if test="not((column[15]/value/@xsi:nil=(&quot;true&quot;)) or (column[15]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:adContactTel>
+                                <xsl:value-of select="column[15]/value"/>
+                            </ns:adContactTel>
+                        </xsl:if>
+                        <xsl:if test="not((column[16]/value/@xsi:nil=(&quot;true&quot;)) or (column[16]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:createTime>
+                                <xsl:value-of select="column[16]/value"/>
+                            </ns:createTime>
+                        </xsl:if>
+                        <xsl:if test="not((column[17]/value/@xsi:nil=(&quot;true&quot;)) or (column[17]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:updateTime>
+                                <xsl:value-of select="column[17]/value"/>
+                            </ns:updateTime>
+                        </xsl:if>
+                        <xsl:if test="not((column[18]/value/@xsi:nil=(&quot;true&quot;)) or (column[18]/value/@xsi:nil=(&quot;1&quot;)))">
+                            <ns:mcVersion>
+                                <xsl:value-of select="column[18]/value"/>
+                            </ns:mcVersion>
+                        </xsl:if>
+                    </ns:advertiserObj>
+                </pfx2:accountObj>
+            </xsl:for-each>
+        </pfx2:accountResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx2:accountResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>278</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT *  from tab_account ba INNER JOIN tab_advertiser bad on ba.ACCOUNT_ID = bad.ACCOUNT_ID &quot;,&#xA;if (exists($Start/pfx2:accountObj/ns:advertiserObj/ns:adId) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/ns:advertiserObj/ns:adId)) then concat(&quot; and  bad.ACCOUNT_ID = '&quot;, tib:trim($Start/pfx2:accountObj/ns:advertiserObj/ns:adId), &quot;'&quot;) else &quot;&quot;, &#xA;&quot; where 1=1 &quot;,&#xA;if (exists($Start/pfx2:accountObj/pfx2:accountName) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/pfx2:accountName)) then concat(&quot; and ba.ACCOUNT_NAME = '&quot;, tib:trim($Start/pfx2:accountObj/pfx2:accountName), &quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:accountObj/pfx2:accountEmail) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/pfx2:accountEmail)) then concat(&quot; and ba.ACCOUNT_EMAIL = '&quot;, tib:trim($Start/pfx2:accountObj/pfx2:accountEmail), &quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:accountObj/pfx2:accNameSearchVal) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/pfx2:accNameSearchVal)) then concat(&quot; and LOWER(ba.ACCOUNT_NAME) like LOWER('%&quot;, tib:trim($Start/pfx2:accountObj/pfx2:accNameSearchVal), &quot;%')&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:accountObj/pfx2:accMailSearchVal) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/pfx2:accMailSearchVal)) then concat(&quot; and LOWER(ba.ACCOUNT_EMAIL) like LOWER('%&quot;, tib:trim($Start/pfx2:accountObj/pfx2:accMailSearchVal), &quot;%')&quot;) else &quot;&quot;,&#xA;&#xA;if (exists($Start/pfx2:accountObj/pfx2:accountId) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/pfx2:accountId)) then concat(&quot; and ba.ACCOUNT_ID = &quot;, tib:trim($Start/pfx2:accountObj/pfx2:accountId)) else &quot;&quot;,&#xA;if (exists($Start/pfx2:accountObj/pfx2:accountSelfId) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/pfx2:accountSelfId)) then concat(&quot; and ba.ACCOUNT_ID != &quot;, tib:trim($Start/pfx2:accountObj/pfx2:accountSelfId)) else &quot;&quot;,&#xA;if (exists($Start/pfx2:accountObj/ns:advertiserObj/ns:adId) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/ns:advertiserObj/ns:adId)) then concat(&quot; and bad.AD_ID = &quot;, tib:trim($Start/pfx2:accountObj/ns:advertiserObj/ns:adId)) else &quot;&quot;,&#xA;if (exists($Start/pfx2:accountObj/pfx2:accountStatus) and &quot;&quot; !=tib:trim($Start/pfx2:accountObj/pfx2:accountStatus)) then concat(&quot; and ba.ACCOUNT_STATUS = '&quot;, tib:trim($Start/pfx2:accountObj/pfx2:accountStatus), &quot;'&quot;) else &quot;&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

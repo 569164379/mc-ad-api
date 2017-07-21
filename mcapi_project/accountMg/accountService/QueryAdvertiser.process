@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <pd:name>accountMg/accountService/QueryAdvertiser.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="$Render-JSON/ns2:ActivityOutputClass/jsonString"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1015</pd:endX>
+    <pd:endY>95</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="AccountQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>400</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <processName>/accountMg/accountDao/AdvertiserQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:accountObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountId">
+                    <ns:accountId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountId"/>
+                    </ns:accountId>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountEmail">
+                    <ns:accountEmail>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountEmail"/>
+                    </ns:accountEmail>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountName">
+                    <ns:accountName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountName"/>
+                    </ns:accountName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accNameSearchVal">
+                    <ns:accNameSearchVal>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accNameSearchVal"/>
+                    </ns:accNameSearchVal>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accMailSearchVal">
+                    <ns:accMailSearchVal>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accMailSearchVal"/>
+                    </ns:accMailSearchVal>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountSelfId">
+                    <ns:accountSelfId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountSelfId"/>
+                    </ns:accountSelfId>
+                </xsl:if>
+                <ns1:advertiserObj>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adId">
+                        <ns1:adId>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adId"/>
+                        </ns1:adId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyName">
+                        <ns1:adCompanyName>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyName"/>
+                        </ns1:adCompanyName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyAddr">
+                        <ns1:adCompanyAddr>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adCompanyAddr"/>
+                        </ns1:adCompanyAddr>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactName">
+                        <ns1:adContactName>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactName"/>
+                        </ns1:adContactName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactTel">
+                        <ns1:adContactTel>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns1:advertiserObj/ns1:adContactTel"/>
+                        </ns1:adContactTel>
+                    </xsl:if>
+                </ns1:advertiserObj>
+            </ns:accountObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="ns:accountObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>668</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="ns:accountResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <ns:accountResults>
+                    <xsl:for-each select="$AccountQuery/ns:accountResults/ns:accountObj">
+                        <ns:accountObj>
+                            <xsl:if test="ns:accountId">
+                                <ns:accountId>
+                                    <xsl:value-of select="ns:accountId"/>
+                                </ns:accountId>
+                            </xsl:if>
+                            <xsl:if test="ns:accountEmail">
+                                <ns:accountEmail>
+                                    <xsl:value-of select="ns:accountEmail"/>
+                                </ns:accountEmail>
+                            </xsl:if>
+                            <xsl:if test="ns:accountName">
+                                <ns:accountName>
+                                    <xsl:value-of select="ns:accountName"/>
+                                </ns:accountName>
+                            </xsl:if>
+                            <xsl:if test="ns:accountStatus">
+                                <ns:accountStatus>
+                                    <xsl:value-of select="ns:accountStatus"/>
+                                </ns:accountStatus>
+                            </xsl:if>
+                            <ns:createTime>
+                                <xsl:value-of select="substring(ns:createTime, 0, 11)"/>
+                            </ns:createTime>
+                            <xsl:if test="ns:accountRoleName">
+                                <ns:accountRoleName>
+                                    <xsl:value-of select="ns:accountRoleName"/>
+                                </ns:accountRoleName>
+                            </xsl:if>
+                            <ns1:advertiserObj>
+                                <xsl:if test="ns1:advertiserObj/ns1:adId">
+                                    <ns1:adId>
+                                        <xsl:value-of select="ns1:advertiserObj/ns1:adId"/>
+                                    </ns1:adId>
+                                </xsl:if>
+                                <xsl:if test="ns1:advertiserObj/ns1:adCompanyName">
+                                    <ns1:adCompanyName>
+                                        <xsl:value-of select="ns1:advertiserObj/ns1:adCompanyName"/>
+                                    </ns1:adCompanyName>
+                                </xsl:if>
+                                <xsl:if test="ns1:advertiserObj/ns1:adCompanyAddr">
+                                    <ns1:adCompanyAddr>
+                                        <xsl:value-of select="ns1:advertiserObj/ns1:adCompanyAddr"/>
+                                    </ns1:adCompanyAddr>
+                                </xsl:if>
+                                <xsl:if test="ns1:advertiserObj/ns1:adContactName">
+                                    <ns1:adContactName>
+                                        <xsl:value-of select="ns1:advertiserObj/ns1:adContactName"/>
+                                    </ns1:adContactName>
+                                </xsl:if>
+                                <ns1:adContactTel>
+                                    <xsl:value-of select="ns1:advertiserObj/ns1:adContactTel"/>
+                                </ns1:adContactTel>
+                            </ns1:advertiserObj>
+                        </ns:accountObj>
+                    </xsl:for-each>
+                </ns:accountResults>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AccountQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AccountQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

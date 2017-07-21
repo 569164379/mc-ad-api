@@ -212,7 +212,7 @@
         <pd:inputBindings>
             <root>
                 <creativeName>
-                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:materialResults/pfx2:creativeName"/>
+                    <xsl:value-of select="$DecodeCreativeName/javaCodeActivityOutput/outCreativeName"/>
                 </creativeName>
             </root>
         </pd:inputBindings>

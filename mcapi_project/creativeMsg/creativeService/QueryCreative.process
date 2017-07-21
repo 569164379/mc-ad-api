@@ -25,8 +25,8 @@
     <pd:activity name="CreativeQuery">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>495</pd:x>
-        <pd:y>119</pd:y>
+        <pd:x>494</pd:x>
+        <pd:y>117</pd:y>
         <config>
             <processName>/creativeMsg/creativeDao/CreativeQuery.process</processName>
         </config>
@@ -170,10 +170,10 @@
                                     <xsl:value-of select="pfx3:tagNames"/>
                                 </pfx3:tagNames>
                             </xsl:if>
-                            <xsl:if test="pfx3:uploadAccountMail">
-                                <pfx3:uploadAccountMail>
-                                    <xsl:value-of select="pfx3:uploadAccountMail"/>
-                                </pfx3:uploadAccountMail>
+                            <xsl:if test="pfx3:uploadAccountName">
+                                <pfx3:uploadAccountName>
+                                    <xsl:value-of select="pfx3:uploadAccountName"/>
+                                </pfx3:uploadAccountName>
                             </xsl:if>
                             <pfx3:creativeDownloadUrl>
                                 <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/CreativeFileHostPath, &quot;/&quot;,current()/pfx3:creativeName,&quot;.zip&quot;)"/>

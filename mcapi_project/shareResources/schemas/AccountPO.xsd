@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9"
+	 xmlns:ad="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13"/>
+	<xs:element name="accountId" type="xs:string"/>
+	<xs:element name="accountEmail" type="xs:string"/>
+	<xs:element name="accountName" type="xs:string"/>
+	<xs:element name="accountPwd" type="xs:string"/>
+	<xs:element name="accountStatus" type="xs:string"/>
+	<xs:element name="accountRoleId" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="accountRoleName" type="xs:string"/>
+	<xs:element name="accIdNameSearchVal" type="xs:string"/>
+	<xs:element name="accNameSearchVal" type="xs:string"/>
+	<xs:element name="accMailSearchVal" type="xs:string"/>
+	<xs:element name="accountSelfId" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="accountObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="accountId" minOccurs="0"/>
+				<xs:element ref="accountEmail" minOccurs="0"/>
+				<xs:element ref="accountName" minOccurs="0"/>
+				<xs:element ref="accountPwd" minOccurs="0"/>
+				<xs:element ref="accountStatus" minOccurs="0"/>
+				<xs:element ref="accountRoleId" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="accountRoleName" minOccurs="0"/>
+				<xs:element ref="accIdNameSearchVal" minOccurs="0"/>
+				<xs:element ref="accNameSearchVal" minOccurs="0"/>
+				<xs:element ref="accMailSearchVal" minOccurs="0"/>
+				<xs:element ref="accountSelfId" minOccurs="0"/>
+				<xs:element ref="ad:advertiserObj" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="accountResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="accountObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

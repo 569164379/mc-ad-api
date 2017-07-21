@@ -13,6 +13,8 @@
 	<xs:element name="creativeLogResult" type="xs:string"/>
 	<xs:element name="creativeLogTypeName" type="xs:string"/>
 	<xs:element name="creativeLogRSName" type="xs:string"/>
+	<xs:element name="operatorAccountName" type="xs:string"/>
+	<xs:element name="creativeName" type="xs:string"/>
 	<xs:element name="creativeLogObj">
 		<xs:complexType>
 			<xs:sequence>
@@ -24,6 +26,8 @@
 				<xs:element ref="creativeLogResult" minOccurs="0"/>
 				<xs:element ref="creativeLogTypeName" minOccurs="0"/>
 				<xs:element ref="creativeLogRSName" minOccurs="0"/>
+				<xs:element ref="operatorAccountName" minOccurs="0"/>
+				<xs:element ref="creativeName" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>

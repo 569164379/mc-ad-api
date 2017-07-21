@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd14"
+	 xmlns:list="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd15"
+	 xmlns:acc="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd14"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd15"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9"/>
+	<xs:element name="adDetailVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="acc:accountObj"/>
+				<xs:element ref="list:listObjResutls" minOccurs="0"/>
+				<xs:element ref="list:listObjResutls" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

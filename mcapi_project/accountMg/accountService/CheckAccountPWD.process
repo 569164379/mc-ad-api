@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <pd:name>accountMg/accountService/CheckAccountPWD.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="$Render-JSON/ns2:ActivityOutputClass/jsonString"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1015</pd:endX>
+    <pd:endY>95</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="AccountQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>573</pd:x>
+        <pd:y>96</pd:y>
+        <config>
+            <processName>/accountMg/accountDao/AccountQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns:accountObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountId">
+                    <ns:accountId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountId"/>
+                    </ns:accountId>
+                </xsl:if>
+                <ns:accountPwd>
+                    <xsl:value-of select="$Java-Code/javaCodeActivityOutput/userPwdOut"/>
+                </ns:accountPwd>
+            </ns:accountObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="ns:accountObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>771</pd:x>
+        <pd:y>92</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor>
+                <xsd:element name="responseStatus" type="xsd:string"/>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <responseStatus>
+                    <xsl:value-of select="if (tib:trim($AccountQuery/ns:accountResults/ns:accountObj[1]/ns:accountPwd)=tib:trim($Java-Code/javaCodeActivityOutput/userPwdOut)) then &quot;true&quot; else &quot;false&quot;"/>
+                </responseStatus>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>410</pd:x>
+        <pd:y>103</pd:y>
+        <config>
+            <fileName>CheckAccountPWDJavaCode</fileName>
+            <packageName>accountMg.accountService.CheckAccountPWD</packageName>
+            <fullsource>package accountMg.accountService.CheckAccountPWD;
+import java.util.*;
+import java.io.*;
+import com.tm.mc.util.MD5Util;
+public class CheckAccountPWDJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String userPwd = "";
+	protected String userPwdOut = "";
+	public String getuserPwd() {
+		return userPwd;
+	}
+	public void setuserPwd(String val) {
+		userPwd = val;
+	}
+	public String getuserPwdOut() {
+		return userPwdOut;
+	}
+	public void setuserPwdOut(String val) {
+		userPwdOut = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public CheckAccountPWDJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String userPwd
+	Out : String userPwdOut
+* Available Variables: DO NOT MODIFY *****/
+
+userPwdOut = MD5Util.getMD5String(userPwd);}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>userPwd</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>userPwdOut</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>CheckAccountPWDJavaCode</name>
+                    <byteCode>yv66vgAAADQAJgkABgAaCQAGABsKAAcAHAgAHQoAHgAfBwAgBwAhAQAHdXNlclB3ZAEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACnVzZXJQd2RPdXQBAApnZXR1c2VyUHdkAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAKc2V0dXNlclB3ZAEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADWdldHVzZXJQd2RPdXQBAA1zZXR1c2VyUHdkT3V0AQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAIgEAClNvdXJjZUZpbGUBABxDaGVja0FjY291bnRQV0RKYXZhQ29kZS5qYXZhDAAIAAkMAAoACQwAEwAUAQAABwAjDAAkACUBAEBhY2NvdW50TWcvYWNjb3VudFNlcnZpY2UvQ2hlY2tBY2NvdW50UFdEL0NoZWNrQWNjb3VudFBXREphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABZjb20vdG0vbWMvdXRpbC9NRDVVdGlsAQAMZ2V0TUQ1U3RyaW5nAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZzsAIQAGAAcAAAACAAQACAAJAAAABAAKAAkAAAAGAAEACwAMAAEADQAAAB0AAQABAAAABSq0AAGwAAAAAQAOAAAABgABAAAACgABAA8AEAABAA0AAAAiAAIAAgAAAAYqK7UAAbEAAAABAA4AAAAKAAIAAAANAAUADgABABEADAABAA0AAAAdAAEAAQAAAAUqtAACsAAAAAEADgAAAAYAAQAAABAAAQASABAAAQANAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAOAAAACgACAAAAEwAFABQAAQATABQAAQANAAAANQACAAEAAAARKrcAAyoSBLUAASoSBLUAArEAAAABAA4AAAASAAQAAAAWAAQABwAKAAgAEAAXAAEAFQAUAAIADQAAACQAAgABAAAADCoqtAABuAAFtQACsQAAAAEADgAAAAYAAQAAAB4AFgAAAAQAAQAXAAEAGAAAAAIAGQ==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountPwd">
+                    <userPwd>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountPwd"/>
+                    </userPwd>
+                </xsl:if>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AccountQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>AccountQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
+    <pd:name>AdvertisingPlanMg/advertisingPlanDao/AdPlanQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx3:adplanObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <pfx3:adplanResutls>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx3:adplanObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx3:adplanId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:productId>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx3:productId>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:advertiserId>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx3:advertiserId>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanName>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx3:adplanName>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanStartDate>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx3:adplanStartDate>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanEndDate>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx3:adplanEndDate>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanPayType>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx3:adplanPayType>
+                    </xsl:if>
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanTotalBudget>
+                            <xsl:value-of select="column[8]/value"/>
+                        </pfx3:adplanTotalBudget>
+                    </xsl:if>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanStatus>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx3:adplanStatus>
+                    </xsl:if>
+                    <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:adplanDcp>
+                            <xsl:value-of select="column[10]/value"/>
+                        </pfx3:adplanDcp>
+                    </xsl:if>
+                    <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:createTime>
+                            <xsl:value-of select="column[11]/value"/>
+                        </pfx3:createTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[12]/value/@xsi:nil=(&quot;true&quot;)) or (column[12]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:updateTime>
+                            <xsl:value-of select="column[12]/value"/>
+                        </pfx3:updateTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[13]/value/@xsi:nil=(&quot;true&quot;)) or (column[13]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:mcVersion>
+                            <xsl:value-of select="column[13]/value"/>
+                        </pfx3:mcVersion>
+                    </xsl:if>
+                    <xsl:if test="not((column[14]/value/@xsi:nil=(&quot;true&quot;)) or (column[14]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:advertiserName>
+                            <xsl:value-of select="column[14]/value"/>
+                        </pfx3:advertiserName>
+                    </xsl:if>
+                    <xsl:if test="not((column[15]/value/@xsi:nil=(&quot;true&quot;)) or (column[15]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:productName>
+                            <xsl:value-of select="column[15]/value"/>
+                        </pfx3:productName>
+                    </xsl:if>
+                </pfx3:adplanObj>
+            </xsl:for-each>
+        </pfx3:adplanResutls>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:adplanResutls"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>278</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;select bap.*,ba.ACCOUNT_NAME,bp.PRODUCT_NAME from tab_ad_plan bap INNER JOIN tab_account ba on bap.ADVERTISER_ID = ba.ACCOUNT_ID INNER JOIN tab_product bp on bap.PRODUCT_ID = bp.PRODUCT_ID   where 1=1 &quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:advertiserId) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:advertiserId)) then concat(&quot; and bap.ADVERTISER_ID = &quot;, tib:trim($Start/pfx3:adplanObj/pfx3:advertiserId)) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:productId) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:productId)) then concat(&quot; and bap.PRODUCT_ID = &quot;, tib:trim($Start/pfx3:adplanObj/pfx3:productId)) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:adplanId) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:adplanId)) then concat(&quot; and bap.ADPLAN_ID = &quot;, tib:trim($Start/pfx3:adplanObj/pfx3:adplanId)) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:adplanSelfId) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:adplanSelfId)) then concat(&quot; and bap.ADPLAN_ID != &quot;, tib:trim($Start/pfx3:adplanObj/pfx3:adplanSelfId)) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:adplanName) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:adplanName)) then concat(&quot; and bap.ADPLAN_NAME = '&quot;, tib:trim($Start/pfx3:adplanObj/pfx3:adplanName), &quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:adplanNameSearchVal) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:adplanNameSearchVal)) then concat(&quot; and LOWER(bap.ADPLAN_NAME) like LOWER('%&quot;, tib:trim($Start/pfx3:adplanObj/pfx3:adplanNameSearchVal), &quot;%') &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:adplanStatus) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:adplanStatus)) then concat(&quot; and bap.ADPLAN_STATUS = '&quot;, tib:trim($Start/pfx3:adplanObj/pfx3:adplanStatus), &quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:advertiserSearchVal) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:advertiserSearchVal)) then concat(&quot; and (LOWER(ba.ACCOUNT_NAME) like LOWER( '%&quot;, tib:trim($Start/pfx3:adplanObj/pfx3:advertiserSearchVal), &quot;%') or ba.ACCOUNT_ID like '%&quot;, tib:trim($Start/pfx3:adplanObj/pfx3:advertiserSearchVal), &quot;%'  )&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:adplanObj/pfx3:productSearchVal) and &quot;&quot; !=tib:trim($Start/pfx3:adplanObj/pfx3:productSearchVal)) then concat(&quot; and (LOWER(bp.PRODUCT_NAME) like LOWER('%&quot;, tib:trim($Start/pfx3:adplanObj/pfx3:productSearchVal), &quot;%') or bp.PRODUCT_ID like '%&quot;, tib:trim($Start/pfx3:adplanObj/pfx3:productSearchVal), &quot;%')&quot;) else &quot;&quot;,&#xA;&quot;  ORDER BY bap.ADPLAN_ID desc&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

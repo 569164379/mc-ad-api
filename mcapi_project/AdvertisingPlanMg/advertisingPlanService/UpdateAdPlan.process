@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
+    <pd:name>AdvertisingPlanMg/advertisingPlanService/UpdateAdPlan.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>27</pd:startX>
+    <pd:startY>284</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="'{&quot;responseStatus&quot;:&quot;success&quot;}'"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1203</pd:endX>
+    <pd:endY>297</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>185</pd:x>
+        <pd:y>49</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx2:adplanObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AdPlanQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>188</pd:x>
+        <pd:y>266</pd:y>
+        <config>
+            <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx2:adplanObj/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>20</pd:y>
+        <pd:width>909</pd:width>
+        <pd:height>534</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>AdPlanUpdate</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanUpdate</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanLogAdd-1</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanLogAdd</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanLogAdd-4</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanLogAdd-2</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanLogAdd-3</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanUpdate</pd:from>
+            <pd:to>AdPlanLogAdd</pd:to>
+            <pd:xpathDescription>adplanNameChanged</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanName) and (tib:trim($AdPlanQuery/pfx2:adplanResutls/pfx2:adplanObj[1]/pfx2:adplanName)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanName))</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanUpdate</pd:from>
+            <pd:to>AdPlanLogAdd-1</pd:to>
+            <pd:xpathDescription>payTypeChanged</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanPayType) and tib:trim($AdPlanQuery/pfx2:adplanResutls/pfx2:adplanObj[1]/pfx2:adplanPayType)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanPayType)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanUpdate</pd:from>
+            <pd:to>AdPlanLogAdd-2</pd:to>
+            <pd:xpathDescription>TotalBudgetChanged</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanTotalBudget) and tib:trim($AdPlanQuery/pfx2:adplanResutls/pfx2:adplanObj[1]/pfx2:adplanTotalBudget)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanTotalBudget)</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanUpdate</pd:from>
+            <pd:to>AdPlanLogAdd-3</pd:to>
+            <pd:xpathDescription>EndDateChanged</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>(empty($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanEndDate) and ""!=tib:trim($AdPlanQuery/pfx2:adplanResutls/pfx2:adplanObj[1]/pfx2:adplanEndDate))  or (tib:trim($AdPlanQuery/pfx2:adplanResutls/pfx2:adplanObj[1]/pfx2:adplanEndDate)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanEndDate))</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdPlanUpdate</pd:from>
+            <pd:to>AdPlanLogAdd-4</pd:to>
+            <pd:xpathDescription>adplanStatusChanged</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>exists($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanStatus) and tib:trim($AdPlanQuery/pfx2:adplanResutls/pfx2:adplanObj[1]/pfx2:adplanStatus)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanStatus)</pd:xpath>
+        </pd:transition>
+        <pd:activity name="AdPlanUpdate">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>427</pd:x>
+            <pd:y>288</pd:y>
+            <config>
+                <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanUpdate.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx2:adplanObj>
+                    <pfx2:adplanId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId"/>
+                    </pfx2:adplanId>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanName">
+                        <pfx2:adplanName>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanName"/>
+                        </pfx2:adplanName>
+                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanEndDate)">
+                            <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanEndDate">
+                                <pfx2:adplanEndDate>
+                                    <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanEndDate"/>
+                                </pfx2:adplanEndDate>
+                            </xsl:if>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:adplanEndDate>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx2:adplanEndDate>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanPayType">
+                        <pfx2:adplanPayType>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanPayType"/>
+                        </pfx2:adplanPayType>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanTotalBudget">
+                        <pfx2:adplanTotalBudget>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanTotalBudget"/>
+                        </pfx2:adplanTotalBudget>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanStatus">
+                        <pfx2:adplanStatus>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanStatus"/>
+                        </pfx2:adplanStatus>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanDcp">
+                        <pfx2:adplanDcp>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanDcp"/>
+                        </pfx2:adplanDcp>
+                    </xsl:if>
+                    <pfx2:updateTime>
+                        <xsl:value-of select="tib:format-dateTime('yyyy-MM-dd HH:mm:ss', current-dateTime())"/>
+                    </pfx2:updateTime>
+                </pfx2:adplanObj>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AdPlanLogAdd">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>663</pd:x>
+            <pd:y>75</pd:y>
+            <config>
+                <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanLogAdd.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:adplanlogObj>
+                    <pfx3:adplanlogTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                    </pfx3:adplanlogTime>
+                    <pfx3:adplanlogOperator>
+                        <xsl:value-of select="1"/>
+                    </pfx3:adplanlogOperator>
+                    <pfx3:adplanId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId"/>
+                    </pfx3:adplanId>
+                    <pfx3:adplanlogType>
+                        <xsl:value-of select="42"/>
+                    </pfx3:adplanlogType>
+                    <pfx3:adplanlogResult>
+                        <xsl:value-of select="43"/>
+                    </pfx3:adplanlogResult>
+                    <pfx3:mcVersion>
+                        <xsl:value-of select="'mc_v1.0'"/>
+                    </pfx3:mcVersion>
+                </pfx3:adplanlogObj>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AdPlanLogAdd-1">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>676</pd:x>
+            <pd:y>177</pd:y>
+            <config>
+                <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanLogAdd.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:adplanlogObj>
+                    <pfx3:adplanlogTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                    </pfx3:adplanlogTime>
+                    <pfx3:adplanlogOperator>
+                        <xsl:value-of select="1"/>
+                    </pfx3:adplanlogOperator>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId">
+                        <pfx3:adplanId>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId"/>
+                        </pfx3:adplanId>
+                    </xsl:if>
+                    <pfx3:adplanlogType>
+                        <xsl:value-of select="42"/>
+                    </pfx3:adplanlogType>
+                    <pfx3:adplanlogResult>
+                        <xsl:value-of select="44"/>
+                    </pfx3:adplanlogResult>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanPayType">
+                        <pfx3:adplanlogResultValue>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanPayType"/>
+                        </pfx3:adplanlogResultValue>
+                    </xsl:if>
+                    <pfx3:mcVersion>
+                        <xsl:value-of select="'mc_v1.0'"/>
+                    </pfx3:mcVersion>
+                </pfx3:adplanlogObj>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AdPlanLogAdd-2">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>681</pd:x>
+            <pd:y>260</pd:y>
+            <config>
+                <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanLogAdd.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:adplanlogObj>
+                    <pfx3:adplanlogTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                    </pfx3:adplanlogTime>
+                    <pfx3:adplanlogOperator>
+                        <xsl:value-of select="1"/>
+                    </pfx3:adplanlogOperator>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId">
+                        <pfx3:adplanId>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId"/>
+                        </pfx3:adplanId>
+                    </xsl:if>
+                    <pfx3:adplanlogType>
+                        <xsl:value-of select="42"/>
+                    </pfx3:adplanlogType>
+                    <pfx3:adplanlogResult>
+                        <xsl:value-of select="45"/>
+                    </pfx3:adplanlogResult>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanTotalBudget">
+                        <pfx3:adplanlogResultValue>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanTotalBudget"/>
+                        </pfx3:adplanlogResultValue>
+                    </xsl:if>
+                    <pfx3:mcVersion>
+                        <xsl:value-of select="'mc_v1.0'"/>
+                    </pfx3:mcVersion>
+                </pfx3:adplanlogObj>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AdPlanLogAdd-3">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>725</pd:x>
+            <pd:y>371</pd:y>
+            <config>
+                <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanLogAdd.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:adplanlogObj>
+                    <pfx3:adplanlogTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                    </pfx3:adplanlogTime>
+                    <pfx3:adplanlogOperator>
+                        <xsl:value-of select="1"/>
+                    </pfx3:adplanlogOperator>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId">
+                        <pfx3:adplanId>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId"/>
+                        </pfx3:adplanId>
+                    </xsl:if>
+                    <pfx3:adplanlogType>
+                        <xsl:value-of select="42"/>
+                    </pfx3:adplanlogType>
+                    <pfx3:adplanlogResult>
+                        <xsl:value-of select="46"/>
+                    </pfx3:adplanlogResult>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanEndDate">
+                        <pfx3:adplanlogResultValue>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanEndDate"/>
+                        </pfx3:adplanlogResultValue>
+                    </xsl:if>
+                    <pfx3:mcVersion>
+                        <xsl:value-of select="'mc_v1.0'"/>
+                    </pfx3:mcVersion>
+                </pfx3:adplanlogObj>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="AdPlanLogAdd-4">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>766</pd:x>
+            <pd:y>500</pd:y>
+            <config>
+                <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanLogAdd.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx3:adplanlogObj>
+                    <pfx3:adplanlogTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                    </pfx3:adplanlogTime>
+                    <pfx3:adplanlogOperator>
+                        <xsl:value-of select="1"/>
+                    </pfx3:adplanlogOperator>
+                    <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId">
+                        <pfx3:adplanId>
+                            <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId"/>
+                        </pfx3:adplanId>
+                    </xsl:if>
+                    <pfx3:adplanlogType>
+                        <xsl:value-of select="42"/>
+                    </pfx3:adplanlogType>
+                    <pfx3:adplanlogResult>
+                        <xsl:value-of select="if (tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanStatus)='active') then &quot;47&quot;  else &quot;48&quot;"/>
+                    </pfx3:adplanlogResult>
+                    <pfx3:mcVersion>
+                        <xsl:value-of select="'mc_v1.0'"/>
+                    </pfx3:mcVersion>
+                </pfx3:adplanlogObj>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AdPlanQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdPlanQuery</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

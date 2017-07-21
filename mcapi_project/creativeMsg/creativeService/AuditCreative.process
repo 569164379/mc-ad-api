@@ -108,8 +108,8 @@
     <pd:activity name="QueryCreativeObjBfUpdate">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>353</pd:x>
-        <pd:y>322</pd:y>
+        <pd:x>369</pd:x>
+        <pd:y>307</pd:y>
         <config>
             <processName>/creativeMsg/creativeDao/CreativeQuery.process</processName>
         </config>
@@ -260,8 +260,8 @@
     <pd:group name="Group (1)">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>944</pd:x>
-        <pd:y>1</pd:y>
+        <pd:x>984</pd:x>
+        <pd:y>4</pd:y>
         <pd:width>184</pd:width>
         <pd:height>140</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -296,8 +296,8 @@
         <pd:activity name="DeleteCreativeTags">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>1024</pd:x>
-            <pd:y>66</pd:y>
+            <pd:x>1064</pd:x>
+            <pd:y>69</pd:y>
             <config>
                 <processName>/creativeMsg/creativeDao/DictCreativeUpdate.process</processName>
             </config>
@@ -402,8 +402,8 @@
     <pd:group name="submitTags">
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
-        <pd:x>455</pd:x>
-        <pd:y>30</pd:y>
+        <pd:x>491</pd:x>
+        <pd:y>5</pd:y>
         <pd:width>445</pd:width>
         <pd:height>292</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
@@ -462,8 +462,8 @@
         <pd:activity name="Assign-1">
             <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
             <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
-            <pd:x>811</pd:x>
-            <pd:y>110</pd:y>
+            <pd:x>846</pd:x>
+            <pd:y>85</pd:y>
             <config>
                 <variableName>TagFlag</variableName>
             </config>
@@ -476,16 +476,16 @@
         <pd:activity name="Null">
             <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
             <pd:resourceType>ae.activities.null</pd:resourceType>
-            <pd:x>756</pd:x>
-            <pd:y>242</pd:y>
+            <pd:x>791</pd:x>
+            <pd:y>217</pd:y>
             <config/>
             <pd:inputBindings/>
         </pd:activity>
         <pd:activity name="Map Data">
             <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
             <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-            <pd:x>606</pd:x>
-            <pd:y>109</pd:y>
+            <pd:x>641</pd:x>
+            <pd:y>84</pd:y>
             <config>
                 <element>
                     <xsd:element name="root">
@@ -689,7 +689,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>validateRepeatSubmit</pd:from>
-        <pd:to>QueryTagsByCreativeId</pd:to>
+        <pd:to>QueryCreativeObjBfUpdate</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>

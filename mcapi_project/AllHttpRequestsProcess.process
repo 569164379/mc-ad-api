@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:ns1="http://xmlns.tibco.com/encodings/mime">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/pe/EngineTypes" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://xmlns.tibco.com/encodings/mime">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
     <pd:name>AllHttpRequestsProcess.process</pd:name>
     <pd:startName>HTTP Receiver</pd:startName>
     <pd:startX>0</pd:startX>
@@ -53,7 +54,7 @@
     <pd:activity name="Dynamic Call Process">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>415</pd:x>
+        <pd:x>414</pd:x>
         <pd:y>89</pd:y>
         <config>
             <processNameXPath>concat(
@@ -83,6 +84,30 @@ if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/queryPro
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/queryProductList") ) then "/offerMg/offerService/QueryProductList" else
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/queryProductBEdit") ) then "/offerMg/offerService/QueryProductBEdit" else
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/editProduct") ) then "/offerMg/offerService/EditProduct" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/camptureIconUrl") ) then "/offerMg/offerService/CamptureIconUrl" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/uploadProductIcon") ) then "/offerMg/offerService/UploadProductIcon" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/offersMg/addProduct") ) then "/offerMg/offerService/AddProduct" else
+
+
+
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/addAdvertiser") ) then "/accountMg/accountService/AddAdvertiser" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/accountList") ) then "/accountMg/accountService/QueryAccount" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/updateAdvertiser") ) then "/accountMg/accountService/UpdateAdvertiser" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/queryAdvertiser") ) then "/accountMg/accountService/QueryAdvertiser" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/checkAccountPWD") ) then "/accountMg/accountService/CheckAccountPWD" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/queryRole") ) then "/accountMg/accountService/QueryRole" else
+
+
+
+
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/adPlanList") ) then "/AdvertisingPlanMg/advertisingPlanService/QueryAdPlan" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/addAdverPlan") ) then "/AdvertisingPlanMg/advertisingPlanService/AddAdPlan" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/addAdPlanLogList") ) then "/AdvertisingPlanMg/advertisingPlanService/QueryAdPlanLog" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/updateAdPlan") ) then "/AdvertisingPlanMg/advertisingPlanService/UpdateAdPlan" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/listObjAdPlan") ) then "/AdvertisingPlanMg/advertisingPlanService/ListObjAdPlan" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/batchUpdateAdPlan") ) then "/AdvertisingPlanMg/advertisingPlanService/BatchUpdateAdPlan" else
+
+
 
 
 

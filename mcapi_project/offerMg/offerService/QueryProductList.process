@@ -26,18 +26,31 @@
     <pd:activity name="ProductListQuery">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>375</pd:x>
+        <pd:x>378</pd:x>
         <pd:y>186</pd:y>
         <config>
             <processName>/offerMg/offerDao/ProductQuery.process</processName>
         </config>
         <pd:inputBindings>
             <ns1:productObj>
+                <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/ns1:productObj/ns1:productName">
+                    <ns1:productName>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/ns1:productObj/ns1:productName"/>
+                    </ns1:productName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/ns1:productObj/ns1:productAppPackage">
+                    <ns1:productAppPackage>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/ns1:productObj/ns1:productAppPackage"/>
+                    </ns1:productAppPackage>
+                </xsl:if>
                 <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/ns1:productObj/ns1:searchVal">
                     <ns1:searchVal>
                         <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/ns1:productObj/ns1:searchVal"/>
                     </ns1:searchVal>
                 </xsl:if>
+                <ns1:selfProductID>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/ns1:productObj/ns1:selfProductID"/>
+                </ns1:selfProductID>
             </ns1:productObj>
         </pd:inputBindings>
     </pd:activity>
@@ -82,7 +95,7 @@
                                 </ns1:productIconUrl>
                             </xsl:if>
                             <ns1:productSatusColor>
-                                <xsl:value-of select="&quot;red&quot;"/>
+                                <xsl:value-of select="&quot;green&quot;"/>
                             </ns1:productSatusColor>
                         </ns1:productObj>
                     </xsl:for-each>

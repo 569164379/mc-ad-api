@@ -90,6 +90,14 @@
 			<modTime>1497268503096</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>ProductIconFolder</name>
+			<value>productIcon</value>
+			<deploymentSettable>false</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1499298566231</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>RemoteRvDaemon</name>
 			<value></value>
 			<deploymentSettable>true</deploymentSettable>

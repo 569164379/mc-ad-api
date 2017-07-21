@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="adplanlogId" type="xs:string"/>
+	<xs:element name="adplanlogTime" type="xs:string"/>
+	<xs:element name="adplanlogOperator" type="xs:string"/>
+	<xs:element name="adplanId" type="xs:string"/>
+	<xs:element name="adplanlogType" type="xs:string"/>
+	<xs:element name="adplanlogResult" type="xs:string"/>
+	<xs:element name="adplanlogResultValue" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="adplanlogOperatorName" type="xs:string"/>
+	<xs:element name="adplanlogResultName" type="xs:string"/>
+	<xs:element name="adplanName" type="xs:string"/>
+	<xs:element name="adplanlogObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adplanlogId" minOccurs="0"/>
+				<xs:element ref="adplanlogTime" minOccurs="0"/>
+				<xs:element ref="adplanlogOperator" minOccurs="0"/>
+				<xs:element ref="adplanId" minOccurs="0"/>
+				<xs:element ref="adplanlogType" minOccurs="0"/>
+				<xs:element ref="adplanlogResult" minOccurs="0"/>
+				<xs:element ref="adplanlogResultValue" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="adplanlogOperatorName" minOccurs="0"/>
+				<xs:element ref="adplanlogResultName" minOccurs="0"/>
+				<xs:element ref="adplanName" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adplanlogResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adplanlogObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

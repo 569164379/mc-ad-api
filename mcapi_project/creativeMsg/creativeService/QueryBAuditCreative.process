@@ -92,6 +92,11 @@
                                 <xsl:value-of select="$CreativeQuery/pfx3:creativeResults/pfx3:creativeObj[1]/pfx3:productName"/>
                             </pfx3:productName>
                         </xsl:if>
+                        <xsl:if test="$CreativeQuery/pfx3:creativeResults/pfx3:creativeObj[1]/pfx3:uploadAccountName">
+                            <pfx3:uploadAccountName>
+                                <xsl:value-of select="$CreativeQuery/pfx3:creativeResults/pfx3:creativeObj[1]/pfx3:uploadAccountName"/>
+                            </pfx3:uploadAccountName>
+                        </xsl:if>
                         <pfx3:creativeLogResult>
                             <xsl:value-of select="$NotPassReasonQuery/root/notPassReason"/>
                         </pfx3:creativeLogResult>

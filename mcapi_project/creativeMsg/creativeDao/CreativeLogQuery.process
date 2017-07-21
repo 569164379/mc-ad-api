@@ -50,6 +50,16 @@
                     <pfx3:creativeLogRSName>
                         <xsl:value-of select="column[8]/value"/>
                     </pfx3:creativeLogRSName>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:operatorAccountName>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx3:operatorAccountName>
+                    </xsl:if>
+                    <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:creativeName>
+                            <xsl:value-of select="column[10]/value"/>
+                        </pfx3:creativeName>
+                    </xsl:if>
                 </pfx3:creativeLogObj>
             </xsl:for-each>
         </pfx3:creativeLogResults>
@@ -75,7 +85,7 @@
         <pd:inputBindings>
             <jdbcGeneralActivityInput>
                 <statement>
-                    <xsl:value-of select="concat(&quot;SELECT bcl.*,bd.DICT_NAME,bd2.DICT_NAME creativeLogRSName from tab_creative_log bcl INNER JOIN tab_dictionary bd on bcl.CREATIVELOG_TYPE=bd.DICT_ID&quot;,&#xA;&quot; left JOIN tab_dictionary bd2 on bcl.CREATIVELOG_RESULT = bd2.DICT_ID&quot;,&#xA;&quot; where 1=1&quot;, &#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeLogEmail) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeLogEmail) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVELOG_EMAIL like '%&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeLogEmail, &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeLogType) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeLogType) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVELOG_TYPE = '&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeLogType, &quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeId) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeId) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVE_ID like '%&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeId, &quot;%'&quot;) else &quot;&quot;,&#xA;&quot; order by CREATIVELOG_DATE desc&quot;&#xA;)"/>
+                    <xsl:value-of select="concat(&quot;SELECT bcl.*,bd.DICT_NAME,bd2.DICT_NAME creativeLogRSName ,ba.ACCOUNT_NAME accountName, bc.CREATIVE_NAME  from tab_creative_log bcl INNER JOIN tab_dictionary bd on bcl.CREATIVELOG_TYPE=bd.DICT_ID&quot;,&#xA;&quot; left JOIN tab_dictionary bd2 on bcl.CREATIVELOG_RESULT = bd2.DICT_ID&quot;,&#xA;&quot; INNER JOIN tab_creative bc on bc.CREATIVE_ID = bcl.CREATIVE_ID&quot;,&#xA;&quot; left JOIN tab_account ba on bcl.CREATIVELOG_EMAIL = ba.ACCOUNT_ID&quot;,&#xA;&quot; where 1=1&quot;, &#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeLogEmail) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeLogEmail) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVELOG_EMAIL like '%&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeLogEmail, &quot;%'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeLogType) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeLogType) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVELOG_TYPE = '&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeLogType, &quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx3:creativeLogObj/pfx3:creativeId) and tib:trim($Start/pfx3:creativeLogObj/pfx3:creativeId) !=&quot;&quot;) then concat(&quot; and bcl.CREATIVE_ID like '%&quot;, $Start/pfx3:creativeLogObj/pfx3:creativeId, &quot;%'&quot;) else &quot;&quot;,&#xA;&quot; order by CREATIVELOG_DATE desc&quot;&#xA;)"/>
                 </statement>
             </jdbcGeneralActivityInput>
         </pd:inputBindings>
