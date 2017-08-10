@@ -26,8 +26,8 @@
     <pd:activity name="AdPlanQuery">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>481</pd:x>
-        <pd:y>102</pd:y>
+        <pd:x>480</pd:x>
+        <pd:y>104</pd:y>
         <config>
             <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanQuery.process</processName>
         </config>
@@ -67,6 +67,11 @@
                     <pfx2:productSearchVal>
                         <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:productSearchVal"/>
                     </pfx2:productSearchVal>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanNameSearchVal2">
+                    <pfx2:adplanNameSearchVal2>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanNameSearchVal2"/>
+                    </pfx2:adplanNameSearchVal2>
                 </xsl:if>
             </pfx2:adplanObj>
         </pd:inputBindings>
@@ -114,6 +119,11 @@
                                 <pfx3:objStatus>
                                     <xsl:value-of select="pfx2:adplanStatus"/>
                                 </pfx3:objStatus>
+                            </xsl:if>
+                            <xsl:if test="pfx2:productId">
+                                <pfx3:productId>
+                                    <xsl:value-of select="pfx2:productId"/>
+                                </pfx3:productId>
                             </xsl:if>
                         </pfx3:listObj>
                     </xsl:for-each>

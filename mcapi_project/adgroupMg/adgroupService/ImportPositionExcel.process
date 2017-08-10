@@ -1,0 +1,478 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" xmlns:pfx2="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd3" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd3" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/file" xmlns:ns1="http://www.tibco.com/pe/DeployedVarsType" xmlns:ns3="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" schemaLocation="/share_resources/schema_resources/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd3" schemaLocation="/share_resources/schema_resources/CreativePOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd2" schemaLocation="/shareResources/schemas/MaterialPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" schemaLocation="/shareResources/schemas/AdgAdp.xsd"/>
+    <pd:name>adgroupMg/adgroupService/ImportPositionExcel.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:requestParams"/>
+    <pd:startX>38</pd:startX>
+    <pd:startY>90</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1244</pd:endX>
+    <pd:endY>216</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1490097155242</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1500</pd:x>
+        <pd:y>35</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>1518</pd:x>
+        <pd:y>242</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>141</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx3:materialResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx4:requestParams/pfx4:jsonPostData"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>327</pd:x>
+        <pd:y>246</pd:y>
+        <pd:width>337</pd:width>
+        <pd:height>309</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Start/pfx4:requestParams/pfx4:mimeEnvelopeElement/pfx4:mimePart</pd:over>
+            <pd:iterationElementSlot>mimeItem</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>DecodeFileName</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Start/pfx4:requestParams/pfx4:mimeEnvelopeElement/pfx4:mimePart!="text/plain"</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Write File</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>DecodeFileName</pd:from>
+            <pd:to>Write File</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Write File">
+            <pd:type>com.tibco.plugin.file.FileWriteActivity</pd:type>
+            <pd:resourceType>ae.activities.FileWriteActivity</pd:resourceType>
+            <pd:x>569</pd:x>
+            <pd:y>337</pd:y>
+            <config>
+                <encoding>binary</encoding>
+                <compressFile>None</compressFile>
+                <createMissingDirectories>true</createMissingDirectories>
+            </config>
+            <pd:inputBindings>
+                <ns2:WriteActivityInputBinaryClass>
+                    <fileName>
+                        <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath, &quot;/&quot;,$DecodeFileName/javaCodeActivityOutput/outCreativeName)"/>
+                    </fileName>
+                    <binaryContent>
+                        <xsl:value-of select="$mimeItem/pfx4:mimePart/pfx4:creativeBase64"/>
+                    </binaryContent>
+                </ns2:WriteActivityInputBinaryClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>464</pd:x>
+            <pd:y>478</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="DecodeFileName">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:x>457</pd:x>
+            <pd:y>320</pd:y>
+            <config>
+                <fileName>ImportPositionExcelDecodeFileName</fileName>
+                <packageName>adgroupMg.adgroupService.ImportPositionExcel</packageName>
+                <fullsource>package adgroupMg.adgroupService.ImportPositionExcel;
+import java.util.*;
+import java.io.*;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+public class ImportPositionExcelDecodeFileName{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String inCreativeName = "";
+	protected String outCreativeName = "";
+	public String getinCreativeName() {
+		return inCreativeName;
+	}
+	public void setinCreativeName(String val) {
+		inCreativeName = val;
+	}
+	public String getoutCreativeName() {
+		return outCreativeName;
+	}
+	public void setoutCreativeName(String val) {
+		outCreativeName = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ImportPositionExcelDecodeFileName() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String inCreativeName
+	Out : String outCreativeName
+* Available Variables: DO NOT MODIFY *****/
+	outCreativeName = new String(inCreativeName.getBytes("ISO8859-1"),"UTF-8");
+	//String s1 = URLEncoder.encode(inCreativeName,"UTF-8");
+	
+	//outCreativeName =URLDecoder.decode(s1,"UTF-8");
+	//outCreativeName =URLDecoder.decode(inCreativeName,"UTF-8").trim();
+
+}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>inCreativeName</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </inputData>
+                <outputData>
+                    <row>
+                        <fieldName>outCreativeName</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </outputData>
+                <byteCode>
+                    <class>
+                        <name>ImportPositionExcelDecodeFileName</name>
+                        <byteCode>yv66vgAAADQALQkACgAeCQAKAB8KAAsAIAgAIQcAIggAIwoABQAkCAAlCgAFACYHACcHACgBAA5pbkNyZWF0aXZlTmFtZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAD291dENyZWF0aXZlTmFtZQEAEWdldGluQ3JlYXRpdmVOYW1lAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQARc2V0aW5DcmVhdGl2ZU5hbWUBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBABJnZXRvdXRDcmVhdGl2ZU5hbWUBABJzZXRvdXRDcmVhdGl2ZU5hbWUBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwApAQAKU291cmNlRmlsZQEAJkltcG9ydFBvc2l0aW9uRXhjZWxEZWNvZGVGaWxlTmFtZS5qYXZhDAAMAA0MAA4ADQwAFwAYAQAAAQAQamF2YS9sYW5nL1N0cmluZwEACUlTTzg4NTktMQwAKgArAQAFVVRGLTgMABcALAEATmFkZ3JvdXBNZy9hZGdyb3VwU2VydmljZS9JbXBvcnRQb3NpdGlvbkV4Y2VsL0ltcG9ydFBvc2l0aW9uRXhjZWxEZWNvZGVGaWxlTmFtZQEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAIZ2V0Qnl0ZXMBABYoTGphdmEvbGFuZy9TdHJpbmc7KVtCAQAXKFtCTGphdmEvbGFuZy9TdHJpbmc7KVYAIQAKAAsAAAACAAQADAANAAAABAAOAA0AAAAGAAEADwAQAAEAEQAAAB0AAQABAAAABSq0AAGwAAAAAQASAAAABgABAAAACwABABMAFAABABEAAAAiAAIAAgAAAAYqK7UAAbEAAAABABIAAAAKAAIAAAAOAAUADwABABUAEAABABEAAAAdAAEAAQAAAAUqtAACsAAAAAEAEgAAAAYAAQAAABEAAQAWABQAAQARAAAAIgACAAIAAAAGKiu1AAKxAAAAAQASAAAACgACAAAAFAAFABUAAQAXABgAAQARAAAANQACAAEAAAARKrcAAyoSBLUAASoSBLUAArEAAAABABIAAAASAAQAAAAXAAQACAAKAAkAEAAYAAEAGQAYAAIAEQAAADMABQABAAAAFyq7AAVZKrQAARIGtgAHEgi3AAm1AAKxAAAAAQASAAAACgACAAAAHgAWACQAGgAAAAQAAQAbAAEAHAAAAAIAHQ==</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <inCreativeName>
+                        <xsl:value-of select="substring(substring-after($mimeItem/pfx4:mimePart/pfx4:mimeHeaders/pfx4:content-disposition, &quot;filename=&quot;), 2, string-length(substring-after($mimeItem/pfx4:mimePart/pfx4:mimeHeaders/pfx4:content-disposition, &quot;filename=&quot;))-2)"/>
+                    </inCreativeName>
+                </javaCodeActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="validateRepeatSubmit">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>161</pd:x>
+        <pd:y>225</pd:y>
+        <config>
+            <processName>/commonFunction/ValidateRepeatSubmit.process</processName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <tokenInfo>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx3:materialResults/pfx3:tokenInfo"/>
+                </tokenInfo>
+                <validateRepeatSubmit>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/pfx3:materialResults/pfx3:validateRepeat"/>
+                </validateRepeatSubmit>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>841</pd:x>
+        <pd:y>336</pd:y>
+        <config>
+            <fileName>ImportPositionExcelJavaCode</fileName>
+            <packageName>adgroupMg.adgroupService.ImportPositionExcel</packageName>
+            <fullsource>package adgroupMg.adgroupService.ImportPositionExcel;
+import java.util.*;
+import java.io.*;
+import com.tm.mc.util.ExcelUtil;
+public class ImportPositionExcelJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String excelPath = "";
+	protected String jsonStrings = "";
+	public String getexcelPath() {
+		return excelPath;
+	}
+	public void setexcelPath(String val) {
+		excelPath = val;
+	}
+	public String getjsonStrings() {
+		return jsonStrings;
+	}
+	public void setjsonStrings(String val) {
+		jsonStrings = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ImportPositionExcelJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String excelPath
+	Out : String jsonStrings
+* Available Variables: DO NOT MODIFY *****/
+jsonStrings = getAdgAdpJsonStr();
+}
+public String getAdgAdpJsonStr(){
+		
+		
+		StringBuffer jsonStrBuff = new StringBuffer();
+		jsonStrBuff.append("{\"adgAdpResults\": {");
+		
+		
+		
+		List&lt;Map&lt;Integer, String&gt;&gt; contentsList = ExcelUtil.readExcelContent(excelPath);
+		if(contentsList!=null &amp;&amp; contentsList.size()&gt;0){
+			StringBuffer jsonStrBuff2 = new StringBuffer();
+			jsonStrBuff2.append(" \"adgAdpObj\": [");
+			for(int i=0;i&lt;contentsList.size();i++){
+				Map&lt;Integer, String&gt; rowsMap = contentsList.get(i);
+				String row = rowsMap.get(i+1);
+				jsonStrBuff2.append("{");
+				String[] cellValues = row.split("&amp;");
+				if(cellValues!=null &amp;&amp; cellValues.length&gt;0){
+					int j=0;
+					while(j&lt;cellValues.length){
+						if(cellValues[j]!=null &amp;&amp; !"".equals(cellValues[j].trim())){
+							String cellVal = cellValues[j].trim();
+							if(j==0){
+								jsonStrBuff2.append(" \"adpId\": \""+cellVal+"\",");
+							}else if(j==1){
+								jsonStrBuff2.append(" \"fixPrice\": \""+cellVal+"\"");
+							}else{
+								
+							}
+						}
+						j++;
+					}
+				}
+				jsonStrBuff2.append("},");
+				
+			}
+			String jsonStr = jsonStrBuff2.toString().substring(0,jsonStrBuff2.toString().length()-1);
+			jsonStrBuff.append(jsonStr+"]}}");
+		}
+		
+		return jsonStrBuff.toString();
+	}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>excelPath</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>jsonStrings</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>ImportPositionExcelJavaCode</name>
+                    <byteCode>yv66vgAAADQAfwkAJABACQAkAEEKACUAQggAQwoAJABEBwBFCgAGAEIIAEYKAAYARwoASABJCwBKAEsIAEwLAEoATQcATgoATwBQCwAOAFEHAFIIAFMIAFQKABEAVQoAEQBWCgARAFcHAFgKABcAQggAWQoAFwBaCABbCgAXAFwIAF0IAF4IAF8KAAYAXAoAEQBgCgARAGEIAGIHAGMHAGQBAAlleGNlbFBhdGgBABJMamF2YS9sYW5nL1N0cmluZzsBAAtqc29uU3RyaW5ncwEADGdldGV4Y2VsUGF0aAEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADHNldGV4Y2VsUGF0aAEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADmdldGpzb25TdHJpbmdzAQAOc2V0anNvblN0cmluZ3MBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwBlAQAQZ2V0QWRnQWRwSnNvblN0cgEADVN0YWNrTWFwVGFibGUHAGMHAEUHAGYHAE4HAFIHAGcBAApTb3VyY2VGaWxlAQAgSW1wb3J0UG9zaXRpb25FeGNlbEphdmFDb2RlLmphdmEMACYAJwwAKAAnDAAxADIBAAAMADYAKgEAFmphdmEvbGFuZy9TdHJpbmdCdWZmZXIBABN7ImFkZ0FkcFJlc3VsdHMiOiB7DABoAGkHAGoMAGsAbAcAZgwAbQBuAQAPICJhZGdBZHBPYmoiOiBbDABvAHABAA1qYXZhL3V0aWwvTWFwBwBxDAByAHMMAG8AdAEAEGphdmEvbGFuZy9TdHJpbmcBAAF7AQABJgwAdQB2DAB3ACoMAHgAeQEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyAQALICJhZHBJZCI6ICIMAGgAegEAAiIsDAB7ACoBAA4gImZpeFByaWNlIjogIgEAASIBAAJ9LAwAfABuDAB9AH4BAANdfX0BAEhhZGdyb3VwTWcvYWRncm91cFNlcnZpY2UvSW1wb3J0UG9zaXRpb25FeGNlbC9JbXBvcnRQb3NpdGlvbkV4Y2VsSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQATamF2YS9sYW5nL0V4Y2VwdGlvbgEADmphdmEvdXRpbC9MaXN0AQATW0xqYXZhL2xhbmcvU3RyaW5nOwEABmFwcGVuZAEALChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWZmZXI7AQAYY29tL3RtL21jL3V0aWwvRXhjZWxVdGlsAQAQcmVhZEV4Y2VsQ29udGVudAEAJChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvdXRpbC9MaXN0OwEABHNpemUBAAMoKUkBAANnZXQBABUoSSlMamF2YS9sYW5nL09iamVjdDsBABFqYXZhL2xhbmcvSW50ZWdlcgEAB3ZhbHVlT2YBABYoSSlMamF2YS9sYW5nL0ludGVnZXI7AQAmKExqYXZhL2xhbmcvT2JqZWN0OylMamF2YS9sYW5nL09iamVjdDsBAAVzcGxpdAEAJyhMamF2YS9sYW5nL1N0cmluZzspW0xqYXZhL2xhbmcvU3RyaW5nOwEABHRyaW0BAAZlcXVhbHMBABUoTGphdmEvbGFuZy9PYmplY3Q7KVoBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAAh0b1N0cmluZwEABmxlbmd0aAEACXN1YnN0cmluZwEAFihJSSlMamF2YS9sYW5nL1N0cmluZzsAIQAkACUAAAACAAQAJgAnAAAABAAoACcAAAAHAAEAKQAqAAEAKwAAAB0AAQABAAAABSq0AAGwAAAAAQAsAAAABgABAAAACgABAC0ALgABACsAAAAiAAIAAgAAAAYqK7UAAbEAAAABACwAAAAKAAIAAAANAAUADgABAC8AKgABACsAAAAdAAEAAQAAAAUqtAACsAAAAAEALAAAAAYAAQAAABAAAQAwAC4AAQArAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAsAAAACgACAAAAEwAFABQAAQAxADIAAQArAAAANQACAAEAAAARKrcAAyoSBLUAASoSBLUAArEAAAABACwAAAASAAQAAAAWAAQABwAKAAgAEAAXAAEAMwAyAAIAKwAAACUAAgABAAAACSoqtgAFtQACsQAAAAEALAAAAAoAAgAAAB0ACAAeADQAAAAEAAEANQABADYAKgABACsAAAIPAAQACgAAATe7AAZZtwAHTCsSCLYACVcqtAABuAAKTSzGARosuQALAQCeARG7AAZZtwAHTi0SDLYACVcDNgQVBCy5AAsBAKIAyCwVBLkADQIAwAAOOgUZBRUEBGC4AA+5ABACAMAAEToGLRIStgAJVxkGEhO2ABQ6BxkHxgCGGQe+ngCAAzYIFQgZB76iAHUZBxUIMsYAZxIEGQcVCDK2ABW2ABaaAFcZBxUIMrYAFToJFQiaACQtuwAXWbcAGBIZtgAaGQm2ABoSG7YAGrYAHLYACVenACcVCASgACEtuwAXWbcAGBIdtgAaGQm2ABoSHrYAGrYAHLYACVeECAGn/4ktEh+2AAlXhAQBp/8zLbYAIAMttgAgtgAhBGS2ACI6BCu7ABdZtwAYGQS2ABoSI7YAGrYAHLYACVcrtgAgsAAAAAIALAAAAGoAGgAAACIACAAjAA8AJwAXACgAJAApACwAKgAzACsAQQAsAE4ALQBhAC4AaAAvAHEAMAB8ADEAfwAyAIcAMwCfADQAqQA1AK4ANgDPADcA1QA4APMAPQD5AEABAAArAQYAQwEZAEQBMgBHADcAAABWAAf/ADYABQcAOAcAOQcAOgcAOQEAAP8ASAAJBwA4BwA5BwA6BwA5AQcAOwcAPAcAPQEAAPwATwcAPPoAI/oABf8ADAAEBwA4BwA5BwA6BwA5AAD6ACsAAQA+AAAAAgA/</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <excelPath>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath, &quot;/&quot;,$DecodeFileName/javaCodeActivityOutput/outCreativeName)"/>
+                </excelPath>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Remove File">
+        <pd:type>com.tibco.plugin.file.FileRemoveActivity</pd:type>
+        <pd:resourceType>ae.activities.FileRemoveActivity</pd:resourceType>
+        <pd:x>1287</pd:x>
+        <pd:y>348</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <ns2:RemoveActivityInputClass>
+                <fileName>
+                    <xsl:value-of select="concat($_globalVariables/ns1:GlobalVariables/FileUploadPath, &quot;/&quot;,$DecodeFileName/javaCodeActivityOutput/outCreativeName)"/>
+                </fileName>
+            </ns2:RemoveActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-JSON-1">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>937</pd:x>
+        <pd:y>482</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx6:adgAdpResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Java-Code/javaCodeActivityOutput/jsonStrings"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1159</pd:x>
+        <pd:y>483</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="pfx6:adgAdpResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <pfx6:adgAdpResults>
+                    <xsl:copy-of select="$Parse-JSON-1/ns:ActivityOutputClass/pfx6:adgAdpResults/pfx6:adgAdpObj"/>
+                </pfx6:adgAdpResults>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>validateRepeatSubmit</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>validateRepeatSubmit</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Parse-JSON-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Remove File</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>validateRepeatSubmit</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-JSON-1</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>Remove File</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

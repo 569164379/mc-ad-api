@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20"
+	 xmlns:adgadp="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21"
+	 xmlns:adg="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19"/>
+	<xs:element name="adpId" type="xs:string"/>
+	<xs:element name="adpAppId" type="xs:string"/>
+	<xs:element name="adpName" type="xs:string"/>
+	<xs:element name="adpAppName" type="xs:string"/>
+	<xs:element name="adpType" type="xs:string"/>
+	<xs:element name="floorPrice" type="xs:string"/>
+	<xs:element name="adpSize" type="xs:string"/>
+	<xs:element name="dpCreativeLevel" type="xs:string"/>
+	<xs:element name="adpMaterialType" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="adpAppSearchVal" type="xs:string"/>
+	<xs:element name="adpSearchVal" type="xs:string"/>
+	<xs:element name="adpAppSearchVal2" type="xs:string"/>
+	<xs:element name="adpSearchVal2" type="xs:string"/>
+	<xs:element name="adpIds" type="xs:string"/>
+	<xs:element name="adpIdSearchVal" type="xs:string"/>
+	<xs:element name="adpNameSearchVal" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="adpObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adpId" minOccurs="0"/>
+				<xs:element ref="adpAppId" minOccurs="0"/>
+				<xs:element ref="adpName" minOccurs="0"/>
+				<xs:element ref="adpAppName" minOccurs="0"/>
+				<xs:element ref="adpType" minOccurs="0"/>
+				<xs:element ref="floorPrice" minOccurs="0"/>
+				<xs:element ref="adpSize" minOccurs="0"/>
+				<xs:element ref="dpCreativeLevel" minOccurs="0"/>
+				<xs:element ref="adpMaterialType" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="adgadp:fixPrice" minOccurs="0"/>
+				<xs:element ref="adpSearchVal" minOccurs="0"/>
+				<xs:element ref="adpAppSearchVal" minOccurs="0"/>
+				<xs:element ref="adpSearchVal2" minOccurs="0"/>
+				<xs:element ref="adpAppSearchVal2" minOccurs="0"/>
+				<xs:element ref="adg:priceStrategy" minOccurs="0"/>
+				<xs:element ref="adpIds" minOccurs="0"/>
+				<xs:element ref="adpIdSearchVal" minOccurs="0"/>
+				<xs:element ref="adpNameSearchVal" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adpResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adpObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -74,7 +74,7 @@
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
-            <pd:conditionType>always</pd:conditionType>
+            <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
             <pd:from>AdPlanLogAdd-4</pd:from>
@@ -112,6 +112,18 @@
                     <pfx2:adplanId>
                         <xsl:value-of select="$apItem/pfx2:adplanObj/pfx2:adplanId"/>
                     </pfx2:adplanId>
+                    <xsl:choose>
+                        <xsl:when test="tib:compare-date($AdPlanQuery/pfx2:adplanResutls/pfx2:adplanObj[1]/pfx2:adplanStartDate, tib:format-date(&quot;yyyy-MM-dd&quot;, current-date()))">
+                            <pfx2:adplanStartDate>
+                                <xsl:value-of select="tib:format-date(&quot;yyyy-MM-dd&quot;, current-date())"/>
+                            </pfx2:adplanStartDate>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:adplanStartDate>
+                                <xsl:value-of select="&quot;&quot;"/>
+                            </pfx2:adplanStartDate>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <pfx2:adplanStatus>
                         <xsl:value-of select="$apItem/pfx2:adplanObj/pfx2:adplanStatus"/>
                     </pfx2:adplanStatus>

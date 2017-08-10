@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" schemaLocation="/shareResources/schemas/Strategy.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20" schemaLocation="/shareResources/schemas/AdPosition.xsd"/>
+    <pd:name>adgroupMg/adgroupDao/AdPoistionQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx5:adpObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <pfx5:adpResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx5:adpObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adpId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx5:adpId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adpAppId>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx5:adpAppId>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adpName>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx5:adpName>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adpAppName>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx5:adpAppName>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adpType>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx5:adpType>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:floorPrice>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx5:floorPrice>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adpSize>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx5:adpSize>
+                    </xsl:if>
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:dpCreativeLevel>
+                            <xsl:value-of select="column[8]/value"/>
+                        </pfx5:dpCreativeLevel>
+                    </xsl:if>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adpMaterialType>
+                            <xsl:value-of select="column[9]/value"/>
+                        </pfx5:adpMaterialType>
+                    </xsl:if>
+                    <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:createTime>
+                            <xsl:value-of select="column[10]/value"/>
+                        </pfx5:createTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:updateTime>
+                            <xsl:value-of select="column[11]/value"/>
+                        </pfx5:updateTime>
+                    </xsl:if>
+                </pfx5:adpObj>
+            </xsl:for-each>
+        </pfx5:adpResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx5:adpResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>291</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT adp.*&quot;,&#xA;if (exists($Start/pfx5:adpObj/ns1:priceStrategy) and &quot;fixCPM&quot;=tib:trim($Start/pfx5:adpObj/ns1:priceStrategy)) then  &quot;  ,baa.FIX_PRICE &quot; else &quot;&quot;,&#xA;&quot; from tab_ad_position adp&quot;,&#xA;if (exists($Start/pfx5:adpObj/ns1:priceStrategy) and &quot;fixCPM&quot;=tib:trim($Start/pfx5:adpObj/ns1:priceStrategy)) then  &quot;  INNER JOIN tab_adg_adp baa on adp.ADP_ID= baa.ADP_ID &quot; else &quot;&quot;,&#xA;&quot; where 1=1&quot;,&#xA;if (exists($Start/pfx5:adpObj/pfx5:adpAppSearchVal) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:adpAppSearchVal)) then concat( &quot; and (adp.ADP_APP_ID like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpAppSearchVal),&quot;%'  or adp.ADP_APP_NAME like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpAppSearchVal),&quot;%' )&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:adpObj/pfx5:adpSearchVal) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:adpSearchVal)) then concat( &quot; and (adp.ADP_NAME like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpSearchVal),&quot;%'  or adp.ADP_ID like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpSearchVal),&quot;%' )&quot;) else &quot;&quot;,&#xA;&#xA;if (exists($Start/pfx5:adpObj/pfx5:adpIdSearchVal) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:adpIdSearchVal)) then concat( &quot; and adp.ADP_ID like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpIdSearchVal),&quot;%'  &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:adpObj/pfx5:adpNameSearchVal) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:adpNameSearchVal)) then concat( &quot; and adp.ADP_NAME like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpNameSearchVal),&quot;%' &quot;) else &quot;&quot;,&#xA;&#xA;&#xA;if (exists($Start/pfx5:adpObj/pfx5:adpAppSearchVal2) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:adpAppSearchVal2)) then concat( &quot; and (adp.ADP_APP_ID like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpAppSearchVal2),&quot;%'  or adp.ADP_APP_NAME like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpAppSearchVal2),&quot;%' )&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:adpObj/pfx5:adpSearchVal2) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:adpSearchVal2)) then concat( &quot; and (adp.ADP_NAME like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpSearchVal2),&quot;%'  or adp.ADP_ID like '%&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpSearchVal2),&quot;%' )&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:adpObj/pfx5:dpCreativeLevel) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:dpCreativeLevel)) then concat( &quot; and adp.adp_creative_level ='&quot;, tib:trim($Start/pfx5:adpObj/pfx5:dpCreativeLevel),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:adpObj/pfx5:adpIds) and &quot;&quot;!=tib:trim($Start/pfx5:adpObj/pfx5:adpIds)) then concat( &quot; and ADP_ID in (&quot;, tib:trim($Start/pfx5:adpObj/pfx5:adpIds),&quot;)&quot;) else &quot;&quot;,&#xA;&quot; ORDER BY adp.ADP_ID desc&quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

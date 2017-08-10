@@ -1,0 +1,868 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:pfx7="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22" xmlns:pfx8="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pfx9="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:pfx4="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:ns4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd23" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx10="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" schemaLocation="/shareResources/schemas/ProductPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" schemaLocation="/shareResources/schemas/Strategy.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22" schemaLocation="/shareResources/schemas/ExtraTrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" schemaLocation="/shareResources/schemas/AdgAdp.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" schemaLocation="/shareResources/schemas/AdGroup.xsd"/>
+    <pd:name>adgroupMg/adgroupService/UpdateAdgroup.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>30</pd:startX>
+    <pd:startY>36</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="'{&quot;responseStatus&quot;:&quot;success&quot;}'"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1734</pd:endX>
+    <pd:endY>319</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <x>
+            <xsd:element name="root" type="xsd:int"/>
+        </x>
+        <extralinkFlag/>
+        <positionFlag>
+            <xsd:element name="root" type="xsd:string"/>
+        </positionFlag>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>151</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx9:adgroupObjVO"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AdGroupUpdate">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>53</pd:x>
+        <pd:y>356</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupUpdate.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx9:adgroupObj>
+                <pfx9:adgroupId>
+                    <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                </pfx9:adgroupId>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupName">
+                    <pfx9:adgroupName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupName"/>
+                    </pfx9:adgroupName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adplanId">
+                    <pfx9:adplanId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adplanId"/>
+                    </pfx9:adplanId>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:creativeId">
+                    <pfx9:creativeId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:creativeId"/>
+                    </pfx9:creativeId>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:tracklinkId">
+                    <pfx9:tracklinkId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:tracklinkId"/>
+                    </pfx9:tracklinkId>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:strategyId">
+                    <pfx9:strategyId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:strategyId"/>
+                    </pfx9:strategyId>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:dayBudget">
+                    <pfx9:dayBudget>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:dayBudget"/>
+                    </pfx9:dayBudget>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:budgetStrategyType">
+                    <pfx9:budgetStrategyType>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:budgetStrategyType"/>
+                    </pfx9:budgetStrategyType>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceStrategy">
+                    <pfx9:priceStrategy>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceStrategy"/>
+                    </pfx9:priceStrategy>
+                </xsl:if>
+                <xsl:choose>
+                    <xsl:when test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceOverflow) and &quot;&quot;!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceOverflow)">
+                        <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceOverflow">
+                            <pfx9:priceOverflow>
+                                <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceOverflow"/>
+                            </pfx9:priceOverflow>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx9:priceOverflow>
+                            <xsl:value-of select="&quot;null&quot;"/>
+                        </pfx9:priceOverflow>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceMaxCpm)">
+                        <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceMaxCpm">
+                            <pfx9:priceMaxCpm>
+                                <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceMaxCpm"/>
+                            </pfx9:priceMaxCpm>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx9:priceMaxCpm>
+                            <xsl:value-of select="&quot;null&quot;"/>
+                        </pfx9:priceMaxCpm>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <xsl:choose>
+                    <xsl:when test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceTargetCpc)">
+                        <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceTargetCpc">
+                            <pfx9:priceTargetCpc>
+                                <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:priceTargetCpc"/>
+                            </pfx9:priceTargetCpc>
+                        </xsl:if>
+                    </xsl:when>
+                    <xsl:otherwise>
+                        <pfx9:priceTargetCpc>
+                            <xsl:value-of select="&quot;null&quot;"/>
+                        </pfx9:priceTargetCpc>
+                    </xsl:otherwise>
+                </xsl:choose>
+                <pfx9:adgroupStatus>
+                    <xsl:value-of select="'active'"/>
+                </pfx9:adgroupStatus>
+                <pfx9:createTime>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </pfx9:createTime>
+                <pfx9:mcVersion>
+                    <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                </pfx9:mcVersion>
+            </pfx9:adgroupObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="AdGroupLogAdd">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1439</pd:x>
+        <pd:y>170</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupLogAdd.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:adgroupLogObj>
+                <ns3:adgroupId>
+                    <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                </ns3:adgroupId>
+                <ns3:createTime>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </ns3:createTime>
+                <ns3:adgroupOperator>
+                    <xsl:value-of select="1"/>
+                </ns3:adgroupOperator>
+                <ns3:adgroupResultId>
+                    <xsl:value-of select="59"/>
+                </ns3:adgroupResultId>
+                <ns3:mcVersion>
+                    <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                </ns3:mcVersion>
+            </ns3:adgroupLogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>731</pd:x>
+        <pd:y>260</pd:y>
+        <pd:width>181</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx7:extracklinkResults/pfx7:extracklinkObj</pd:over>
+            <pd:iterationElementSlot>elinkItem</pd:iterationElementSlot>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>ExtrackLinkUpdate</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>ExtrackLinkUpdate</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="ExtrackLinkUpdate">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>816</pd:x>
+            <pd:y>331</pd:y>
+            <config>
+                <processName>/adgroupMg/adgroupDao/ExtrackLinkUpdate.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx7:extracklinkObj>
+                    <xsl:if test="$elinkItem/pfx7:extracklinkObj/pfx7:extracklinkId">
+                        <pfx7:extracklinkId>
+                            <xsl:value-of select="$elinkItem/pfx7:extracklinkObj/pfx7:extracklinkId"/>
+                        </pfx7:extracklinkId>
+                    </xsl:if>
+                    <pfx7:adgroupId>
+                        <xsl:value-of select="$elinkItem/pfx7:extracklinkObj/pfx7:adgroupId"/>
+                    </pfx7:adgroupId>
+                    <pfx7:updateTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                    </pfx7:updateTime>
+                </pfx7:extracklinkObj>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:group name="Group (1)">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>963</pd:x>
+        <pd:y>15</pd:y>
+        <pd:width>155</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx8:adgAdpResults/pfx8:adgAdpObj</pd:over>
+            <pd:iterationElementSlot>adgpItem2</pd:iterationElementSlot>
+            <pd:indexSlot>j</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>AdgAdpAdd</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdgAdpAdd</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="AdgAdpAdd">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>1034</pd:x>
+            <pd:y>79</pd:y>
+            <config>
+                <processName>/adgroupMg/adgroupDao/AdgAdpAdd.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx8:adgAdpObj>
+                    <pfx8:adgId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </pfx8:adgId>
+                    <xsl:if test="$adgpItem2/pfx8:adgAdpObj/pfx8:adpId">
+                        <pfx8:adpId>
+                            <xsl:value-of select="$adgpItem2/pfx8:adgAdpObj/pfx8:adpId"/>
+                        </pfx8:adpId>
+                    </xsl:if>
+                    <xsl:choose>
+                        <xsl:when test="exists($adgpItem2/pfx8:adgAdpObj/pfx8:fixPrice) and &quot;&quot;!=tib:trim($adgpItem2/pfx8:adgAdpObj/pfx8:fixPrice)">
+                            <pfx8:fixPrice>
+                                <xsl:value-of select="$adgpItem2/pfx8:adgAdpObj/pfx8:fixPrice"/>
+                            </pfx8:fixPrice>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx8:fixPrice>
+                                <xsl:value-of select="&quot;null&quot;"/>
+                            </pfx8:fixPrice>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                    <pfx8:adgAdpStatus>
+                        <xsl:value-of select="0"/>
+                    </pfx8:adgAdpStatus>
+                    <pfx8:createTime>
+                        <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                    </pfx8:createTime>
+                    <pfx8:mcVersion>
+                        <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                    </pfx8:mcVersion>
+                </pfx8:adgAdpObj>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="AdgAdpQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>680</pd:x>
+        <pd:y>573</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdgAdpQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx8:adgAdpObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <pfx8:adgId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </pfx8:adgId>
+                </xsl:if>
+                <pfx8:adgAdpStatus>
+                    <xsl:value-of select="0"/>
+                </pfx8:adgAdpStatus>
+            </pfx8:adgAdpObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group (2)">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1141</pd:x>
+        <pd:y>377</pd:y>
+        <pd:width>157</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$AdgAdpQuery/pfx8:adgAdpResults/pfx8:adgAdpObj</pd:over>
+            <pd:iterationElementSlot>adgpItem</pd:iterationElementSlot>
+            <pd:indexSlot>k</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>AdgAdpUpdate</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdgAdpUpdate</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="AdgAdpUpdate">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>1203</pd:x>
+            <pd:y>441</pd:y>
+            <config>
+                <processName>/adgroupMg/adgroupDao/AdgAdpUpdate.process</processName>
+            </config>
+            <pd:inputBindings>
+                <pfx8:adgAdpObj>
+                    <xsl:if test="$adgpItem/pfx8:adgAdpObj/pfx8:adgAdpId">
+                        <pfx8:adgAdpId>
+                            <xsl:value-of select="$adgpItem/pfx8:adgAdpObj/pfx8:adgAdpId"/>
+                        </pfx8:adgAdpId>
+                    </xsl:if>
+                    <pfx8:adgAdpStatus>
+                        <xsl:value-of select="1"/>
+                    </pfx8:adgAdpStatus>
+                </pfx8:adgAdpObj>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="AdGroupQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>65</pd:x>
+        <pd:y>193</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx9:adgroupObj/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateCreativeIdLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>465</pd:x>
+        <pd:y>120</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupLogAdd.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:adgroupLogObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <ns3:adgroupId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </ns3:adgroupId>
+                </xsl:if>
+                <ns3:createTime>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </ns3:createTime>
+                <ns3:adgroupOperator>
+                    <xsl:value-of select="1"/>
+                </ns3:adgroupOperator>
+                <ns3:adgroupResultId>
+                    <xsl:value-of select="54"/>
+                </ns3:adgroupResultId>
+                <ns3:adgroupResultValue>
+                    <xsl:value-of select="concat($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:creativeId, &quot;-&quot;,$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:creativeName)"/>
+                </ns3:adgroupResultValue>
+                <ns3:mcVersion>
+                    <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                </ns3:mcVersion>
+            </ns3:adgroupLogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateTrakLinkLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>468</pd:x>
+        <pd:y>198</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupLogAdd.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:adgroupLogObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <ns3:adgroupId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </ns3:adgroupId>
+                </xsl:if>
+                <ns3:createTime>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </ns3:createTime>
+                <ns3:adgroupOperator>
+                    <xsl:value-of select="1"/>
+                </ns3:adgroupOperator>
+                <ns3:adgroupResultId>
+                    <xsl:value-of select="55"/>
+                </ns3:adgroupResultId>
+                <ns3:mcVersion>
+                    <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                </ns3:mcVersion>
+            </ns3:adgroupLogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateStrategyLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>480</pd:x>
+        <pd:y>270</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupLogAdd.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:adgroupLogObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <ns3:adgroupId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </ns3:adgroupId>
+                </xsl:if>
+                <ns3:createTime>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </ns3:createTime>
+                <ns3:adgroupOperator>
+                    <xsl:value-of select="1"/>
+                </ns3:adgroupOperator>
+                <ns3:adgroupResultId>
+                    <xsl:value-of select="56"/>
+                </ns3:adgroupResultId>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:strategyId">
+                    <ns3:adgroupResultValue>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:strategyId"/>
+                    </ns3:adgroupResultValue>
+                </xsl:if>
+                <ns3:mcVersion>
+                    <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                </ns3:mcVersion>
+            </ns3:adgroupLogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateBudgetLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>491</pd:x>
+        <pd:y>395</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupLogAdd.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:adgroupLogObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <ns3:adgroupId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </ns3:adgroupId>
+                </xsl:if>
+                <ns3:createTime>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </ns3:createTime>
+                <ns3:adgroupOperator>
+                    <xsl:value-of select="1"/>
+                </ns3:adgroupOperator>
+                <ns3:adgroupResultId>
+                    <xsl:value-of select="57"/>
+                </ns3:adgroupResultId>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:dayBudget">
+                    <ns3:adgroupResultValue>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:dayBudget"/>
+                    </ns3:adgroupResultValue>
+                </xsl:if>
+                <ns3:mcVersion>
+                    <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                </ns3:mcVersion>
+            </ns3:adgroupLogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="UpdateNameLog">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>473</pd:x>
+        <pd:y>35</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdGroupLogAdd.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns3:adgroupLogObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <ns3:adgroupId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </ns3:adgroupId>
+                </xsl:if>
+                <ns3:createTime>
+                    <xsl:value-of select="tib:format-dateTime(&quot;yyyy-MM-dd HH:mm:ss&quot;, current-dateTime())"/>
+                </ns3:createTime>
+                <ns3:adgroupOperator>
+                    <xsl:value-of select="1"/>
+                </ns3:adgroupOperator>
+                <ns3:adgroupResultId>
+                    <xsl:value-of select="53"/>
+                </ns3:adgroupResultId>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupName">
+                    <ns3:adgroupResultValue>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupName"/>
+                    </ns3:adgroupResultValue>
+                </xsl:if>
+                <ns3:mcVersion>
+                    <xsl:value-of select="&quot;mc_v1.0&quot;"/>
+                </ns3:mcVersion>
+            </ns3:adgroupLogObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign-1">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>802</pd:x>
+        <pd:y>496</pd:y>
+        <config>
+            <variableName>x</variableName>
+        </config>
+        <pd:inputBindings>
+            <root>
+                <xsl:value-of select="0"/>
+            </root>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="QueryAdpIds">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>797</pd:x>
+        <pd:y>606</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/QueryAdpIds.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx8:adgAdpObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <pfx8:adgId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </pfx8:adgId>
+                </xsl:if>
+                <pfx8:adgAdpStatus>
+                    <xsl:value-of select="0"/>
+                </pfx8:adgAdpStatus>
+            </pfx8:adgAdpObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group (3)">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>1024</pd:x>
+        <pd:y>574</pd:y>
+        <pd:width>400</pd:width>
+        <pd:height>295</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx8:adgAdpResults/pfx8:adgAdpObj</pd:over>
+            <pd:iterationElementSlot>adgpSmItem</pd:iterationElementSlot>
+            <pd:indexSlot>e</pd:indexSlot>
+            <pd:activityOutputName/>
+            <pd:accumulateOutput>false</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Null</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Assign</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null</pd:from>
+            <pd:to>Assign</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>contains($QueryAdpIds/adpIds, tib:trim($adgpSmItem/pfx8:adgAdpObj/pfx8:adpId))</pd:xpath>
+        </pd:transition>
+        <pd:activity name="Assign">
+            <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+            <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+            <pd:x>1325</pd:x>
+            <pd:y>657</pd:y>
+            <config>
+                <variableName>x</variableName>
+            </config>
+            <pd:inputBindings>
+                <root>
+                    <xsl:value-of select="$x/root+1"/>
+                </root>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Null">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>1154</pd:x>
+            <pd:y>746</pd:y>
+            <config/>
+            <pd:inputBindings/>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>AdGroupUpdate</pd:from>
+        <pd:to>UpdateCreativeIdLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($AdGroupQuery/pfx9:adgroupResults/pfx9:adgroupObj[1]/pfx9:creativeId)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:creativeId)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (1)</pd:from>
+        <pd:to>AdGroupLogAdd</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>AdgAdpQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdGroupLogAdd</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (2)</pd:from>
+        <pd:to>Group (1)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AdGroupQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdGroupQuery</pd:from>
+        <pd:to>AdGroupUpdate</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateCreativeIdLog</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdGroupUpdate</pd:from>
+        <pd:to>UpdateNameLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($AdGroupQuery/pfx9:adgroupResults/pfx9:adgroupObj[1]/pfx9:adgroupName)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupName)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdGroupUpdate</pd:from>
+        <pd:to>UpdateTrakLinkLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($AdGroupQuery/pfx9:adgroupResults/pfx9:adgroupObj[1]/pfx9:tracklinkId)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:tracklinkId)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdGroupUpdate</pd:from>
+        <pd:to>UpdateStrategyLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($AdGroupQuery/pfx9:adgroupResults/pfx9:adgroupObj[1]/pfx9:strategyId)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:strategyId)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdGroupUpdate</pd:from>
+        <pd:to>UpdateBudgetLog</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>tib:trim($AdGroupQuery/pfx9:adgroupResults/pfx9:adgroupObj[1]/pfx9:dayBudget)!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:dayBudget)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateNameLog</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateTrakLinkLog</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateStrategyLog</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>UpdateBudgetLog</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdGroupUpdate</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:xpathDescription>NoMatch</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdgAdpQuery</pd:from>
+        <pd:to>QueryAdpIds</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>QueryAdpIds</pd:from>
+        <pd:to>Assign-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign-1</pd:from>
+        <pd:to>Group (3)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (3)</pd:from>
+        <pd:to>Group (2)</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group (3)</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>count($AdgAdpQuery/pfx8:adgAdpResults/pfx8:adgAdpObj)=$x/root and ""!=tib:trim($QueryAdpIds/adpIds)</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" schemaLocation="/shareResources/schemas/Strategy.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" schemaLocation="/shareResources/schemas/AdGroup.xsd"/>
+    <pd:name>adgroupMg/adgroupDao/AdGroupAdd.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:adgroupObj"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <param>
+                <xsl:value-of select="$SQL-Direct/jdbcGeneralActivityOutput/noOfUpdates[1]"/>
+            </param>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="param" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>683</pd:endX>
+    <pd:endY>76</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499761285567</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>391</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;insert into tab_adgroup VALUES(&quot;,$Start/pfx4:adgroupObj/pfx4:adgroupId,&quot;,'&quot;, $Start/pfx4:adgroupObj/pfx4:adgroupName, &quot;',&quot;, $Start/pfx4:adgroupObj/pfx4:adplanId, &quot;,&quot;, $Start/pfx4:adgroupObj/pfx4:creativeId, &quot;,&quot;, $Start/pfx4:adgroupObj/pfx4:tracklinkId, &quot;,&quot;, $Start/pfx4:adgroupObj/pfx4:strategyId, &quot;,&quot;, $Start/pfx4:adgroupObj/pfx4:dayBudget, &quot;,'&quot;, $Start/pfx4:adgroupObj/pfx4:budgetStrategyType, &quot;','&quot;, $Start/pfx4:adgroupObj/pfx4:priceStrategy, &quot;',&quot;, $Start/pfx4:adgroupObj/pfx4:priceOverflow, &quot;,&quot;, $Start/pfx4:adgroupObj/pfx4:priceMaxCpm, &quot;,&quot;, $Start/pfx4:adgroupObj/pfx4:priceTargetCpc, &quot;,'&quot;, $Start/pfx4:adgroupObj/pfx4:adgroupStatus, &quot;','&quot;, $Start/pfx4:adgroupObj/pfx4:createTime, &quot;','&quot;, $Start/pfx4:adgroupObj/pfx4:updateTime, &quot;','&quot;, $Start/pfx4:adgroupObj/pfx4:mcVersion, &quot;')&quot;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>853</pd:x>
+        <pd:y>95</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>866</pd:x>
+        <pd:y>271</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd23"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd23"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="adgroupLogId" type="xs:string"/>
+	<xs:element name="adgroupId" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="adgroupOperator" type="xs:string"/>
+	<xs:element name="adgroupResultId" type="xs:string"/>
+	<xs:element name="adgroupResultValue" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="adgroupOperatorName" type="xs:string"/>
+	<xs:element name="adgroupName" type="xs:string"/>
+	<xs:element name="adgroupResultName" type="xs:string"/>
+	<xs:element name="adgroupOperaType" type="xs:string"/>
+	<xs:element name="operatorSearchVal" type="xs:string"/>
+	<xs:element name="adgroupSearchVal" type="xs:string"/>
+	<xs:element name="adgroupLogObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adgroupLogId" minOccurs="0"/>
+				<xs:element ref="adgroupId" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="adgroupOperator" minOccurs="0"/>
+				<xs:element ref="adgroupResultId" minOccurs="0"/>
+				<xs:element ref="adgroupResultValue" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="adgroupOperatorName" minOccurs="0"/>
+				<xs:element ref="adgroupName" minOccurs="0"/>
+				<xs:element ref="adgroupResultName" minOccurs="0"/>
+				<xs:element ref="adgroupOperaType" minOccurs="0"/>
+				<xs:element ref="operatorSearchVal" minOccurs="0"/>
+				<xs:element ref="adgroupSearchVal" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adgroupLogResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adgroupLogObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

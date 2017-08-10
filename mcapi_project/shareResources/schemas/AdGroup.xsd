@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19"
+	 xmlns:adplan="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10"
+	 xmlns:creative="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"
+	 xmlns:tralink="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17"
+	 xmlns:stgy="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18"
+	 xmlns:etralink="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22"
+	 xmlns:adp="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20"
+	 xmlns:adgp="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21"/>
+	<xs:element name="adgroupId" type="xs:string"/>
+	<xs:element name="adgroupName" type="xs:string"/>
+	<xs:element name="adplanId" type="xs:string"/>
+	<xs:element name="creativeId" type="xs:string"/>
+	<xs:element name="tracklinkId" type="xs:string"/>
+	<xs:element name="strategyId" type="xs:string"/>
+	<xs:element name="dayBudget" type="xs:string"/>
+	<xs:element name="budgetStrategyType" type="xs:string"/>
+	<xs:element name="priceStrategy" type="xs:string"/>
+	<xs:element name="priceOverflow" type="xs:string"/>
+	<xs:element name="priceMaxCpm" type="xs:string"/>
+	<xs:element name="priceTargetCpc" type="xs:string"/>
+	<xs:element name="adgroupStatus" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="productId" type="xs:string"/>
+	<xs:element name="adgroupIdSearchVal" type="xs:string"/>
+	<xs:element name="adgroupNameSearchVal" type="xs:string"/>
+	<xs:element name="adgroupNameSearchVal2" type="xs:string"/>
+	<xs:element name="adplanSearchVal" type="xs:string"/>
+	<xs:element name="adgroupSelfId" type="xs:string"/>
+	<xs:element name="creativeName" type="xs:string"/>
+	<xs:element name="creativeLevel" type="xs:string"/>
+	<xs:element name="tracklinkUrl" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="adgroupObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adgroupId" minOccurs="0"/>
+				<xs:element ref="adgroupName" minOccurs="0"/>
+				<xs:element ref="adplanId" minOccurs="0"/>
+				<xs:element ref="creativeId" minOccurs="0"/>
+				<xs:element ref="tracklinkId" minOccurs="0"/>
+				<xs:element ref="strategyId" minOccurs="0"/>
+				<xs:element ref="dayBudget" minOccurs="0"/>
+				<xs:element ref="budgetStrategyType" minOccurs="0"/>
+				<xs:element ref="priceStrategy" minOccurs="0"/>
+				<xs:element ref="priceOverflow" minOccurs="0"/>
+				<xs:element ref="priceMaxCpm" minOccurs="0"/>
+				<xs:element ref="priceTargetCpc" minOccurs="0"/>
+				<xs:element ref="adgroupStatus" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="adplan:adplanName" minOccurs="0"/>
+				<xs:element ref="creative:creativeName" minOccurs="0"/>
+				<xs:element ref="tralink:tracklinkName" minOccurs="0"/>
+				<xs:element ref="productId" minOccurs="0"/>
+				<xs:element ref="creativeLevel" minOccurs="0"/>
+				<xs:element ref="adgroupSelfId" minOccurs="0"/>
+				<xs:element ref="creativeName" minOccurs="0"/>
+				<xs:element ref="tracklinkUrl" minOccurs="0"/>
+				<xs:element ref="adgroupIdSearchVal" minOccurs="0"/>
+				<xs:element ref="adgroupNameSearchVal" minOccurs="0"/>
+				<xs:element ref="adgroupNameSearchVal2" minOccurs="0"/>
+				<xs:element ref="adplanSearchVal" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adgroupObjVO">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="etralink:extracklinkResults" minOccurs="0"/>
+				<xs:element ref="adgroupObj"/>
+				<xs:element ref="adgp:adgAdpResults"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adgroupResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adgroupObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

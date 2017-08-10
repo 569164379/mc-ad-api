@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <pd:name>trackLinkMg/trackLinkDao/TrackLinkUpdate.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:trackLinkObj"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <root>
+            <param>
+                <xsl:value-of select="$SQL-Direct/jdbcGeneralActivityOutput/noOfUpdates[1]"/>
+            </param>
+        </root>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="root">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="param" type="xsd:int"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>683</pd:endX>
+    <pd:endY>76</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499761285567</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>391</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;update tab_track_link set MC_VERSION=MC_VERSION&quot;, &#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:productId) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:productId) then concat(&quot;, PRODUCT_ID=&quot;, $Start/pfx2:trackLinkObj/pfx2:productId) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:advertiserId) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:advertiserId) then concat(&quot;, ADVERTISER_ID=&quot;, $Start/pfx2:trackLinkObj/pfx2:advertiserId) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:tracklinkName) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:tracklinkName) then concat(&quot;, TRACKLINK_NAME='&quot;, tib:trim($Start/pfx2:trackLinkObj/pfx2:tracklinkName),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:mode) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:mode) then concat(&quot;, MODE=&quot;, tib:trim($Start/pfx2:trackLinkObj/pfx2:mode)) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:impLink) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:impLink) then concat(&quot;, IMP_LINK='&quot;, tib:trim($Start/pfx2:trackLinkObj/pfx2:impLink),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:clickLink) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:clickLink) then concat(&quot;, CLICK_LINK='&quot;, tib:trim($Start/pfx2:trackLinkObj/pfx2:clickLink),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:impSynType) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:impSynType) then concat(&quot;, IMP_SYN_TYPE='&quot;, tib:trim($Start/pfx2:trackLinkObj/pfx2:impSynType),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:clickSynType) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:clickSynType) then concat(&quot;,CLICK_SYN_TYPE='&quot;, tib:trim($Start/pfx2:trackLinkObj/pfx2:clickSynType),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx2:trackLinkObj/pfx2:updateTime) and &quot;&quot;!=$Start/pfx2:trackLinkObj/pfx2:updateTime) then concat(&quot;,UPDATE_TIME='&quot;, tib:trim($Start/pfx2:trackLinkObj/pfx2:updateTime),&quot;'&quot;) else &quot;&quot;,&#xA;&quot; where TRACKLINK_ID=&quot;,$Start/pfx2:trackLinkObj/pfx2:trackLinkId)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>853</pd:x>
+        <pd:y>95</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>866</pd:x>
+        <pd:y>271</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

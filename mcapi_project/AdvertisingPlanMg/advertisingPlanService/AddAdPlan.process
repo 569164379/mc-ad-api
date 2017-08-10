@@ -138,9 +138,18 @@
                             <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanTotalBudget"/>
                         </pfx2:adplanTotalBudget>
                     </xsl:if>
-                    <pfx2:adplanStatus>
-                        <xsl:value-of select="'active'"/>
-                    </pfx2:adplanStatus>
+                    <xsl:choose>
+                        <xsl:when test="compare(tib:format-date(&quot;yyyy-MM-dd&quot;, $Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanStartDate) , tib:format-date(&quot;yyyy-MM-dd&quot;,current-date()))">
+                            <pfx2:adplanStatus>
+                                <xsl:value-of select="&quot;pause&quot;"/>
+                            </pfx2:adplanStatus>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx2:adplanStatus>
+                                <xsl:value-of select="&quot;active&quot;"/>
+                            </pfx2:adplanStatus>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanDcp">
                         <pfx2:adplanDcp>
                             <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanDcp"/>

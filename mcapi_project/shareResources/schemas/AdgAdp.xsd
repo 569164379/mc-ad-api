@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21"
+	 xmlns:adg="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19"
+	 xmlns:adp="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20"/>
+	<xs:element name="adgAdpId" type="xs:string"/>
+	<xs:element name="adgId" type="xs:string"/>
+	<xs:element name="adpId" type="xs:string"/>
+	<xs:element name="fixPrice" type="xs:string"/>
+	<xs:element name="adgAdpStatus" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="adpIds" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="adgAdpObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adgAdpId" minOccurs="0"/>
+				<xs:element ref="adgId" minOccurs="0"/>
+				<xs:element ref="adpId" minOccurs="0"/>
+				<xs:element ref="fixPrice" minOccurs="0"/>
+				<xs:element ref="adgAdpStatus" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="adg:adgroupName" minOccurs="0"/>
+				<xs:element ref="adp:adpName" minOccurs="0"/>
+				<xs:element ref="adp:adpAppId" minOccurs="0"/>
+				<xs:element ref="adp:adpAppName" minOccurs="0"/>
+				<xs:element ref="adp:adpSearchVal" minOccurs="0"/>
+				<xs:element ref="adp:adpAppSearchVal" minOccurs="0"/>
+				<xs:element ref="adpIds" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="adgAdpResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="adgAdpObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

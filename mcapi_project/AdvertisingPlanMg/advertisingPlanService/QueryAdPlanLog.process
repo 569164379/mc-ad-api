@@ -26,8 +26,8 @@
     <pd:activity name="AdPlanLogQuery">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>400</pd:x>
-        <pd:y>85</pd:y>
+        <pd:x>397</pd:x>
+        <pd:y>89</pd:y>
         <config>
             <processName>/AdvertisingPlanMg/advertisingPlanDao/AdPlanLogQuery.process</processName>
         </config>
@@ -93,6 +93,11 @@
                                 <pfx3:adplanlogTime>
                                     <xsl:value-of select="pfx3:adplanlogTime"/>
                                 </pfx3:adplanlogTime>
+                            </xsl:if>
+                            <xsl:if test="pfx3:adplanlogOperator">
+                                <pfx3:adplanlogOperator>
+                                    <xsl:value-of select="pfx3:adplanlogOperator"/>
+                                </pfx3:adplanlogOperator>
                             </xsl:if>
                             <xsl:if test="pfx3:adplanId">
                                 <pfx3:adplanId>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.w3.org/XML/1998/namespace"/>
+	<xs:element name="extracklinkId" type="xs:string"/>
+	<xs:element name="adgroupId" type="xs:string"/>
+	<xs:element name="etracklinkType" type="xs:string"/>
+	<xs:element name="etracklinkValue" type="xs:string"/>
+	<xs:element name="etracklinkStatus" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="adgroupIdIsNull" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="extracklinkObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="extracklinkId" minOccurs="0"/>
+				<xs:element ref="adgroupId" minOccurs="0"/>
+				<xs:element ref="etracklinkType" minOccurs="0"/>
+				<xs:element ref="etracklinkValue" minOccurs="0"/>
+				<xs:element ref="etracklinkStatus" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="adgroupIdIsNull" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="extracklinkResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="extracklinkObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

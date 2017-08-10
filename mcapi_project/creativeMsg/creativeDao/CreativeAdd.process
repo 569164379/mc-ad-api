@@ -38,7 +38,7 @@
             <timeout>10</timeout>
             <commit>false</commit>
             <maxRows>100</maxRows>
-            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
         </config>
         <pd:inputBindings>
             <jdbcGeneralActivityInput>

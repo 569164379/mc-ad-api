@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="trackLinkId" type="xs:string"/>
+	<xs:element name="productId" type="xs:string"/>
+	<xs:element name="advertiserId" type="xs:string"/>
+	<xs:element name="tracklinkName" type="xs:string"/>
+	<xs:element name="impLink" type="xs:string"/>
+	<xs:element name="clickLink" type="xs:string"/>
+	<xs:element name="mode" type="xs:string"/>
+	<xs:element name="impSynType" type="xs:string"/>
+	<xs:element name="clickSynType" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="productName" type="xs:string"/>
+	<xs:element name="advertiserName" type="xs:string"/>
+	<xs:element name="adgroupNum" type="xs:string"/>
+	<xs:element name="trackLinkIdSearchVal" type="xs:string"/>
+	<xs:element name="productSearchVal" type="xs:string"/>
+	<xs:element name="advertiserSearchVal" type="xs:string"/>
+	<xs:element name="trackLinkSelfId" type="xs:string"/>
+	<xs:element name="trackLinkSearchVal" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="trackLinkObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="trackLinkId" minOccurs="0"/>
+				<xs:element ref="productId" minOccurs="0"/>
+				<xs:element ref="advertiserId" minOccurs="0"/>
+				<xs:element ref="tracklinkName" minOccurs="0"/>
+				<xs:element ref="impLink" minOccurs="0"/>
+				<xs:element ref="clickLink" minOccurs="0"/>
+				<xs:element ref="mode" minOccurs="0"/>
+				<xs:element ref="impSynType" minOccurs="0"/>
+				<xs:element ref="clickSynType" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="productName" minOccurs="0"/>
+				<xs:element ref="advertiserName" minOccurs="0"/>
+				<xs:element ref="adgroupNum" minOccurs="0"/>
+				<xs:element ref="productSearchVal" minOccurs="0"/>
+				<xs:element ref="advertiserSearchVal" minOccurs="0"/>
+				<xs:element ref="trackLinkIdSearchVal" minOccurs="0"/>
+				<xs:element ref="trackLinkSelfId" minOccurs="0"/>
+				<xs:element ref="trackLinkSearchVal" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="trackLinkResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="trackLinkObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

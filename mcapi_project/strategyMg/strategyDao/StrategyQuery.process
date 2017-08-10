@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" schemaLocation="/shareResources/schemas/Strategy.xsd"/>
+    <pd:name>strategyMg/strategyDao/StrategyQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:strategyObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <pfx4:strategyResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx4:strategyObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:strategyId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx4:strategyId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:strategyName>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx4:strategyName>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:deviceType>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx4:deviceType>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:minosv>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx4:minosv>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:maxosv>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx4:maxosv>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:connectionType>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx4:connectionType>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:paraValidation>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx4:paraValidation>
+                    </xsl:if>
+                    <pfx4:frequencyPara>
+                        <xsl:value-of select="column[8]/value"/>
+                    </pfx4:frequencyPara>
+                    <pfx4:frequencyInterval>
+                        <xsl:copy-of select="column[9]/value/@xsi:nil"/>
+                        <xsl:value-of select="column[9]/value"/>
+                    </pfx4:frequencyInterval>
+                    <xsl:if test="column[10]/value">
+                        <pfx4:timeFrame>
+                            <xsl:value-of select="column[10]/value"/>
+                        </pfx4:timeFrame>
+                    </xsl:if>
+                    <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx4:productOS>
+                            <xsl:value-of select="column[11]/value"/>
+                        </pfx4:productOS>
+                    </xsl:if>
+                    <pfx4:cityIds>
+                        <xsl:value-of select="column[12]/value"/>
+                    </pfx4:cityIds>
+                </pfx4:strategyObj>
+            </xsl:for-each>
+        </pfx4:strategyResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx4:strategyResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>291</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>0</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT bs.STRATEGY_ID,bs.STRATEGY_NAME,bs.DEVICE_TYPE,bs.MINOSV,bs.MAXOSV,bs.CONNECTION_TYPE,bs.PARA_VALIDATION,bs.FREQUENCY_PARA,bs.FREQUENCY_INTERVAL,bs.time_frame,bs.product_OS&quot;, &#xA;if (&quot;false&quot;=tib:trim($Start/pfx4:strategyObj/pfx4:isLeftJoin)) then &quot;&quot; else &quot;, GROUP_CONCAT(bsc.CITY_ID) cityIds  &quot;,&#xA;&quot; from tab_strategy bs &quot;,&#xA;if (&quot;false&quot;=tib:trim($Start/pfx4:strategyObj/pfx4:isLeftJoin)) then &quot;&quot; else &quot; left JOIN tab_strategy_city bsc on bs.STRATEGY_ID= bsc.STRATEGY_ID &quot;,&#xA;&quot;   where 1=1&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:strategyId) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:strategyId)) then concat( &quot; and bs.STRATEGY_ID=&quot;, $Start/pfx4:strategyObj/pfx4:strategyId) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:strategyName) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:strategyName)) then concat( &quot; and bs.STRATEGY_NAME='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:strategyName),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:deviceType) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:deviceType)) then concat( &quot; and bs.DEVICE_TYPE='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:deviceType),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:minosv) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:minosv)) then concat( &quot; and bs.MINOSV='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:minosv),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:maxosv) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:maxosv)) then concat( &quot; and bs.MAXOSV='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:maxosv),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:connectionType) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:connectionType)) then concat( &quot; and bs.CONNECTION_TYPE='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:connectionType),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:paraValidation) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:paraValidation)) then concat( &quot; and bs.PARA_VALIDATION='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:paraValidation),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:frequencyPara) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:frequencyPara)) then concat( &quot; and bs.FREQUENCY_PARA='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:frequencyPara),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:productOS) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:productOS)) then concat( &quot; and bs.product_OS='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:productOS),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:timeFrame) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:timeFrame)) then concat( &quot; and bs.time_frame='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:timeFrame),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:frequencyInterval) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:frequencyInterval)) then concat( &quot; and bs.FREQUENCY_INTERVAL='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:frequencyInterval),&quot;' &quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:strategyObj/pfx4:strategySearchVal) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:strategySearchVal)) then concat( &quot; and (bs.STRATEGY_ID like '%&quot;, $Start/pfx4:strategyObj/pfx4:strategySearchVal,&quot;%'  or bs.STRATEGY_NAME like '%&quot;, $Start/pfx4:strategyObj/pfx4:strategySearchVal,&quot;%' )&quot;) else &quot;&quot;,&#xA;if (&quot;false&quot;=tib:trim($Start/pfx4:strategyObj/pfx4:isLeftJoin)) then &quot;&quot; else if (exists($Start/pfx4:strategyObj/pfx4:stratecityStatus) and &quot;&quot;!=tib:trim($Start/pfx4:strategyObj/pfx4:stratecityStatus)) then concat( &quot; and bsc.stra_city_status='&quot;, tib:trim($Start/pfx4:strategyObj/pfx4:stratecityStatus), &quot;'&quot;) else &quot;&quot;,&#xA;if (&quot;false&quot;=tib:trim($Start/pfx4:strategyObj/pfx4:isLeftJoin)) then &quot;&quot; else &quot;   GROUP BY bs.STRATEGY_ID &quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

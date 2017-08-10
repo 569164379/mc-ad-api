@@ -154,8 +154,8 @@ public String renameFileName() throws FileNotFoundException, IOException{
 					    }
 					*/
 					    BufferedImage sourceImg =ImageIO.read(inputstream);  
-						int width= sourceImg.getWidth();
-						int height= sourceImg.getHeight();
+						final int width= sourceImg.getWidth();
+						final int height= sourceImg.getHeight();
 					
 					    
 						

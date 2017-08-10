@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:ns4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" schemaLocation="/shareResources/schemas/Strategy.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20" schemaLocation="/shareResources/schemas/AdPosition.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" schemaLocation="/shareResources/schemas/AdGroup.xsd"/>
+    <pd:name>adgroupMg/adgroupDao/AdGroupQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="ns1:adgroupObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <ns1:adgroupResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <ns1:adgroupObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:adgroupId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </ns1:adgroupId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:adgroupName>
+                            <xsl:value-of select="column[2]/value"/>
+                        </ns1:adgroupName>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:adplanId>
+                            <xsl:value-of select="column[3]/value"/>
+                        </ns1:adplanId>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:creativeId>
+                            <xsl:value-of select="column[4]/value"/>
+                        </ns1:creativeId>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:tracklinkId>
+                            <xsl:value-of select="column[5]/value"/>
+                        </ns1:tracklinkId>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:strategyId>
+                            <xsl:value-of select="column[6]/value"/>
+                        </ns1:strategyId>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:dayBudget>
+                            <xsl:value-of select="column[7]/value"/>
+                        </ns1:dayBudget>
+                    </xsl:if>
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:budgetStrategyType>
+                            <xsl:value-of select="column[8]/value"/>
+                        </ns1:budgetStrategyType>
+                    </xsl:if>
+                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:priceStrategy>
+                            <xsl:value-of select="column[9]/value"/>
+                        </ns1:priceStrategy>
+                    </xsl:if>
+                    <xsl:if test="not((column[10]/value/@xsi:nil=(&quot;true&quot;)) or (column[10]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:priceOverflow>
+                            <xsl:value-of select="column[10]/value"/>
+                        </ns1:priceOverflow>
+                    </xsl:if>
+                    <xsl:if test="not((column[11]/value/@xsi:nil=(&quot;true&quot;)) or (column[11]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:priceMaxCpm>
+                            <xsl:value-of select="column[11]/value"/>
+                        </ns1:priceMaxCpm>
+                    </xsl:if>
+                    <xsl:if test="not((column[12]/value/@xsi:nil=(&quot;true&quot;)) or (column[12]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:priceTargetCpc>
+                            <xsl:value-of select="column[12]/value"/>
+                        </ns1:priceTargetCpc>
+                    </xsl:if>
+                    <xsl:if test="not((column[13]/value/@xsi:nil=(&quot;true&quot;)) or (column[13]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:adgroupStatus>
+                            <xsl:value-of select="column[13]/value"/>
+                        </ns1:adgroupStatus>
+                    </xsl:if>
+                    <xsl:if test="not((column[14]/value/@xsi:nil=(&quot;true&quot;)) or (column[14]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:createTime>
+                            <xsl:value-of select="column[14]/value"/>
+                        </ns1:createTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[15]/value/@xsi:nil=(&quot;true&quot;)) or (column[15]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:updateTime>
+                            <xsl:value-of select="column[15]/value"/>
+                        </ns1:updateTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[16]/value/@xsi:nil=(&quot;true&quot;)) or (column[16]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:mcVersion>
+                            <xsl:value-of select="column[16]/value"/>
+                        </ns1:mcVersion>
+                    </xsl:if>
+                    <xsl:if test="not((column[17]/value/@xsi:nil=(&quot;true&quot;)) or (column[17]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns3:adplanName>
+                            <xsl:value-of select="column[17]/value"/>
+                        </ns3:adplanName>
+                    </xsl:if>
+                    <xsl:if test="not((column[18]/value/@xsi:nil=(&quot;true&quot;)) or (column[18]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns4:creativeName>
+                            <xsl:value-of select="column[18]/value"/>
+                        </ns4:creativeName>
+                    </xsl:if>
+                    <xsl:if test="not((column[19]/value/@xsi:nil=(&quot;true&quot;)) or (column[19]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:tracklinkName>
+                            <xsl:value-of select="column[19]/value"/>
+                        </pfx3:tracklinkName>
+                    </xsl:if>
+                    <xsl:if test="not((column[20]/value/@xsi:nil=(&quot;true&quot;)) or (column[20]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:productId>
+                            <xsl:value-of select="column[20]/value"/>
+                        </ns1:productId>
+                    </xsl:if>
+                    <xsl:if test="not((column[21]/value/@xsi:nil=(&quot;true&quot;)) or (column[21]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <ns1:creativeLevel>
+                            <xsl:value-of select="column[21]/value"/>
+                        </ns1:creativeLevel>
+                    </xsl:if>
+                </ns1:adgroupObj>
+            </xsl:for-each>
+        </ns1:adgroupResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="ns1:adgroupResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>290</pd:x>
+        <pd:y>94</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>0</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT ba.*,bap.ADPLAN_NAME,bc.CREATIVE_NAME,btl.TRACKLINK_NAME,bap.PRODUCT_ID,bc.CREATIVE_LEVEL  from tab_adgroup ba INNER JOIN tab_ad_plan bap on ba.ADPLAN_ID = bap.ADPLAN_ID&quot;,&#xA;&quot; INNER JOIN tab_creative bc on ba.CREATIVE_ID = bc.CREATIVE_ID&quot;,&#xA;&quot; INNER JOIN tab_track_link btl on ba.TRACKLINK_ID = btl.TRACKLINK_ID&quot;,&#xA;&quot; where 1=1 &quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adgroupId) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adgroupId)) then concat( &quot; and ba.ADGROUP_ID  =&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupId)) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adgroupSelfId) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adgroupSelfId)) then concat( &quot; and ba.ADGROUP_ID ! =&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupSelfId)) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adplanId) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adplanId)) then concat( &quot; and ba.ADPLAN_ID  =&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adplanId)) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:tracklinkId) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:tracklinkId)) then concat( &quot; and ba.TRACKLINK_ID  =&quot;, tib:trim($Start/ns1:adgroupObj/ns1:tracklinkId)) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adgroupName) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adgroupName)) then concat( &quot; and ba.ADGROUP_NAME  ='&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupName),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adgroupIdSearchVal) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adgroupIdSearchVal)) then concat( &quot; and ba.ADGROUP_ID like '%&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupIdSearchVal),&quot;%'  &quot;) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adgroupNameSearchVal) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adgroupNameSearchVal)) then concat( &quot; and ba.ADGROUP_NAME like '%&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupNameSearchVal),&quot;%' &quot;) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adgroupNameSearchVal2) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adgroupNameSearchVal2)) then concat( &quot; and (ba.ADGROUP_ID like '%&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupNameSearchVal2),&quot;%' or ba.ADGROUP_NAME like '%&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupNameSearchVal2),&quot;%' ) &quot;) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adplanSearchVal) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adplanSearchVal)) then concat( &quot; and (bap.ADPLAN_ID like '%&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adplanSearchVal),&quot;%'  or bap.ADPLAN_NAME like '%&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adplanSearchVal),&quot;%' )&quot;) else &quot;&quot;,&#xA;if (exists($Start/ns1:adgroupObj/ns1:adgroupStatus) and &quot;&quot;!=tib:trim($Start/ns1:adgroupObj/ns1:adgroupStatus)) then concat( &quot; and ba.adgroup_status  ='&quot;, tib:trim($Start/ns1:adgroupObj/ns1:adgroupStatus),&quot;'&quot;) else &quot;&quot;,&#xA;&quot; ORDER BY ba.ADGROUP_ID desc&quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

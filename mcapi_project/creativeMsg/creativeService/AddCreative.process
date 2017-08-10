@@ -45,7 +45,7 @@
         <pd:x>678</pd:x>
         <pd:y>259</pd:y>
         <config>
-            <processName>/creativeMsg/creativeDao/creativeAdd.process</processName>
+            <processName>/creativeMsg/creativeDao/CreativeAdd.process</processName>
         </config>
         <pd:inputBindings>
             <ns:creativeObj>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18"
+	 xmlns:stracity="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd24"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd24"/>
+	<xs:element name="strategyId" type="xs:string"/>
+	<xs:element name="strategyName" type="xs:string"/>
+	<xs:element name="deviceType" type="xs:string"/>
+	<xs:element name="minosv" type="xs:string"/>
+	<xs:element name="maxosv" type="xs:string"/>
+	<xs:element name="connectionType" type="xs:string"/>
+	<xs:element name="paraValidation" type="xs:string"/>
+	<xs:element name="frequencyPara" type="xs:string"/>
+	<xs:element name="frequencyInterval" type="xs:string" nillable="true"/>
+	<xs:element name="timeFrame" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="productOS" type="xs:string"/>
+	<xs:element name="strategySearchVal" type="xs:string"/>
+	<xs:element name="cityIds" type="xs:string"/>
+	<xs:element name="stratecityStatus" type="xs:string"/>
+	<xs:element name="isLeftJoin" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="validateRepeat" type="xs:string"/>
+	<xs:element name="strategyObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="strategyId" minOccurs="0"/>
+				<xs:element ref="strategyName" minOccurs="0"/>
+				<xs:element ref="deviceType" minOccurs="0"/>
+				<xs:element ref="minosv" minOccurs="0"/>
+				<xs:element ref="maxosv" minOccurs="0"/>
+				<xs:element ref="connectionType" minOccurs="0"/>
+				<xs:element ref="paraValidation" minOccurs="0"/>
+				<xs:element ref="frequencyPara" minOccurs="0"/>
+				<xs:element ref="frequencyInterval" minOccurs="0"/>
+				<xs:element ref="timeFrame" minOccurs="0"/>
+				<xs:element ref="createTime" minOccurs="0"/>
+				<xs:element ref="updateTime" minOccurs="0"/>
+				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="productOS" minOccurs="0"/>
+				<xs:element ref="cityIds" minOccurs="0"/>
+				<xs:element ref="stratecityStatus" minOccurs="0"/>
+				<xs:element ref="isLeftJoin" minOccurs="0"/>
+				<xs:element ref="strategySearchVal" minOccurs="0"/>
+				<xs:element ref="stracity:straCityResults" minOccurs="0"/>
+				<xs:element ref="tokenInfo" minOccurs="0"/>
+				<xs:element ref="validateRepeat" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="strategyResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="strategyObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

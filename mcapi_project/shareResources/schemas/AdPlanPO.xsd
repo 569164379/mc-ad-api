@@ -25,6 +25,7 @@
 	<xs:element name="productSearchVal" type="xs:string"/>
 	<xs:element name="advertiserSearchVal" type="xs:string"/>
 	<xs:element name="adplanNameSearchVal" type="xs:string"/>
+	<xs:element name="adplanNameSearchVal2" type="xs:string"/>
 	<xs:element name="adplanSelfId" type="xs:string"/>
 	<xs:element name="validateRepeat" type="xs:string"/>
 	<xs:element name="tokenInfo" type="xs:string"/>
@@ -49,6 +50,7 @@
 				<xs:element ref="advertiserSearchVal" minOccurs="0"/>
 				<xs:element ref="productSearchVal" minOccurs="0"/>
 				<xs:element ref="adplanNameSearchVal" minOccurs="0"/>
+				<xs:element ref="adplanNameSearchVal2" minOccurs="0"/>
 				<xs:element ref="adplanSelfId" minOccurs="0"/>
 				<xs:element ref="validateRepeat" minOccurs="0"/>
 				<xs:element ref="tokenInfo" minOccurs="0"/>

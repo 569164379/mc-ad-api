@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:ns4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" xmlns:ns3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22" xmlns:pd="http://xmlns.tibco.com/bw/process/2003">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" schemaLocation="/shareResources/schemas/Strategy.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20" schemaLocation="/shareResources/schemas/AdPosition.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" schemaLocation="/"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" schemaLocation="/shareResources/schemas/AdgAdp.xsd"/>
+    <pd:name>adgroupMg/adgroupService/QueryAdgAdp.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="$Render-JSON/ns2:ActivityOutputClass/jsonString"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1015</pd:endX>
+    <pd:endY>95</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="AdgAdpQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>396</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/AdgAdpQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <ns4:adgAdpObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns4:adgAdpObj/ns4:adgId">
+                    <ns4:adgId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns4:adgAdpObj/ns4:adgId"/>
+                    </ns4:adgId>
+                </xsl:if>
+                <ns4:adgAdpStatus>
+                    <xsl:value-of select="0"/>
+                </ns4:adgAdpStatus>
+                <pfx5:adpSearchVal>
+                    <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns4:adgAdpObj/pfx5:adpSearchVal"/>
+                </pfx5:adpSearchVal>
+                <pfx5:adpAppSearchVal>
+                    <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns4:adgAdpObj/pfx5:adpAppSearchVal"/>
+                </pfx5:adpAppSearchVal>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns4:adgAdpObj/ns4:adpIds">
+                    <ns4:adpIds>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns4:adgAdpObj/ns4:adpIds"/>
+                    </ns4:adpIds>
+                </xsl:if>
+            </ns4:adgAdpObj>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>210</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="ns4:adgAdpObj"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>667</pd:x>
+        <pd:y>174</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityInputEditor ref="ns4:adgAdpResults"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <ns4:adgAdpResults>
+                    <xsl:for-each select="$AdgAdpQuery/ns4:adgAdpResults/ns4:adgAdpObj">
+                        <ns4:adgAdpObj>
+                            <xsl:if test="ns4:adgAdpId">
+                                <ns4:adgAdpId>
+                                    <xsl:value-of select="ns4:adgAdpId"/>
+                                </ns4:adgAdpId>
+                            </xsl:if>
+                            <xsl:if test="ns4:adgId">
+                                <ns4:adgId>
+                                    <xsl:value-of select="ns4:adgId"/>
+                                </ns4:adgId>
+                            </xsl:if>
+                            <xsl:if test="ns4:adpId">
+                                <ns4:adpId>
+                                    <xsl:value-of select="ns4:adpId"/>
+                                </ns4:adpId>
+                            </xsl:if>
+                            <xsl:if test="ns4:fixPrice">
+                                <ns4:fixPrice>
+                                    <xsl:value-of select="ns4:fixPrice"/>
+                                </ns4:fixPrice>
+                            </xsl:if>
+                            <xsl:if test="pfx4:adgroupName">
+                                <pfx4:adgroupName>
+                                    <xsl:value-of select="pfx4:adgroupName"/>
+                                </pfx4:adgroupName>
+                            </xsl:if>
+                            <xsl:if test="pfx5:adpName">
+                                <pfx5:adpName>
+                                    <xsl:value-of select="pfx5:adpName"/>
+                                </pfx5:adpName>
+                            </xsl:if>
+                            <xsl:if test="pfx5:adpAppId">
+                                <pfx5:adpAppId>
+                                    <xsl:value-of select="pfx5:adpAppId"/>
+                                </pfx5:adpAppId>
+                            </xsl:if>
+                            <xsl:if test="pfx5:adpAppName">
+                                <pfx5:adpAppName>
+                                    <xsl:value-of select="pfx5:adpAppName"/>
+                                </pfx5:adpAppName>
+                            </xsl:if>
+                            <xsl:if test="ns4:adpIds">
+                                <ns4:adpIds>
+                                    <xsl:value-of select="ns4:adpIds"/>
+                                </ns4:adpIds>
+                            </xsl:if>
+                        </ns4:adgAdpObj>
+                    </xsl:for-each>
+                </ns4:adgAdpResults>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>AdgAdpQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>AdgAdpQuery</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

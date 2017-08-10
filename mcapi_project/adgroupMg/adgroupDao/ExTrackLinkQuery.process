@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" schemaLocation="/shareResources/schemas/Strategy.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" schemaLocation="/shareResources/schemas/TrackLink.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22" schemaLocation="/shareResources/schemas/ExtraTrackLink.xsd"/>
+    <pd:name>adgroupMg/adgroupDao/ExTrackLinkQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx5:extracklinkObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <pfx5:extracklinkResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx5:extracklinkObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:extracklinkId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx5:extracklinkId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:adgroupId>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx5:adgroupId>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:etracklinkType>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx5:etracklinkType>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:etracklinkValue>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx5:etracklinkValue>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:createTime>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx5:createTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:updateTime>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx5:updateTime>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx5:mcVersion>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx5:mcVersion>
+                    </xsl:if>
+                </pfx5:extracklinkObj>
+            </xsl:for-each>
+        </pfx5:extracklinkResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx5:extracklinkResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>291</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;SELECT * from tab_extra_track_link where 1=1&quot;,&#xA;if (exists($Start/pfx5:extracklinkObj/pfx5:adgroupId) and &quot;&quot;!=tib:trim($Start/pfx5:extracklinkObj/pfx5:adgroupId)) then concat( &quot; and ADGROUP_ID='&quot;, tib:trim($Start/pfx5:extracklinkObj/pfx5:adgroupId),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:extracklinkObj/pfx5:adgroupIdIsNull) and &quot;&quot;!=tib:trim($Start/pfx5:extracklinkObj/pfx5:adgroupIdIsNull)) then concat( &quot; and ADGROUP_ID is null&quot;,&quot;&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:extracklinkObj/pfx5:etracklinkStatus) and &quot;&quot;!=tib:trim($Start/pfx5:extracklinkObj/pfx5:etracklinkStatus)) then concat( &quot; and etracklink_status='&quot;, tib:trim($Start/pfx5:extracklinkObj/pfx5:etracklinkStatus),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx5:extracklinkObj/pfx5:etracklinkType) and &quot;&quot;!=tib:trim($Start/pfx5:extracklinkObj/pfx5:etracklinkType)) then concat( &quot; and ETRACKLINK_TYPE='&quot;, tib:trim($Start/pfx5:extracklinkObj/pfx5:etracklinkType),&quot;'&quot;) else &quot;&quot;,&#xA;&quot; ORDER BY ETRACKLINK_ID desc&quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

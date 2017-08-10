@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <BWSharedResource>
-    <name>JDBC Connection</name>
+    <name>JDBC Connection_Test</name>
     <resourceType>ae.shared.JDBCSharedResource</resourceType>
     <config>
         <driver>com.mysql.jdbc.Driver</driver>
@@ -8,8 +8,8 @@
         <loginTimeout>0</loginTimeout>
         <connectionType>JDBC</connectionType>
         <UseSharedJndiConfig>false</UseSharedJndiConfig>
-        <location>jdbc:mysql://localhost:3306/mcdb3.0</location>
-        <password>#!OavagSjgnDtZa4fpClERSepkPnTgnrGD</password>
+        <location>jdbc:mysql://www.91mobcastle.com:3307/mcdb3.0</location>
+        <password>#!HoDJamBInbYm+mD4YTZCOYoy4q7ek4zbI9/F6BrOFWM=</password>
         <user>root</user>
     </config>
 </BWSharedResource>

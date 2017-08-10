@@ -221,13 +221,6 @@ public class AddAdvertiserJavaCode{
 userPwdOut = MD5Util.getMD5String(userPwd);}
 }
 </fullsource>
-                <inputData>
-                    <row>
-                        <fieldName>userPwd</fieldName>
-                        <fieldType>string</fieldType>
-                        <fieldRequired>optional</fieldRequired>
-                    </row>
-                </inputData>
                 <outputData>
                     <row>
                         <fieldName>userPwdOut</fieldName>
@@ -235,6 +228,13 @@ userPwdOut = MD5Util.getMD5String(userPwd);}
                         <fieldRequired>optional</fieldRequired>
                     </row>
                 </outputData>
+                <inputData>
+                    <row>
+                        <fieldName>userPwd</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </inputData>
                 <byteCode>
                     <class>
                         <name>AddAdvertiserJavaCode</name>

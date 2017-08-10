@@ -9,8 +9,8 @@
     <pd:starter name="HTTP Receiver">
         <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
         <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
-        <pd:x>163</pd:x>
-        <pd:y>83</pd:y>
+        <pd:x>165</pd:x>
+        <pd:y>82</pd:y>
         <config>
             <outputMode>String</outputMode>
             <defaultEncoding>ISO8859_1</defaultEncoding>
@@ -54,7 +54,7 @@
     <pd:activity name="Dynamic Call Process">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>414</pd:x>
+        <pd:x>411</pd:x>
         <pd:y>89</pd:y>
         <config>
             <processNameXPath>concat(
@@ -108,9 +108,30 @@ if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/batchUpdateAdPlan") ) then "/AdvertisingPlanMg/advertisingPlanService/BatchUpdateAdPlan" else
 
 
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/trackLinkMg/queryTrackLink") ) then "/trackLinkMg/trackLinkService/QueryTrackLink" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/trackLinkMg/addTrackLink") ) then "/trackLinkMg/trackLinkService/AddTrackLink" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/trackLinkMg/updateTrackLink") ) then "/trackLinkMg/trackLinkService/UpdateTrackLink" else
 
 
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/strategyMg/addStrategy") ) then "/strategyMg/strategyService/AddStrategy" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/strategyMg/queryStrategyDetail") ) then "/strategyMg/strategyService/QueryStrategyDetail" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/strategyMg/queryStrategyList") ) then "/strategyMg/strategyService/QueryStrategyList" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/strategyMg/updateStrategy") ) then "/strategyMg/strategyService/UpdateStrategy" else
 
+
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryAdGroupList") ) then "/adgroupMg/adgroupService/QueryAdGroupList" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryAdGroupDetail") ) then "/adgroupMg/adgroupService/QueryAdGroupDetail" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryExtrackLink") ) then "/adgroupMg/adgroupService/QueryExtrackLink" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryAdPosition") ) then "/adgroupMg/adgroupService/QueryAdPosition" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/addExtrackLink") ) then "/adgroupMg/adgroupService/AddExtrackLink" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/delExtrackLink") ) then "/adgroupMg/adgroupService/DelExtrackLink" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryAdGroupLogList") ) then "/adgroupMg/adgroupService/QueryAdGroupLogList" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryAdgAdp") ) then "/adgroupMg/adgroupService/QueryAdgAdp" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/addAdgroup") ) then "/adgroupMg/adgroupService/AddAdgroup" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/batchUpdateAdgStatus") ) then "/adgroupMg/adgroupService/BatchUpdateAdGroupStatus" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/updateAdgroup") ) then "/adgroupMg/adgroupService/UpdateAdgroup" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryAdgpByAdp") ) then "/adgroupMg/adgroupService/QueryAdgpByAdp" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/importPositionExcel") ) then "/adgroupMg/adgroupService/ImportPositionExcel" else
 
 
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/toPageTokenInfo")) then "/commonFunction/ToPageTokenInfo" else

@@ -8,12 +8,14 @@
 	<xs:element name="objId" type="xs:string"/>
 	<xs:element name="objName" type="xs:string"/>
 	<xs:element name="objStatus" type="xs:string"/>
+	<xs:element name="productId" type="xs:string"/>
 	<xs:element name="listObj">
 		<xs:complexType>
 			<xs:sequence>
 				<xs:element ref="objId"/>
 				<xs:element ref="objName"/>
 				<xs:element ref="objStatus" minOccurs="0"/>
+				<xs:element ref="productId" minOccurs="0"/>
 			</xs:sequence>
 		</xs:complexType>
 	</xs:element>
