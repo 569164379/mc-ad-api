@@ -70,12 +70,14 @@
                 <ns:accountStatus>
                     <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountStatus"/>
                 </ns:accountStatus>
-                <ns:accountRoleId>
-                    <xsl:value-of select="1"/>
-                </ns:accountRoleId>
                 <ns:updateTime>
                     <xsl:value-of select="tib:format-dateTime('yyyy-MM-dd HH:mm:ss', current-dateTime())"/>
                 </ns:updateTime>
+                <xsl:if test="$Java-Code/javaCodeActivityOutput/userPwdRandom">
+                    <ns:pwdRandom>
+                        <xsl:value-of select="$Java-Code/javaCodeActivityOutput/userPwdRandom"/>
+                    </ns:pwdRandom>
+                </xsl:if>
             </ns:accountObj>
         </pd:inputBindings>
     </pd:activity>
@@ -136,6 +138,7 @@ public class UpdateAdvertiserJavaCode{
 /****** START SET/GET METHOD, DO NOT MODIFY *****/
 	protected String userPwd = "";
 	protected String userPwdOut = "";
+	protected String userPwdRandom = "";
 	public String getuserPwd() {
 		return userPwd;
 	}
@@ -148,6 +151,12 @@ public class UpdateAdvertiserJavaCode{
 	public void setuserPwdOut(String val) {
 		userPwdOut = val;
 	}
+	public String getuserPwdRandom() {
+		return userPwdRandom;
+	}
+	public void setuserPwdRandom(String val) {
+		userPwdRandom = val;
+	}
 /****** END SET/GET METHOD, DO NOT MODIFY *****/
 	public UpdateAdvertiserJavaCode() {
 	}
@@ -155,9 +164,11 @@ public class UpdateAdvertiserJavaCode{
 /* Available Variables: DO NOT MODIFY
 	In  : String userPwd
 	Out : String userPwdOut
+	Out : String userPwdRandom
 * Available Variables: DO NOT MODIFY *****/
 
-userPwdOut = MD5Util.getMD5String(userPwd);}
+userPwdRandom = MD5Util.get5Radom();
+userPwdOut = MD5Util.getMD5String(userPwd+userPwdRandom);}
 }
 </fullsource>
             <inputData>
@@ -173,11 +184,16 @@ userPwdOut = MD5Util.getMD5String(userPwd);}
                     <fieldType>string</fieldType>
                     <fieldRequired>optional</fieldRequired>
                 </row>
+                <row>
+                    <fieldName>userPwdRandom</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
             </outputData>
             <byteCode>
                 <class>
                     <name>UpdateAdvertiserJavaCode</name>
-                    <byteCode>yv66vgAAADQAJgkABgAaCQAGABsKAAcAHAgAHQoAHgAfBwAgBwAhAQAHdXNlclB3ZAEAEkxqYXZhL2xhbmcvU3RyaW5nOwEACnVzZXJQd2RPdXQBAApnZXR1c2VyUHdkAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAKc2V0dXNlclB3ZAEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADWdldHVzZXJQd2RPdXQBAA1zZXR1c2VyUHdkT3V0AQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAIgEAClNvdXJjZUZpbGUBAB1VcGRhdGVBZHZlcnRpc2VySmF2YUNvZGUuamF2YQwACAAJDAAKAAkMABMAFAEAAAcAIwwAJAAlAQBCYWNjb3VudE1nL2FjY291bnRTZXJ2aWNlL1VwZGF0ZUFkdmVydGlzZXIvVXBkYXRlQWR2ZXJ0aXNlckphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABZjb20vdG0vbWMvdXRpbC9NRDVVdGlsAQAMZ2V0TUQ1U3RyaW5nAQAmKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZzsAIQAGAAcAAAACAAQACAAJAAAABAAKAAkAAAAGAAEACwAMAAEADQAAAB0AAQABAAAABSq0AAGwAAAAAQAOAAAABgABAAAACgABAA8AEAABAA0AAAAiAAIAAgAAAAYqK7UAAbEAAAABAA4AAAAKAAIAAAANAAUADgABABEADAABAA0AAAAdAAEAAQAAAAUqtAACsAAAAAEADgAAAAYAAQAAABAAAQASABAAAQANAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAOAAAACgACAAAAEwAFABQAAQATABQAAQANAAAANQACAAEAAAARKrcAAyoSBLUAASoSBLUAArEAAAABAA4AAAASAAQAAAAWAAQABwAKAAgAEAAXAAEAFQAUAAIADQAAACQAAgABAAAADCoqtAABuAAFtQACsQAAAAEADgAAAAYAAQAAAB4AFgAAAAQAAQAXAAEAGAAAAAIAGQ==</byteCode>
+                    <byteCode>yv66vgAAADQAOAkADAAjCQAMACQJAAwAJQoADQAmCAAnCgAoACkHACoKAAcAJgoABwArCgAHACwKACgALQcALgcALwEAB3VzZXJQd2QBABJMamF2YS9sYW5nL1N0cmluZzsBAAp1c2VyUHdkT3V0AQANdXNlclB3ZFJhbmRvbQEACmdldHVzZXJQd2QBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAApzZXR1c2VyUHdkAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQANZ2V0dXNlclB3ZE91dAEADXNldHVzZXJQd2RPdXQBABBnZXR1c2VyUHdkUmFuZG9tAQAQc2V0dXNlclB3ZFJhbmRvbQEABjxpbml0PgEAAygpVgEABmludm9rZQEACkV4Y2VwdGlvbnMHADABAApTb3VyY2VGaWxlAQAdVXBkYXRlQWR2ZXJ0aXNlckphdmFDb2RlLmphdmEMAA4ADwwAEAAPDAARAA8MABwAHQEAAAcAMQwAMgATAQAXamF2YS9sYW5nL1N0cmluZ0J1aWxkZXIMADMANAwANQATDAA2ADcBAEJhY2NvdW50TWcvYWNjb3VudFNlcnZpY2UvVXBkYXRlQWR2ZXJ0aXNlci9VcGRhdGVBZHZlcnRpc2VySmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAFmNvbS90bS9tYy91dGlsL01ENVV0aWwBAAlnZXQ1UmFkb20BAAZhcHBlbmQBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAAh0b1N0cmluZwEADGdldE1ENVN0cmluZwEAJihMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmc7ACEADAANAAAAAwAEAA4ADwAAAAQAEAAPAAAABAARAA8AAAAIAAEAEgATAAEAFAAAAB0AAQABAAAABSq0AAGwAAAAAQAVAAAABgABAAAACwABABYAFwABABQAAAAiAAIAAgAAAAYqK7UAAbEAAAABABUAAAAKAAIAAAAOAAUADwABABgAEwABABQAAAAdAAEAAQAAAAUqtAACsAAAAAEAFQAAAAYAAQAAABEAAQAZABcAAQAUAAAAIgACAAIAAAAGKiu1AAKxAAAAAQAVAAAACgACAAAAFAAFABUAAQAaABMAAQAUAAAAHQABAAEAAAAFKrQAA7AAAAABABUAAAAGAAEAAAAXAAEAGwAXAAEAFAAAACIAAgACAAAABiortQADsQAAAAEAFQAAAAoAAgAAABoABQAbAAEAHAAdAAEAFAAAAD8AAgABAAAAFyq3AAQqEgW1AAEqEgW1AAIqEgW1AAOxAAAAAQAVAAAAFgAFAAAAHQAEAAcACgAIABAACQAWAB4AAQAeAB0AAgAUAAAAQwADAAEAAAAnKrgABrUAAyq7AAdZtwAIKrQAAbYACSq0AAO2AAm2AAq4AAu1AAKxAAAAAQAVAAAACgACAAAAJgAHACcAHwAAAAQAAQAgAAEAIQAAAAIAIg==</byteCode>
                 </class>
             </byteCode>
         </config>

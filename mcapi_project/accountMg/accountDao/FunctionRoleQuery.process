@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd26" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd27" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd16" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd5" schemaLocation="/share_resources/schema_resources/CampaignPOSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd27" schemaLocation="/shareResources/schemas/RoleFunction.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd26" schemaLocation="/shareResources/schemas/Function.xsd"/>
+    <pd:name>accountMg/accountDao/FunctionRoleQuery.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx4:roleFunctionObj"/>
+    <pd:startX>157</pd:startX>
+    <pd:startY>92</pd:startY>
+    <pd:returnBindings>
+        <pfx3:functionResults>
+            <xsl:for-each select="$SQL-Direct/jdbcGeneralActivityOutput/unknownResultset/row">
+                <pfx3:functionObj>
+                    <xsl:if test="not((column[1]/value/@xsi:nil=(&quot;true&quot;)) or (column[1]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:functionId>
+                            <xsl:value-of select="column[1]/value"/>
+                        </pfx3:functionId>
+                    </xsl:if>
+                    <xsl:if test="not((column[2]/value/@xsi:nil=(&quot;true&quot;)) or (column[2]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:functionName>
+                            <xsl:value-of select="column[2]/value"/>
+                        </pfx3:functionName>
+                    </xsl:if>
+                    <xsl:if test="not((column[3]/value/@xsi:nil=(&quot;true&quot;)) or (column[3]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:displayOrder>
+                            <xsl:value-of select="column[3]/value"/>
+                        </pfx3:displayOrder>
+                    </xsl:if>
+                    <xsl:if test="not((column[4]/value/@xsi:nil=(&quot;true&quot;)) or (column[4]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:parentFunctionId>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx3:parentFunctionId>
+                    </xsl:if>
+                    <xsl:if test="not((column[5]/value/@xsi:nil=(&quot;true&quot;)) or (column[5]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:functionUrl>
+                            <xsl:value-of select="column[5]/value"/>
+                        </pfx3:functionUrl>
+                    </xsl:if>
+                    <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:iconUrl>
+                            <xsl:value-of select="column[6]/value"/>
+                        </pfx3:iconUrl>
+                    </xsl:if>
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
+                        <pfx3:isMemu>
+                            <xsl:value-of select="column[7]/value"/>
+                        </pfx3:isMemu>
+                    </xsl:if>
+                    <pfx3:functionNestedObj>
+                        <pfx3:parentFunctionId>
+                            <xsl:value-of select="column[4]/value"/>
+                        </pfx3:parentFunctionId>
+                    </pfx3:functionNestedObj>
+                </pfx3:functionObj>
+            </xsl:for-each>
+        </pfx3:functionResults>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType ref="pfx3:functionResults"/>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1489503007724</pd:targetNamespace>
+    <pd:activity name="SQL Direct">
+        <pd:type>com.tibco.plugin.jdbc.JDBCGeneralActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCGeneralActivity</pd:resourceType>
+        <pd:x>291</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcGeneralActivityInput>
+                <statement>
+                    <xsl:value-of select="concat(&quot;select bf.*  from tab_role_function brf &quot;,&#xA;&quot; INNER JOIN tab_functions bf on brf.FUNCTION_ID  = bf.FUNCTION_ID&quot;,&#xA;&quot;  where 1=1 &quot;,&#xA;if (exists($Start/pfx4:roleFunctionObj/pfx4:roleId) and &quot;&quot; !=tib:trim($Start/pfx4:roleFunctionObj/pfx4:roleId)) then concat(&quot; and brf.ROLE_ID = &quot;, tib:trim($Start/pfx4:roleFunctionObj/pfx4:roleId)) else &quot;&quot;,&#xA;if (exists($Start/pfx4:roleFunctionObj/pfx3:parentFunctionId) and &quot;&quot; !=tib:trim($Start/pfx4:roleFunctionObj/pfx3:parentFunctionId)) then concat(&quot; and bf.PARENT_FUNCTION_ID = &quot;, tib:trim($Start/pfx4:roleFunctionObj/pfx3:parentFunctionId)) else &quot;&quot;,&#xA;if (exists($Start/pfx4:roleFunctionObj/pfx3:isMemu) and &quot;&quot; !=tib:trim($Start/pfx4:roleFunctionObj/pfx3:isMemu)) then concat(&quot; and bf.isMemu ='&quot;, tib:trim($Start/pfx4:roleFunctionObj/pfx3:isMemu),&quot;'&quot;) else &quot;&quot;,&#xA;if (exists($Start/pfx4:roleFunctionObj/pfx4:roleIds) and &quot;&quot; !=tib:trim($Start/pfx4:roleFunctionObj/pfx4:roleIds)) then concat(&quot; and brf.ROLE_ID in ( &quot;, tib:trim($Start/pfx4:roleFunctionObj/pfx4:roleId),&quot;)&quot;) else &quot;&quot;&#xA;)"/>
+                </statement>
+            </jdbcGeneralActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>595</pd:x>
+        <pd:y>123</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Rethrow">
+        <pd:type>com.tibco.pe.core.RethrowActivity</pd:type>
+        <pd:resourceType>ae.activities.rethrow</pd:resourceType>
+        <pd:x>739</pd:x>
+        <pd:y>121</pd:y>
+        <config/>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>SQL Direct</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Rethrow</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>SQL Direct</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

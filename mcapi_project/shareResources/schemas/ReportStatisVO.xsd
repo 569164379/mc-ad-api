@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd29"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd29"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="reportDate" type="xs:string"/>
+	<xs:element name="productId" type="xs:string"/>
+	<xs:element name="productName" type="xs:string"/>
+	<xs:element name="adplanId" type="xs:string"/>
+	<xs:element name="adplanName" type="xs:string"/>
+	<xs:element name="creativeId" type="xs:string"/>
+	<xs:element name="creativeName" type="xs:string"/>
+	<xs:element name="tracklinkId" type="xs:string"/>
+	<xs:element name="tracklinkName" type="xs:string"/>
+	<xs:element name="adgroupId" type="xs:string"/>
+	<xs:element name="adgroupName" type="xs:string"/>
+	<xs:element name="adpostionId" type="xs:string"/>
+	<xs:element name="adpostionName" type="xs:string"/>
+	<xs:element name="Request" type="xs:string"/>
+	<xs:element name="ImpNormal" type="xs:string"/>
+	<xs:element name="ImpInvalid" type="xs:string"/>
+	<xs:element name="ImpDuplicate" type="xs:string"/>
+	<xs:element name="ClNormal" type="xs:string"/>
+	<xs:element name="ClkInvalid" type="xs:string"/>
+	<xs:element name="ClkDuplicate" type="xs:string"/>
+	<xs:element name="Cost" type="xs:string"/>
+	<xs:element name="reportStatisObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="reportDate" minOccurs="0"/>
+				<xs:element ref="productId" minOccurs="0"/>
+				<xs:element ref="productName" minOccurs="0"/>
+				<xs:element ref="adplanId" minOccurs="0"/>
+				<xs:element ref="adplanName" minOccurs="0"/>
+				<xs:element ref="creativeId" minOccurs="0"/>
+				<xs:element ref="creativeName" minOccurs="0"/>
+				<xs:element ref="tracklinkId" minOccurs="0"/>
+				<xs:element ref="tracklinkName" minOccurs="0"/>
+				<xs:element ref="adgroupId" minOccurs="0"/>
+				<xs:element ref="adgroupName" minOccurs="0"/>
+				<xs:element ref="adpostionId" minOccurs="0"/>
+				<xs:element ref="adpostionName" minOccurs="0"/>
+				<xs:element ref="Request" minOccurs="0"/>
+				<xs:element ref="ImpNormal" minOccurs="0"/>
+				<xs:element ref="ImpInvalid" minOccurs="0"/>
+				<xs:element ref="ImpDuplicate" minOccurs="0"/>
+				<xs:element ref="ClNormal" minOccurs="0"/>
+				<xs:element ref="ClkInvalid" minOccurs="0"/>
+				<xs:element ref="ClkDuplicate" minOccurs="0"/>
+				<xs:element ref="Cost" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="reportStatisResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="reportStatisObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

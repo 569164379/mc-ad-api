@@ -1,0 +1,846 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd16" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd28" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd29" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd16" schemaLocation="/shareResources/schemas/RolePO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd28" schemaLocation="/shareResources/schemas/ReportConditionVO.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd29" schemaLocation="/shareResources/schemas/ReportStatisVO.xsd"/>
+    <pd:name>reportsMg/reportsService/QueryReports.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:requestParams"/>
+    <pd:startX>28</pd:startX>
+    <pd:startY>70</pd:startY>
+    <pd:returnBindings>
+        <responseJsonStr>
+            <xsl:value-of select="concat('{&quot;tableHtml&quot;:&quot;',$Java-Code/javaCodeActivityOutput/tableHtmlStr,'&quot;}')"/>
+        </responseJsonStr>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJsonStr" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1015</pd:endX>
+    <pd:endY>95</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>123</pd:x>
+        <pd:y>185</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx3:reportCondNameVO"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/pfx:requestParams/pfx:jsonPostData"/>
+                </jsonString>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>571</pd:x>
+        <pd:y>95</pd:y>
+        <config>
+            <fileName>QueryReportsJavaCode</fileName>
+            <packageName>reportsMg.reportsService.QueryReports</packageName>
+            <fullsource>package reportsMg.reportsService.QueryReports;
+
+import java.util.*;
+import java.io.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.text.DecimalFormat;
+
+import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import com.mongodb.BasicDBObject;
+import com.mongodb.Block;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoCredential;
+import com.mongodb.ServerAddress;
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.tm.mc.util.Constants;
+
+public class QueryReportsJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String startDate = "";
+	protected String endDate = "";
+	protected String productIds = "";
+	protected String adPlanIds = "";
+	protected String creativeIds = "";
+	protected String tracklinkIds = "";
+	protected String adgroupIds = "";
+	protected String adPositionIds = "";
+	protected String isCreative = "";
+	protected String isTracklink = "";
+	protected String isAdgroup = "";
+	protected String isAdPositionIds = "";
+	protected String dateSearchType = "";
+	protected String tableHtmlStr = "";
+	public String getstartDate() {
+		return startDate;
+	}
+	public void setstartDate(String val) {
+		startDate = val;
+	}
+	public String getendDate() {
+		return endDate;
+	}
+	public void setendDate(String val) {
+		endDate = val;
+	}
+	public String getproductIds() {
+		return productIds;
+	}
+	public void setproductIds(String val) {
+		productIds = val;
+	}
+	public String getadPlanIds() {
+		return adPlanIds;
+	}
+	public void setadPlanIds(String val) {
+		adPlanIds = val;
+	}
+	public String getcreativeIds() {
+		return creativeIds;
+	}
+	public void setcreativeIds(String val) {
+		creativeIds = val;
+	}
+	public String gettracklinkIds() {
+		return tracklinkIds;
+	}
+	public void settracklinkIds(String val) {
+		tracklinkIds = val;
+	}
+	public String getadgroupIds() {
+		return adgroupIds;
+	}
+	public void setadgroupIds(String val) {
+		adgroupIds = val;
+	}
+	public String getadPositionIds() {
+		return adPositionIds;
+	}
+	public void setadPositionIds(String val) {
+		adPositionIds = val;
+	}
+	public String getisCreative() {
+		return isCreative;
+	}
+	public void setisCreative(String val) {
+		isCreative = val;
+	}
+	public String getisTracklink() {
+		return isTracklink;
+	}
+	public void setisTracklink(String val) {
+		isTracklink = val;
+	}
+	public String getisAdgroup() {
+		return isAdgroup;
+	}
+	public void setisAdgroup(String val) {
+		isAdgroup = val;
+	}
+	public String getisAdPositionIds() {
+		return isAdPositionIds;
+	}
+	public void setisAdPositionIds(String val) {
+		isAdPositionIds = val;
+	}
+	public String getdateSearchType() {
+		return dateSearchType;
+	}
+	public void setdateSearchType(String val) {
+		dateSearchType = val;
+	}
+	public String gettableHtmlStr() {
+		return tableHtmlStr;
+	}
+	public void settableHtmlStr(String val) {
+		tableHtmlStr = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public QueryReportsJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String startDate
+	In  : String endDate
+	In  : String productIds
+	In  : String adPlanIds
+	In  : String creativeIds
+	In  : String tracklinkIds
+	In  : String adgroupIds
+	In  : String adPositionIds
+	In  : String isCreative
+	In  : String isTracklink
+	In  : String isAdgroup
+	In  : String isAdPositionIds
+	In  : String dateSearchType
+	Out : String tableHtmlStr
+* Available Variables: DO NOT MODIFY *****/
+MongoCredential credential = MongoCredential.createCredential("mcadnroot", "admin", "QiagNT12rRz7y9mcadnroot".toCharArray());
+		ServerAddress serverAddress = new ServerAddress("101.200.56.102", 28017);
+		MongoClient mongoClient = new MongoClient(serverAddress, Arrays.asList(credential));
+		MongoDatabase db = mongoClient.getDatabase("AdnStats");
+		MongoCollection&lt;Document&gt; coll = db.getCollection("adnstats");
+
+		List&lt;String&gt; groupList = new ArrayList&lt;String&gt;();
+		List&lt;Map&lt;String,Object&gt;&gt;  conditionsMapList = new ArrayList&lt;Map&lt;String,Object&gt;&gt;();
+		
+		Connection con;
+		String driver = "com.mysql.jdbc.Driver";
+		String url = "jdbc:mysql://localhost:3306/mcdb3.0";
+        String user = "root";
+        String password = "mona";
+        Class.forName(driver);
+        con = DriverManager.getConnection(url,user,password);
+        Statement statement = con.createStatement();
+	dataPreparation(groupList, conditionsMapList);
+		tableHtmlStr = statisticsByDateType(coll,groupList,conditionsMapList,statement);
+}
+
+
+
+//聚合查询
+	public String statisticsByDateType(MongoCollection&lt;Document&gt; coll,List&lt;String&gt; groupList,List&lt;Map&lt;String,Object&gt;&gt;  conditionsMapList,Statement statement ) throws ParseException{
+		
+		
+/**------match 操作start**/
+		List&lt;Document&gt; matchList = new ArrayList&lt;Document&gt;();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		String startDateTime = "";
+		long startDtime=0;
+		if(startDate!=null &amp;&amp; !"".equals(startDate.trim())){
+			startDateTime = startDate.trim()+" 00:00:00";
+			Date d1 =  sdf.parse(startDateTime);
+			startDtime = d1.getTime()*1000;
+		}
+		
+		String endDateTime = "";
+		long endDtime=0;
+		if(endDate!=null &amp;&amp; !"".equals(endDate.trim())){
+			endDateTime = endDate.trim()+" 23:59:59";
+			endDtime = sdf.parse(endDateTime).getTime()*1000;
+		}
+		
+				
+		
+		if(conditionsMapList!=null &amp;&amp; conditionsMapList.size()&gt;0){
+			for(Map&lt;String,Object&gt; m: conditionsMapList){
+				
+				String valIns = (String)m.get("valueIns");
+				String[] valInsArr = valIns.split(",");
+				if(valInsArr!=null &amp;&amp; valInsArr.length&gt;0){
+					List&lt;Integer&gt; valInsiList = new ArrayList&lt;Integer&gt;();
+					for(String valInss: valInsArr){
+						int valInsi = Integer.parseInt(valInss);
+						valInsiList.add(valInsi);
+					}
+					
+					matchList.add(new Document((String)m.get("name"), new Document("$in", valInsiList)));
+				}
+				
+			}
+		}
+		
+		if(startDate!=null &amp;&amp; !"".equals(startDate.trim())){
+			matchList.add(new Document("Time", new Document("$gte",startDtime)));
+		}
+		if(endDate!=null &amp;&amp; !"".equals(endDate.trim())){
+			matchList.add(new Document("Time", new Document("$lte",endDtime)));
+		}
+		
+		/*matchList.add(new Document("ProductId", new Document("$gte",10)));
+		matchList.add(new Document("ProductId", new Document("$lte",13)));*/
+		//matchList.add(new Document("GroupId", new Document("$in", Arrays.asList(2,3))));
+		Document timestampRange = new Document("$and", matchList);
+		Document matchObject= new Document("$match", timestampRange);
+		/**------match 操作end**/
+		
+		/**------group 操作start**/
+		Document groupFields =null;
+		Document substrD = null;
+		if("hour".equals(dateSearchType)){
+			substrD = new Document("$substr",Arrays.asList("$Date",0,13));
+			groupFields= new Document("_id",substrD);
+		}
+		if("day".equals(dateSearchType)){
+			 substrD = new Document("$substr",Arrays.asList("$Date",0,10));
+			groupFields= new Document("_id",substrD);
+		}
+		if("month".equals(dateSearchType)){
+			substrD = new Document("$substr",Arrays.asList("$Date",0,7));
+			groupFields= new Document("_id",substrD);
+		}
+		
+		groupFields.append("_id","$ProductId").append("_id", "$ProjectId");
+		//groupFields= new Document("_id","$ProductId").append("_id", "$ProjectId");
+		
+		
+		if(groupList!=null &amp;&amp; groupList.size()&gt;0){
+			for(String groupField:groupList){
+				groupFields.append("_id", "$"+groupField);
+			}
+		}
+		
+		//Document groupFields= new Document("_id","$ProductId").append("_id", "$GroupId");
+		//groupFields.append("Time",new Document("$first","$Time"));
+		if("hour".equals(dateSearchType)){
+			groupFields.append("Time",new Document("$first","$Date"));
+		}else{
+			groupFields.append("Time",new Document("$first",substrD));
+		}
+		groupFields.append("Time",new Document("$first",substrD));
+		groupFields.append("ProductId", new Document("$first","$ProductId") );
+		groupFields.append("ProjectId", new Document("$first","$ProjectId") );
+		groupFields.append("GroupId", new Document("$first","$GroupId") );
+		groupFields.append("CreativeId", new Document("$first","$CreativeId") );
+		groupFields.append("LinkId", new Document("$first","$LinkId") );
+		groupFields.append("AdPosId", new Document("$first","$AdPosId") );
+		
+		groupFields.append("Request", new Document("$sum","$Request"));
+		groupFields.append("ImpNormal", new BasicDBObject("$sum","$ImpNormal"));
+		groupFields.append("ImpInvalid", new BasicDBObject("$sum","$ImpInvalid"));
+		groupFields.append("ImpDuplicate", new BasicDBObject("$sum","$ImpDuplicate"));
+		groupFields.append("ClNormal", new BasicDBObject("$sum","$ClNormal"));
+		groupFields.append("ClkInvalid", new BasicDBObject("$sum","$ClkInvalid"));
+		groupFields.append("ClkDuplicate", new BasicDBObject("$sum","$ClkDuplicate"));
+		groupFields.append("Cost", new BasicDBObject("$sum","$Cost"));
+		Document group= new Document("$group",groupFields);
+		/**------group 操作end**/
+		
+		/**------project 操作start**/
+		
+		Document projectObject= new Document("$project",new Document("ProjectId",2).append("GroupId", "1"));
+		/**------project 操作end**/
+		
+		/**------sort 操作start**/
+		Document sortObject= new Document("$sort",new Document("Time",1).append("GroupID", 1));
+		/**------sort 操作end**/
+		
+		List&lt;Bson&gt; list = new ArrayList&lt;Bson&gt;(); 
+		list.add(matchObject);
+		list.add(group);
+		//list.add(projectObject);
+		list.add(sortObject);
+		
+		
+		StringBuffer tableHtmlBuffer = new StringBuffer();
+		//tableHtmlBuffer.append("&lt;table&gt;");
+		tableHtmlBuffer.append("&lt;thead&gt;");
+		StringBuffer trHtmlBuffer = new StringBuffer();
+		tableHtmlBuffer.append("&lt;tr&gt;&lt;th&gt;"+Constants.TH_API_REPORT_DATE+"&lt;/th&gt;&lt;th&gt;"+Constants.TH_API_PRODUCT+"&lt;/th&gt;&lt;th&gt;"+Constants.TH_API_ADPLAN+"&lt;/th&gt;");
+		if(isCreative!=null &amp;&amp; !"".equals(isCreative.trim())){
+			tableHtmlBuffer.append("&lt;th&gt;"+Constants.TH_API_CREATIVE+"&lt;/th&gt;");
+		}
+	
+		if(isTracklink!=null &amp;&amp; !"".equals(isTracklink.trim())){
+			tableHtmlBuffer.append("&lt;th&gt;"+Constants.TH_API_TRACKLINK+"&lt;/th&gt;");
+		}
+		if(isAdgroup!=null &amp;&amp; !"".equals(isAdgroup.trim())){
+			tableHtmlBuffer.append("&lt;th&gt;"+Constants.TH_API_ADGROUP+"&lt;/th&gt;");
+		}
+		if(isAdPositionIds!=null &amp;&amp; !"".equals(isAdPositionIds.trim())){
+			tableHtmlBuffer.append("&lt;th&gt;"+Constants.TH_API_ADPOSITION+"&lt;/th&gt;");
+		}
+		
+		tableHtmlBuffer.append("&lt;th&gt;"+Constants.TH_API_REQUEST_COUNT+"&lt;/th&gt;&lt;th&gt;"+Constants.TH_API_IMPRESSION_COUNT+"&lt;/th&gt;&lt;th&gt;"+Constants.TH_API_CLICK_COUNT
+				+"&lt;/th&gt;&lt;th&gt;"+Constants.TH_API_IMPRESSION_RATE+"&lt;/th&gt;&lt;th&gt;"+Constants.TTH_API_CLICK_RATE+"&lt;/th&gt;&lt;th&gt;"+Constants.TH_API_COST+"&lt;/th&gt;");
+		tableHtmlBuffer.append("&lt;/tr&gt;");
+		tableHtmlBuffer.append("&lt;/thead&gt;");
+		
+		AggregateIterable&lt;Document&gt; iterator = coll.aggregate(list);
+		tableHtmlBuffer.append("&lt;tbody&gt;");
+		iterator.forEach(new Block&lt;Document&gt;(){
+			@Override
+			public void apply(Document document) {
+				
+				 trHtmlBuffer.append("&lt;tr&gt;");
+				 System.out.println(document.toJson());  
+				/* long dateTimelong = (long)document.get("Time");
+				 SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				 String reportDate = formatter.format(new Date(dateTimelong));*/
+				 String reportDate = document.get("Time").toString();
+				 trHtmlBuffer.append("&lt;td&gt;"+reportDate+"&lt;/td&gt;");
+				//产品
+				 int pid = (int)document.get("ProductId");
+				 String pname = "";
+				 try {
+					ResultSet rs = statement.executeQuery("select PRODUCT_NAME from tab_product  where PRODUCT_ID="+pid);
+					 while(rs.next()){
+						 pname = rs.getString(1);
+				        }
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 
+				 
+				 trHtmlBuffer.append("&lt;td&gt;&lt;a href='../detail/product_detail.html?Id="+pid+"'&gt;"+pid+"-"+pname+"&lt;/a&gt;&lt;/td&gt;");
+				//广告计划
+				 int projectId = (int)document.get("ProjectId");
+				 String adpname = "";
+				 try {
+					ResultSet rs = statement.executeQuery("select ADPLAN_NAME from tab_ad_plan  where ADPLAN_ID="+projectId);
+					 while(rs.next()){
+						 adpname = rs.getString(1);
+				        }
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				 trHtmlBuffer.append("&lt;td&gt;&lt;a href='../detail/adplan_detail.html?Id="+projectId+"'&gt;"+projectId+"-"+adpname+"&lt;/a&gt;&lt;/td&gt;");
+				 
+				 
+			 	if(isCreative!=null &amp;&amp; !"".equals(isCreative.trim())){
+			 		int creativeId = (int)document.get("CreativeId");
+			 		 String creativeName = "";
+					 try {
+						ResultSet rs = statement.executeQuery("select CREATIVE_NAME from tab_creative where CREATIVE_ID="+creativeId);
+						 while(rs.next()){
+							 creativeName = rs.getString(1);
+					        }
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					trHtmlBuffer.append("&lt;td&gt;&lt;a href='../detail/Creative_detail.html?Id="+creativeId+"'&gt;"+creativeId+"-"+creativeName+"&lt;/a&gt;&lt;/td&gt;");
+				}
+			
+				if(isTracklink!=null &amp;&amp; !"".equals(isTracklink.trim())){
+					int tracklinId = (int)document.get("LinkId");
+					 String tracklinkName = "";
+					 try {
+						ResultSet rs = statement.executeQuery("select TRACKLINK_NAME from tab_track_link where TRACKLINK_ID="+tracklinId);
+						 while(rs.next()){
+							 tracklinkName = rs.getString(1);
+					        }
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					trHtmlBuffer.append("&lt;td&gt;&lt;a href='../detail/launchLinks_detail.html?Id="+tracklinId+"'&gt;"+tracklinId+"-"+tracklinkName+"&lt;/a&gt;&lt;/td&gt;");
+				}
+				if(isAdgroup!=null &amp;&amp; !"".equals(isAdgroup.trim())){
+					int groupId = (int)document.get("GroupId");
+					 String groupName = "";
+					 try {
+						ResultSet rs = statement.executeQuery("select ADGROUP_NAME from tab_adgroup where ADGROUP_ID="+groupId);
+						 while(rs.next()){
+							 groupName = rs.getString(1);
+					        }
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					trHtmlBuffer.append("&lt;td&gt;&lt;a href='../detail/adgroup_detail.html?Id="+groupId+"'&gt;"+groupId+"-"+groupName+"&lt;/a&gt;&lt;/td&gt;");
+				}
+				if(isAdPositionIds!=null &amp;&amp; !"".equals(isAdPositionIds.trim())){
+					String adposId= (String)document.get("AdPosId");
+					String adposName = "";
+					 try {
+						 ResultSet rs = statement.executeQuery("select ADP_NAME from tab_ad_position where ADP_ID='"+adposId+"'");
+						 while(rs.next()){
+							 adposName = rs.getString(1);
+					        }
+					} catch (SQLException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					trHtmlBuffer.append("&lt;td&gt;"+adposId+"-"+adposName+"&lt;/td&gt;");
+				}
+				String requestnum = document.get("Request")==null?"0":document.get("Request").toString();
+				trHtmlBuffer.append("&lt;td&gt;"+requestnum+"&lt;/td&gt;");//填充数
+				String impnub = document.get("ImpNormal")==null?"0":document.get("ImpNormal").toString();
+				trHtmlBuffer.append("&lt;td&gt;"+impnub+"&lt;/td&gt;");//展示数
+				String clicknum = document.get("ClNormal")==null?"0":document.get("ClNormal").toString();
+				trHtmlBuffer.append("&lt;td&gt;"+clicknum+"&lt;/td&gt;");//点击数
+				
+				
+				String impressionRate1="0";
+				if(!"0".equals(requestnum) &amp;&amp; !"0".equals(impnub)){
+					double impressionRate = (Double.parseDouble(impnub)/Double.parseDouble(requestnum))*100;
+					DecimalFormat df = new DecimalFormat("0.00");
+					impressionRate1 = df.format(impressionRate);
+				}
+				
+				
+				trHtmlBuffer.append("&lt;td&gt;"+impressionRate1+"&lt;/td&gt;");//展示率
+				
+				String clickRate1="0";
+				if(!"0".equals(impnub) &amp;&amp; !"0".equals(clicknum)){
+					double clickRate = (Double.parseDouble(clicknum)/Double.parseDouble(impnub))*100;
+					DecimalFormat df = new DecimalFormat("0.00");
+					clickRate1 = df.format(clickRate);
+				}
+				
+				trHtmlBuffer.append("&lt;td&gt;"+clickRate1+"&lt;/td&gt;");//点击率
+				
+				/*trHtmlBuffer.append("&lt;td&gt;"+document.get("ImpDuplicate")+"&lt;/td&gt;");
+				trHtmlBuffer.append("&lt;td&gt;"+document.get("ClNormal")+"&lt;/td&gt;");
+				trHtmlBuffer.append("&lt;td&gt;"+document.get("ClkInvalid")+"&lt;/td&gt;");
+				trHtmlBuffer.append("&lt;td&gt;"+document.get("ClkDuplicate")+"&lt;/td&gt;");*/
+				trHtmlBuffer.append("&lt;td&gt;"+document.get("Cost")+"&lt;/td&gt;");//消耗
+				trHtmlBuffer.append("&lt;/tr&gt;");
+				
+			}
+			
+		});
+		tableHtmlBuffer.append(trHtmlBuffer.toString());
+		tableHtmlBuffer.append("&lt;/tbody&gt;");
+		//tableHtmlBuffer.append("&lt;/table&gt;");
+		
+		/*@SuppressWarnings("deprecation")
+		String resultsString = JSON.serialize(iterator);*/
+		
+		return tableHtmlBuffer.toString();
+	}
+
+//准备条件数据
+public void dataPreparation(List&lt;String&gt; groupList,List&lt;Map&lt;String,Object&gt;&gt;  conditionsMapList ){
+		/**************Group fields*****************/
+		/*groupList.add("ProductId");
+		groupList.add("ProjectId");*/
+		
+		if(isCreative!=null &amp;&amp; !"".equals(isCreative.trim())){
+			groupList.add("CreativeId");
+		}
+		
+		if(isTracklink!=null &amp;&amp; !"".equals(isTracklink.trim()) ){
+			groupList.add("LinkId");
+		}
+		
+		if(isAdgroup!=null &amp;&amp; !"".equals(isAdgroup.trim()) ){
+			groupList.add("GroupId");
+		}
+		
+		if(isAdPositionIds!=null &amp;&amp; !"".equals(isAdPositionIds.trim())){
+			groupList.add("AdPosId");
+		}
+		
+		
+		/**************Conditons*****************/
+		if(productIds!=null &amp;&amp; !"".equals(productIds.trim())){
+			Map&lt;String,Object&gt;  conditionsMap = new HashMap&lt;String,Object&gt;();
+			conditionsMap.put("name","ProductId");
+			conditionsMap.put("valueIns",productIds);
+			conditionsMapList.add(conditionsMap);
+		}
+		
+		if(adPlanIds!=null &amp;&amp; !"".equals(adPlanIds.trim())){
+			Map&lt;String,Object&gt;  conditionsMap = new HashMap&lt;String,Object&gt;();
+			conditionsMap.put("name","ProjectId");
+			conditionsMap.put("valueIns",adPlanIds);
+			conditionsMapList.add(conditionsMap);
+		}
+		
+		if(isCreative!=null &amp;&amp; !"".equals(isCreative.trim()) &amp;&amp; creativeIds!=null &amp;&amp; !"".equals(creativeIds.trim())){
+			Map&lt;String,Object&gt;  conditionsMap = new HashMap&lt;String,Object&gt;();
+			conditionsMap.put("name","CreativeId");
+			conditionsMap.put("valueIns",creativeIds);
+			conditionsMapList.add(conditionsMap);
+		}
+		
+		if(isTracklink!=null &amp;&amp; !"".equals(isTracklink.trim()) &amp;&amp; tracklinkIds!=null &amp;&amp; !"".equals(tracklinkIds.trim())){
+			Map&lt;String,Object&gt;  conditionsMap = new HashMap&lt;String,Object&gt;();
+			conditionsMap.put("name","LinkId");
+			conditionsMap.put("valueIns",tracklinkIds);
+			conditionsMapList.add(conditionsMap);
+		}
+		
+		if(isAdgroup!=null &amp;&amp; !"".equals(isAdgroup.trim()) &amp;&amp; adgroupIds!=null &amp;&amp; !"".equals(adgroupIds.trim())){
+			Map&lt;String,Object&gt;  conditionsMap = new HashMap&lt;String,Object&gt;();
+			conditionsMap.put("name","GroupId");
+			conditionsMap.put("valueIns",adgroupIds);
+			conditionsMapList.add(conditionsMap);
+		}
+		
+		if(isAdPositionIds!=null &amp;&amp; !"".equals(isAdPositionIds.trim()) &amp;&amp; adPositionIds!=null &amp;&amp; !"".equals(adPositionIds.trim())){
+			Map&lt;String,Object&gt;  conditionsMap = new HashMap&lt;String,Object&gt;();
+			conditionsMap.put("name","AdPosId");
+			conditionsMap.put("valueIns",adPositionIds);
+			conditionsMapList.add(conditionsMap);
+		}
+	
+		
+	}
+/*
+public class Constants {	
+	
+	public static final String TH_API_REPORT_DATE="时间";
+	public static final String TH_API_PRODUCT="产品";
+	public static final String TH_API_ADPLAN="广告计划";
+	public static final String TH_API_CREATIVE="创意";
+	public static final String TH_API_TRACKLINK="投放链接";
+	public static final String TH_API_ADGROUP="广告组";
+	public static final String TH_API_ADPOSITION="广告位";
+	
+	public static final String TH_API_REQUEST_COUNT="填充数";
+	public static final String TH_API_IMPRESSION_COUNT="展示数";
+	public static final String TH_API_CLICK_COUNT="点击数";
+	public static final String TH_API_IMPRESSION_RATE="展示率";
+	public static final String TTH_API_CLICK_RATE="点击率";
+	public static final String TH_API_COST="消耗";
+	//导出单元格数据类型
+	public static final String CELL_TYPE_NUMERIC="0";//数值型
+	public static final String CELL_TYPE_STRING="1";//文本型
+	
+
+}*/
+
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>startDate</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>endDate</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>productIds</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>adPlanIds</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>creativeIds</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>tracklinkIds</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>adgroupIds</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>adPositionIds</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>isCreative</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>isTracklink</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>isAdgroup</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>isAdPositionIds</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>dateSearchType</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>tableHtmlStr</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>QueryReportsJavaCode$1</name>
+                    <byteCode>yv66vgAAADQA3wkASABlCQBIAGYJAEgAZwoASQBoCABpCgBqAGsJAGwAbQoARgBuCgBvAHAIAHEKAEYAcgoASQBzBwB0CgANAGgIAHUKAA0AdggAdwoADQBzCAB4BwB5CgAUAHoIAHsIAHwKAA0AfQsAfgB/CwCAAIELAIAAggcAgwoAHACECACFCACGCACHCACICACJCACKCACLCQBjAIwKADUAjQoANQCOCACPCACQCACRCQBjAJIIAJMIAJQIAJUJAGMAlggAlwgAmAgAmQkAYwCaCACbBwCcCACdCACeCACfCACgCAChCACiCgCjAKQGQFkAAAAAAAAHAKUIAKYKAD8ApwoAPwCoCACpCgANAKoIAKsHAKwKAEgArQcArgcAsAcAsQEAEHZhbCR0ckh0bWxCdWZmZXIBABhMamF2YS9sYW5nL1N0cmluZ0J1ZmZlcjsBAA12YWwkc3RhdGVtZW50AQAUTGphdmEvc3FsL1N0YXRlbWVudDsBAAZ0aGlzJDABADxMcmVwb3J0c01nL3JlcG9ydHNTZXJ2aWNlL1F1ZXJ5UmVwb3J0cy9RdWVyeVJlcG9ydHNKYXZhQ29kZTsBAAY8aW5pdD4BAGsoTHJlcG9ydHNNZy9yZXBvcnRzU2VydmljZS9RdWVyeVJlcG9ydHMvUXVlcnlSZXBvcnRzSmF2YUNvZGU7TGphdmEvbGFuZy9TdHJpbmdCdWZmZXI7TGphdmEvc3FsL1N0YXRlbWVudDspVgEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAVhcHBseQEAFihMb3JnL2Jzb24vRG9jdW1lbnQ7KVYBAA1TdGFja01hcFRhYmxlBwCuBwCsBwCcBwCyBwCDAQAVKExqYXZhL2xhbmcvT2JqZWN0OylWAQAJU2lnbmF0dXJlAQA6TGphdmEvbGFuZy9PYmplY3Q7TGNvbS9tb25nb2RiL0Jsb2NrPExvcmcvYnNvbi9Eb2N1bWVudDs+OwEAClNvdXJjZUZpbGUBABlRdWVyeVJlcG9ydHNKYXZhQ29kZS5qYXZhAQAPRW5jbG9zaW5nTWV0aG9kBwCzDAC0ALUMAE8AUAwASwBMDABNAE4MAFEAtgEABDx0cj4HALcMALgAuQcAugwAuwC8DAC9AL4HAL8MAMAAwQEABFRpbWUMAMIAwwwAxAC+AQAXamF2YS9sYW5nL1N0cmluZ0J1aWxkZXIBAAQ8dGQ+DAC4AMUBAAU8L3RkPgEACVByb2R1Y3RJZAEAEWphdmEvbGFuZy9JbnRlZ2VyDADGAMcBAAABADdzZWxlY3QgUFJPRFVDVF9OQU1FIGZyb20gdGFiX3Byb2R1Y3QgIHdoZXJlIFBST0RVQ1RfSUQ9DAC4AMgHAMkMAMoAywcAsgwAzADNDADOAM8BABVqYXZhL3NxbC9TUUxFeGNlcHRpb24MANAAtgEALjx0ZD48YSBocmVmPScuLi9kZXRhaWwvcHJvZHVjdF9kZXRhaWwuaHRtbD9JZD0BAAInPgEAAS0BAAk8L2E+PC90ZD4BAAlQcm9qZWN0SWQBADVzZWxlY3QgQURQTEFOX05BTUUgZnJvbSB0YWJfYWRfcGxhbiAgd2hlcmUgQURQTEFOX0lEPQEALTx0ZD48YSBocmVmPScuLi9kZXRhaWwvYWRwbGFuX2RldGFpbC5odG1sP0lkPQwA0QDSDADTAL4MANQA1QEACkNyZWF0aXZlSWQBADlzZWxlY3QgQ1JFQVRJVkVfTkFNRSBmcm9tIHRhYl9jcmVhdGl2ZSB3aGVyZSBDUkVBVElWRV9JRD0BAC88dGQ+PGEgaHJlZj0nLi4vZGV0YWlsL0NyZWF0aXZlX2RldGFpbC5odG1sP0lkPQwA1gDSAQAGTGlua0lkAQA9c2VsZWN0IFRSQUNLTElOS19OQU1FIGZyb20gdGFiX3RyYWNrX2xpbmsgd2hlcmUgVFJBQ0tMSU5LX0lEPQEAMjx0ZD48YSBocmVmPScuLi9kZXRhaWwvbGF1bmNoTGlua3NfZGV0YWlsLmh0bWw/SWQ9DADXANIBAAdHcm91cElkAQA2c2VsZWN0IEFER1JPVVBfTkFNRSBmcm9tIHRhYl9hZGdyb3VwIHdoZXJlIEFER1JPVVBfSUQ9AQAuPHRkPjxhIGhyZWY9Jy4uL2RldGFpbC9hZGdyb3VwX2RldGFpbC5odG1sP0lkPQwA2ADSAQAHQWRQb3NJZAEAEGphdmEvbGFuZy9TdHJpbmcBADNzZWxlY3QgQURQX05BTUUgZnJvbSB0YWJfYWRfcG9zaXRpb24gd2hlcmUgQURQX0lEPScBAAEnAQAHUmVxdWVzdAEAATABAAlJbXBOb3JtYWwBAAhDbE5vcm1hbAcA2QwA2gDbAQAXamF2YS90ZXh0L0RlY2ltYWxGb3JtYXQBAAQwLjAwDABRAMEMANwA3QEABENvc3QMALgA3gEABTwvdHI+AQARb3JnL2Jzb24vRG9jdW1lbnQMAFUAVgEAPHJlcG9ydHNNZy9yZXBvcnRzU2VydmljZS9RdWVyeVJlcG9ydHMvUXVlcnlSZXBvcnRzSmF2YUNvZGUkMQEADElubmVyQ2xhc3NlcwEAEGphdmEvbGFuZy9PYmplY3QBABFjb20vbW9uZ29kYi9CbG9jawEAEmphdmEvc3FsL1Jlc3VsdFNldAEAOnJlcG9ydHNNZy9yZXBvcnRzU2VydmljZS9RdWVyeVJlcG9ydHMvUXVlcnlSZXBvcnRzSmF2YUNvZGUBABRzdGF0aXN0aWNzQnlEYXRlVHlwZQEAbChMY29tL21vbmdvZGIvY2xpZW50L01vbmdvQ29sbGVjdGlvbjtMamF2YS91dGlsL0xpc3Q7TGphdmEvdXRpbC9MaXN0O0xqYXZhL3NxbC9TdGF0ZW1lbnQ7KUxqYXZhL2xhbmcvU3RyaW5nOwEAAygpVgEAFmphdmEvbGFuZy9TdHJpbmdCdWZmZXIBAAZhcHBlbmQBACwoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVmZmVyOwEAEGphdmEvbGFuZy9TeXN0ZW0BAANvdXQBABVMamF2YS9pby9QcmludFN0cmVhbTsBAAZ0b0pzb24BABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEAE2phdmEvaW8vUHJpbnRTdHJlYW0BAAdwcmludGxuAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQADZ2V0AQAmKExqYXZhL2xhbmcvT2JqZWN0OylMamF2YS9sYW5nL09iamVjdDsBAAh0b1N0cmluZwEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEACGludFZhbHVlAQADKClJAQAcKEkpTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEAEmphdmEvc3FsL1N0YXRlbWVudAEADGV4ZWN1dGVRdWVyeQEAKChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvc3FsL1Jlc3VsdFNldDsBAARuZXh0AQADKCla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</byteCode>
+                </class>
+                <class>
+                    <name>QueryReportsJavaCode</name>
+                    <byteCode>yv66vgAAADQByAkAlwDkCQCXAOUJAJcA5gkAlwDnCQCXAOgJAJcA6QkAlwDqCQCXAOsJAJcA7AkAlwDtCQCXAO4JAJcA7wkAlwDwCQCXAPEKAJgA8ggA8wgA9AgA9QgA9goAQgD3CgAaAPgHAPkIAPoKABYA+wcA/AcA/QoA/gD/CgAZAQAIAQEKABkBAggBAwsBBAEFBwEGCgAhAPIIAQcIAQgIAQkIAQoKAQsBDAoBDQEOCwEPARAKAJcBEQoAlwESBwETCAEUCgAsARUKAEIBFgoAQgEXBwEYCgAxAPIKADEBGQgBGgoAMQEbCgAsARwKAR0BHgUAAAAAAAAD6AgBHwsBIAEhCwEgASILASMBJAsBIwElBwEmCAEnCwA/ASgHASkIASoKAEIBKwoBLAEtCgEsAS4LASABLwcBMAgBMQgBMgoASAEzCAE0CAE1CgE2ATcIATgIATkIAToIATsIATwHAT0IAT4IAT8IAUAIAUEIAUIKAEgBQwgBRAgBRQgBRggBRwgBSAgBSQgBSggBSwgBTAgBTQgBTggBTwgBUAgBUQgBUggBUwgBVAcBVQgBVgoAbAEzCAFXCAFYCAFZCAFaCAFbCAFcCAFdCAFeCAFfCAFgCAFhCAFiCAFjCAFkCAFlCAFmCAFnBwFoCgCAAPIIAWkKAIABagcBawgBbAgBbQgBbggBbwgBcAgBcQgBcggBcwsBdAF1CAF2BwF3CgCPAXgLAXkBegoAgAEbCAF7BwF8CgCUAPILAD8BfQcBfgcBfwEADElubmVyQ2xhc3NlcwEACXN0YXJ0RGF0ZQEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAB2VuZERhdGUBAApwcm9kdWN0SWRzAQAJYWRQbGFuSWRzAQALY3JlYXRpdmVJZHMBAAx0cmFja2xpbmtJZHMBAAphZGdyb3VwSWRzAQANYWRQb3NpdGlvbklkcwEACmlzQ3JlYXRpdmUBAAtpc1RyYWNrbGluawEACWlzQWRncm91cAEAD2lzQWRQb3NpdGlvbklkcwEADmRhdGVTZWFyY2hUeXBlAQAMdGFibGVIdG1sU3RyAQAMZ2V0c3RhcnREYXRlAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAMc2V0c3RhcnREYXRlAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAKZ2V0ZW5kRGF0ZQEACnNldGVuZERhdGUBAA1nZXRwcm9kdWN0SWRzAQANc2V0cHJvZHVjdElkcwEADGdldGFkUGxhbklkcwEADHNldGFkUGxhbklkcwEADmdldGNyZWF0aXZlSWRzAQAOc2V0Y3JlYXRpdmVJZHMBAA9nZXR0cmFja2xpbmtJZHMBAA9zZXR0cmFja2xpbmtJZHMBAA1nZXRhZGdyb3VwSWRzAQANc2V0YWRncm91cElkcwEAEGdldGFkUG9zaXRpb25JZHMBABBzZXRhZFBvc2l0aW9uSWRzAQANZ2V0aXNDcmVhdGl2ZQEADXNldGlzQ3JlYXRpdmUBAA5nZXRpc1RyYWNrbGluawEADnNldGlzVHJhY2tsaW5rAQAMZ2V0aXNBZGdyb3VwAQAMc2V0aXNBZGdyb3VwAQASZ2V0aXNBZFBvc2l0aW9uSWRzAQASc2V0aXNBZFBvc2l0aW9uSWRzAQARZ2V0ZGF0ZVNlYXJjaFR5cGUBABFzZXRkYXRlU2VhcmNoVHlwZQEAD2dldHRhYmxlSHRtbFN0cgEAD3NldHRhYmxlSHRtbFN0cgEABjxpbml0PgEAAygpVgEABmludm9rZQEACkV4Y2VwdGlvbnMHAYABABRzdGF0aXN0aWNzQnlEYXRlVHlwZQEAbChMY29tL21vbmdvZGIvY2xpZW50L01vbmdvQ29sbGVjdGlvbjtMamF2YS91dGlsL0xpc3Q7TGphdmEvdXRpbC9MaXN0O0xqYXZhL3NxbC9TdGF0ZW1lbnQ7KUxqYXZhL2xhbmcvU3RyaW5nOwEADVN0YWNrTWFwVGFibGUHAX4HAYEHAYIHAYMHARMHASkHAYQHASYHAYUHATAHAWgHAYYBAAlTaWduYXR1cmUBAMwoTGNvbS9tb25nb2RiL2NsaWVudC9Nb25nb0NvbGxlY3Rpb248TG9yZy9ic29uL0RvY3VtZW50Oz47TGphdmEvdXRpbC9MaXN0PExqYXZhL2xhbmcvU3RyaW5nOz47TGphdmEvdXRpbC9MaXN0PExqYXZhL3V0aWwvTWFwPExqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL2xhbmcvT2JqZWN0Oz47PjtMamF2YS9zcWwvU3RhdGVtZW50OylMamF2YS9sYW5nL1N0cmluZzsBAA9kYXRhUHJlcGFyYXRpb24BACMoTGphdmEvdXRpbC9MaXN0O0xqYXZhL3V0aWwvTGlzdDspVgEAbihMamF2YS91dGlsL0xpc3Q8TGphdmEvbGFuZy9TdHJpbmc7PjtMamF2YS91dGlsL0xpc3Q8TGphdmEvdXRpbC9NYXA8TGphdmEvbGFuZy9TdHJpbmc7TGphdmEvbGFuZy9PYmplY3Q7Pjs+OylWAQAKU291cmNlRmlsZQEAGVF1ZXJ5UmVwb3J0c0phdmFDb2RlLmphdmEMAJoAmwwAnACbDACdAJsMAJ4AmwwAnwCbDACgAJsMAKEAmwwAogCbDACjAJsMAKQAmwwApQCbDACmAJsMAKcAmwwAqACbDADJAMoBAAABAAltY2FkbnJvb3QBAAVhZG1pbgEAF1FpYWdOVDEyclJ6N3k5bWNhZG5yb290DAGHAYgMAYkBigEAGWNvbS9tb25nb2RiL1NlcnZlckFkZHJlc3MBAA4xMDEuMjAwLjU2LjEwMgwAyQGLAQAXY29tL21vbmdvZGIvTW9uZ29DbGllbnQBABtjb20vbW9uZ29kYi9Nb25nb0NyZWRlbnRpYWwHAYwMAY0BjgwAyQGPAQAIQWRuU3RhdHMMAZABkQEACGFkbnN0YXRzBwGSDAGTAZQBABNqYXZhL3V0aWwvQXJyYXlMaXN0AQAVY29tLm15c3FsLmpkYmMuRHJpdmVyAQAjamRiYzpteXNxbDovL2xvY2FsaG9zdDozMzA2L21jZGIzLjABAARyb290AQAEbW9uYQcBlQwBlgGXBwGYDAGZAZoHAZsMAZwBnQwA3wDgDADOAM8BABpqYXZhL3RleHQvU2ltcGxlRGF0ZUZvcm1hdAEAE3l5eXktTU0tZGQgSEg6bW06c3MMAMkArgwBngCqDAGfAaABABdqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcgwBoQGiAQAJIDAwOjAwOjAwDAGjAKoMAaQBpQcBpgwBpwGoAQAJIDIzOjU5OjU5BwGCDAGpAaoMAasBrAcBhAwBrQGuDAGvAbABAA1qYXZhL3V0aWwvTWFwAQAIdmFsdWVJbnMMAbEBsgEAEGphdmEvbGFuZy9TdHJpbmcBAAEsDAGzAbQHAbUMAbYBtwwBuAG5DAG6AaABABFvcmcvYnNvbi9Eb2N1bWVudAEABG5hbWUBAAMkaW4MAMkBuwEABFRpbWUBAAQkZ3RlBwG8DAG4Ab0BAAQkbHRlAQAEJGFuZAEABiRtYXRjaAEABGhvdXIBAAckc3Vic3RyAQAUamF2YS9pby9TZXJpYWxpemFibGUBAAUkRGF0ZQEAA19pZAEAA2RheQEABW1vbnRoAQAKJFByb2R1Y3RJZAwBoQG+AQAKJFByb2plY3RJZAEAASQBAAYkZmlyc3QBAAlQcm9kdWN0SWQBAAlQcm9qZWN0SWQBAAdHcm91cElkAQAIJEdyb3VwSWQBAApDcmVhdGl2ZUlkAQALJENyZWF0aXZlSWQBAAZMaW5rSWQBAAckTGlua0lkAQAHQWRQb3NJZAEACCRBZFBvc0lkAQAHUmVxdWVzdAEABCRzdW0BAAgkUmVxdWVzdAEACUltcE5vcm1hbAEAGWNvbS9tb25nb2RiL0Jhc2ljREJPYmplY3QBAAokSW1wTm9ybWFsAQAKSW1wSW52YWxpZAEACyRJbXBJbnZhbGlkAQAMSW1wRHVwbGljYXRlAQANJEltcER1cGxpY2F0ZQEACENsTm9ybWFsAQAJJENsTm9ybWFsAQAKQ2xrSW52YWxpZAEACyRDbGtJbnZhbGlkAQAMQ2xrRHVwbGljYXRlAQANJENsa0R1cGxpY2F0ZQEABENvc3QBAAUkQ29zdAEABiRncm91cAEACCRwcm9qZWN0AQABMQEABSRzb3J0AQAHR3JvdXBJRAEAFmphdmEvbGFuZy9TdHJpbmdCdWZmZXIBAAc8dGhlYWQ+DAGhAb8BABhjb20vdG0vbWMvdXRpbC9Db25zdGFudHMBADc8dHI+PHRoPuaXtumXtDwvdGg+PHRoPuS6p+WTgTwvdGg+PHRoPuW5v+WRiuiuoeWIkjwvdGg+AQAPPHRoPuWIm+aEjzwvdGg+AQAVPHRoPuaKleaUvumTvuaOpTwvdGg+AQASPHRoPuW5v+WRiue7hDwvdGg+AQASPHRoPuW5v+WRiuS9jTwvdGg+AQBpPHRoPuWhq+WFheaVsDwvdGg+PHRoPuWxleekuuaVsDwvdGg+PHRoPueCueWHu+aVsDwvdGg+PHRoPuWxleekuueOhzwvdGg+PHRoPueCueWHu+eOhzwvdGg+PHRoPua2iOiAlzwvdGg+AQAFPC90cj4BAAg8L3RoZWFkPgcBgQwBwAHBAQAHPHRib2R5PgEAPHJlcG9ydHNNZy9yZXBvcnRzU2VydmljZS9RdWVyeVJlcG9ydHMvUXVlcnlSZXBvcnRzSmF2YUNvZGUkMQwAyQHCBwHDDAHEAcUBAAg8L3Rib2R5PgEAEWphdmEvdXRpbC9IYXNoTWFwDAHGAccBADpyZXBvcnRzTWcvcmVwb3J0c1NlcnZpY2UvUXVlcnlSZXBvcnRzL1F1ZXJ5UmVwb3J0c0phdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BACJjb20vbW9uZ29kYi9jbGllbnQvTW9uZ29Db2xsZWN0aW9uAQAOamF2YS91dGlsL0xpc3QBABJqYXZhL3NxbC9TdGF0ZW1lbnQBABJqYXZhL3V0aWwvSXRlcmF0b3IBABNbTGphdmEvbGFuZy9TdHJpbmc7AQAYamF2YS90ZXh0L1BhcnNlRXhjZXB0aW9uAQALdG9DaGFyQXJyYXkBAAQoKVtDAQAQY3JlYXRlQ3JlZGVudGlhbAEARShMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztbQylMY29tL21vbmdvZGIvTW9uZ29DcmVkZW50aWFsOwEAFihMamF2YS9sYW5nL1N0cmluZztJKVYBABBqYXZhL3V0aWwvQXJyYXlzAQAGYXNMaXN0AQAlKFtMamF2YS9sYW5nL09iamVjdDspTGphdmEvdXRpbC9MaXN0OwEALihMY29tL21vbmdvZGIvU2VydmVyQWRkcmVzcztMamF2YS91dGlsL0xpc3Q7KVYBAAtnZXREYXRhYmFzZQEANihMamF2YS9sYW5nL1N0cmluZzspTGNvbS9tb25nb2RiL2NsaWVudC9Nb25nb0RhdGFiYXNlOwEAIGNvbS9tb25nb2RiL2NsaWVudC9Nb25nb0RhdGFiYXNlAQANZ2V0Q29sbGVjdGlvbgEAOChMamF2YS9sYW5nL1N0cmluZzspTGNvbS9tb25nb2RiL2NsaWVudC9Nb25nb0NvbGxlY3Rpb247AQAPamF2YS9sYW5nL0NsYXNzAQAHZm9yTmFtZQEAJShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9DbGFzczsBABZqYXZhL3NxbC9Ecml2ZXJNYW5hZ2VyAQANZ2V0Q29ubmVjdGlvbgEATShMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvc3FsL0Nvbm5lY3Rpb247AQATamF2YS9zcWwvQ29ubmVjdGlvbgEAD2NyZWF0ZVN0YXRlbWVudAEAFigpTGphdmEvc3FsL1N0YXRlbWVudDsBAAR0cmltAQAGZXF1YWxzAQAVKExqYXZhL2xhbmcvT2JqZWN0OylaAQAGYXBwZW5kAQAtKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1aWxkZXI7AQAIdG9TdHJpbmcBAAVwYXJzZQEAJChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvdXRpbC9EYXRlOwEADmphdmEvdXRpbC9EYXRlAQAHZ2V0VGltZQEAAygpSgEABHNpemUBAAMoKUkBAAhpdGVyYXRvcgEAFigpTGphdmEvdXRpbC9JdGVyYXRvcjsBAAdoYXNOZXh0AQADKClaAQAEbmV4dAEAFCgpTGphdmEvbGFuZy9PYmplY3Q7AQADZ2V0AQAmKExqYXZhL2xhbmcvT2JqZWN0OylMamF2YS9sYW5nL09iamVjdDsBAAVzcGxpdAEAJyhMamF2YS9sYW5nL1N0cmluZzspW0xqYXZhL2xhbmcvU3RyaW5nOwEAEWphdmEvbGFuZy9JbnRlZ2VyAQAIcGFyc2VJbnQBABUoTGphdmEvbGFuZy9TdHJpbmc7KUkBAAd2YWx1ZU9mAQAWKEkpTGphdmEvbGFuZy9JbnRlZ2VyOwEAA2FkZAEAJyhMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL09iamVjdDspVgEADmphdmEvbGFuZy9Mb25nAQATKEopTGphdmEvbGFuZy9Mb25nOwEAOShMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL09iamVjdDspTG9yZy9ic29uL0RvY3VtZW50OwEALChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWZmZXI7AQAJYWdncmVnYXRlAQA4KExqYXZhL3V0aWwvTGlzdDspTGNvbS9tb25nb2RiL2NsaWVudC9BZ2dyZWdhdGVJdGVyYWJsZTsBAGsoTHJlcG9ydHNNZy9yZXBvcnRzU2VydmljZS9RdWVyeVJlcG9ydHMvUXVlcnlSZXBvcnRzSmF2YUNvZGU7TGphdmEvbGFuZy9TdHJpbmdCdWZmZXI7TGphdmEvc3FsL1N0YXRlbWVudDspVgEAJGNvbS9tb25nb2RiL2NsaWVudC9BZ2dyZWdhdGVJdGVyYWJsZQEAB2ZvckVhY2gBABYoTGNvbS9tb25nb2RiL0Jsb2NrOylWAQADcHV0AQA4KExqYXZhL2xhbmcvT2JqZWN0O0xqYXZhL2xhbmcvT2JqZWN0OylMamF2YS9sYW5nL09iamVjdDsAIQCXAJgAAAAOAAQAmgCbAAAABACcAJsAAAAEAJ0AmwAAAAQAngCbAAAABACfAJsAAAAEAKAAmwAAAAQAoQCbAAAABACiAJsAAAAEAKMAmwAAAAQApACbAAAABAClAJsAAAAEAKYAmwAAAAQApwCbAAAABACoAJsAAAAgAAEAqQCqAAEAqwAAAB0AAQABAAAABSq0AAGwAAAAAQCsAAAABgABAAAAMwABAK0ArgABAKsAAAAiAAIAAgAAAAYqK7UAAbEAAAABAKwAAAAKAAIAAAA2AAUANwABAK8AqgABAKsAAAAdAAEAAQAAAAUqtAACsAAAAAEArAAAAAYAAQAAADkAAQCwAK4AAQCrAAAAIgACAAIAAAAGKiu1AAKxAAAAAQCsAAAACgACAAAAPAAFAD0AAQCxAKoAAQCrAAAAHQABAAEAAAAFKrQAA7AAAAABAKwAAAAGAAEAAAA/AAEAsgCuAAEAqwAAACIAAgACAAAABiortQADsQAAAAEArAAAAAoAAgAAAEIABQBDAAEAswCqAAEAqwAAAB0AAQABAAAABSq0AASwAAAAAQCsAAAABgABAAAARQABALQArgABAKsAAAAiAAIAAgAAAAYqK7UABLEAAAABAKwAAAAKAAIAAABIAAUASQABALUAqgABAKsAAAAdAAEAAQAAAAUqtAAFsAAAAAEArAAAAAYAAQAAAEsAAQC2AK4AAQCrAAAAIgACAAIAAAAGKiu1AAWxAAAAAQCsAAAACgACAAAATgAFAE8AAQC3AKoAAQCrAAAAHQABAAEAAAAFKrQABrAAAAABAKwAAAAGAAEAAABRAAEAuACuAAEAqwAAACIAAgACAAAABiortQAGsQAAAAEArAAAAAoAAgAAAFQABQBVAAEAuQCqAAEAqwAAAB0AAQABAAAABSq0AAewAAAAAQCsAAAABgABAAAAVwABALoArgABAKsAAAAiAAIAAgAAAAYqK7UAB7EAAAABAKwAAAAKAAIAAABaAAUAWwABALsAqgABAKsAAAAdAAEAAQAAAAUqtAAIsAAAAAEArAAAAAYAAQAAAF0AAQC8AK4AAQCrAAAAIgACAAIAAAAGKiu1AAixAAAAAQCsAAAACgACAAAAYAAFAGEAAQC9AKoAAQCrAAAAHQABAAEAAAAFKrQACbAAAAABAKwAAAAGAAEAAABjAAEAvgCuAAEAqwAAACIAAgACAAAABiortQAJsQAAAAEArAAAAAoAAgAAAGYABQBnAAEAvwCqAAEAqwAAAB0AAQABAAAABSq0AAqwAAAAAQCsAAAABgABAAAAaQABAMAArgABAKsAAAAiAAIAAgAAAAYqK7UACrEAAAABAKwAAAAKAAIAAABsAAUAbQABAMEAqgABAKsAAAAdAAEAAQAAAAUqtAALsAAAAAEArAAAAAYAAQAAAG8AAQDCAK4AAQCrAAAAIgACAAIAAAAGKiu1AAuxAAAAAQCsAAAACgACAAAAcgAFAHMAAQDDAKoAAQCrAAAAHQABAAEAAAAFKrQADLAAAAABAKwAAAAGAAEAAAB1AAEAxACuAAEAqwAAACIAAgACAAAABiortQAMsQAAAAEArAAAAAoAAgAAAHgABQB5AAEAxQCqAAEAqwAAAB0AAQABAAAABSq0AA2wAAAAAQCsAAAABgABAAAAewABAMYArgABAKsAAAAiAAIAAgAAAAYqK7UADbEAAAABAKwAAAAKAAIAAAB+AAUAfwABAMcAqgABAKsAAAAdAAEAAQAAAAUqtAAOsAAAAAEArAAAAAYAAQAAAIEAAQDIAK4AAQCrAAAAIgACAAIAAAAGKiu1AA6xAAAAAQCsAAAACgACAAAAhAAFAIUAAQDJAMoAAQCrAAAArQACAAEAAABZKrcADyoSELUAASoSELUAAioSELUAAyoSELUABCoSELUABSoSELUABioSELUAByoSELUACCoSELUACSoSELUACioSELUACyoSELUADCoSELUADSoSELUADrEAAAABAKwAAABCABAAAACHAAQAJAAKACUAEAAmABYAJwAcACgAIgApACgAKgAuACsANAAsADoALQBAAC4ARgAvAEwAMABSADEAWACIAAEAywDKAAIAqwAAAO4ABwAOAAAAlhIREhISE7YAFLgAFUy7ABZZEhcRbXG3ABhNuwAZWSwEvQAaWQMrU7gAG7cAHE4tEh22AB46BBkEEh+5ACACADoFuwAhWbcAIjoGuwAhWbcAIjoHEiM6CRIkOgoSJToLEiY6DBkJuAAnVxkKGQsZDLgAKDoIGQi5ACkBADoNKhkGGQe2ACoqKhkFGQYZBxkNtgArtQAOsQAAAAEArAAAAEYAEQAAAJoADQCbABoAnAAuAJ0ANgCeAEEAoABKAKEAUwCkAFcApQBbAKYAXwCnAGMAqABpAKkAdACqAH0AqwCFAKwAlQCtAMwAAAAEAAEAzQABAM4AzwADAKsAAAhZAAkAGAAABbO7ACFZtwAiOgW7ACxZEi23AC46BhIQOgcJNwgqtAABxgBBEhAqtAABtgAvtgAwmgAyuwAxWbcAMiq0AAG2AC+2ADMSNLYAM7YANToHGQYZB7YANjoKGQq2ADcUADhpNwgSEDoKCTcLKrQAAsYAPRIQKrQAArYAL7YAMJoALrsAMVm3ADIqtAACtgAvtgAzEjq2ADO2ADU6ChkGGQq2ADa2ADcUADhpNwstxgCyLbkAOwEAngCpLbkAPAEAOg0ZDbkAPQEAmQCXGQ25AD4BAMAAPzoOGQ4SQLkAQQIAwABCOg8ZDxJDtgBEOhAZEMYAbBkQvp4AZrsAIVm3ACI6ERkQOhIZEr42EwM2FBUUFROiACQZEhUUMjoVGRW4AEU2FhkRFRa4AEa5AEcCAFeEFAGn/9sZBbsASFkZDhJJuQBBAgDAAEK7AEhZEkoZEbcAS7cAS7kARwIAV6f/ZSq0AAHGADESECq0AAG2AC+2ADCaACIZBbsASFkSTLsASFkSTRYIuABOtwBLtwBLuQBHAgBXKrQAAsYAMRIQKrQAArYAL7YAMJoAIhkFuwBIWRJMuwBIWRJPFgu4AE63AEu3AEu5AEcCAFe7AEhZElAZBbcASzoNuwBIWRJRGQ23AEs6DgE6DwE6EBJSKrQADbYAMJkANrsASFkSUwa9AFRZAxJVU1kEA7gARlNZBRANuABGU7gAG7cASzoQuwBIWRJWGRC3AEs6DxJXKrQADbYAMJkANrsASFkSUwa9AFRZAxJVU1kEA7gARlNZBRAKuABGU7gAG7cASzoQuwBIWRJWGRC3AEs6DxJYKrQADbYAMJkANrsASFkSUwa9AFRZAxJVU1kEA7gARlNZBRAHuABGU7gAG7cASzoQuwBIWRJWGRC3AEs6DxkPElYSWbYAWhJWElu2AFpXLMYASSy5ADsBAJ4AQCy5ADwBADoRGRG5AD0BAJkALhkRuQA+AQDAAEI6EhkPEla7ADFZtwAyEly2ADMZErYAM7YANbYAWlen/84SUiq0AA22ADCZABkZDxJMuwBIWRJdElW3AEu2AFpXpwAWGQ8STLsASFkSXRkQtwBLtgBaVxkPEky7AEhZEl0ZELcAS7YAWlcZDxJeuwBIWRJdElm3AEu2AFpXGQ8SX7sASFkSXRJbtwBLtgBaVxkPEmC7AEhZEl0SYbcAS7YAWlcZDxJiuwBIWRJdEmO3AEu2AFpXGQ8SZLsASFkSXRJltwBLtgBaVxkPEma7AEhZEl0SZ7cAS7YAWlcZDxJouwBIWRJpEmq3AEu2AFpXGQ8Sa7sAbFkSaRJttwButgBaVxkPEm+7AGxZEmkScLcAbrYAWlcZDxJxuwBsWRJpEnK3AG62AFpXGQ8Sc7sAbFkSaRJ0twButgBaVxkPEnW7AGxZEmkSdrcAbrYAWlcZDxJ3uwBsWRJpEni3AG62AFpXGQ8SebsAbFkSaRJ6twButgBaV7sASFkSexkPtwBLOhG7AEhZEny7AEhZEl8FuABGtwBLEmASfbYAWrcASzoSuwBIWRJ+uwBIWRJMBLgARrcASxJ/BLgARrYAWrcASzoTuwAhWbcAIjoUGRQZDrkARwIAVxkUGRG5AEcCAFcZFBkTuQBHAgBXuwCAWbcAgToVGRUSgrYAg1e7AIBZtwCBOhYZFRKFtgCDVyq0AAnGABoSECq0AAm2AC+2ADCaAAsZFRKGtgCDVyq0AArGABoSECq0AAq2AC+2ADCaAAsZFRKHtgCDVyq0AAvGABoSECq0AAu2AC+2ADCaAAsZFRKItgCDVyq0AAzGABoSECq0AAy2AC+2ADCaAAsZFRKJtgCDVxkVEoq2AINXGRUSi7YAg1cZFRKMtgCDVysZFLkAjQIAOhcZFRKOtgCDVxkXuwCPWSoZFhkEtwCQuQCRAgAZFRkWtgCStgCDVxkVEpO2AINXGRW2AJKwAAAAAgCsAAABdgBdAAAAtgAJALcAFAC5ABgAugAbALsAMQC8AEwAvQBVAL4AYADBAGQAwgBnAMMAfQDEAJgAxQCoAMoAtQDLANMAzQDhAM4A6gDPAPUA0AD+ANEBGADSAR8A0wEsANEBMgDWAVgA2QFbANwBcQDdAZAA3wGmAOABxQDmAdIA5wHfAOsB4gDsAeUA7QHxAO4CFwDvAiQA8QIwAPICVgDzAmMA9QJvAPYClQD3AqIA+gKzAP4CwAD/At4BAAL6AQEC/QEGAwkBBwMfAQkDMgELA0UBDANYAQ0DawEOA34BDwORARADpAERA7cBEwPKARQD3QEVA/ABFgQDARcEFgEYBCkBGQQ8ARoETwEbBFwBIAR7ASQEnAEnBKUBKASvASkEuQErBMMBLgTMATAE1AExBN0BMgTlATME+wE0BQMBNwUZATgFIQE6BTcBOwU/AT0FVQE+BV0BQQVlAUMFbQFEBXUBRgV/AUcFhwFIBZoBzwWlAdAFrQHWANAAAAEYABT/AGAACQcA0QcA0gcA0wcA0wcA1AcA0wcA1QcA1gQAAP0ARwcA1gT8ABQHANf/AEwAEwcA0QcA0gcA0wcA0wcA1AcA0wcA1QcA1gQHANYEBwDXBwDYBwDWBwDZBwDTBwDZAQEAAPgAJ/8AJQAMBwDRBwDSBwDTBwDTBwDUBwDTBwDVBwDWBAcA1gQHANcAAPoAAjQ0/wBeAA8HANEHANIHANMHANMHANQHANMHANUHANYEBwDWBAcA2gcA2gcA2gcA2gAAPj78ACUHANf6ADQhEv8B0AAVBwDRBwDSBwDTBwDTBwDUBwDTBwDVBwDWBAcA1gQHANoHANoHANoHANoHANoHANoHANoHANMHANsHANsAAB0dHQDMAAAABAABANwA3QAAAAIA3gABAN8A4AACAKsAAAMTAAMABAAAAkkqtAAJxgAbEhAqtAAJtgAvtgAwmgAMKxJiuQBHAgBXKrQACsYAGxIQKrQACrYAL7YAMJoADCsSZLkARwIAVyq0AAvGABsSECq0AAu2AC+2ADCaAAwrEmC5AEcCAFcqtAAMxgAbEhAqtAAMtgAvtgAwmgAMKxJmuQBHAgBXKrQAA8YAOhIQKrQAA7YAL7YAMJoAK7sAlFm3AJVOLRJJEl65AJYDAFctEkAqtAADuQCWAwBXLC25AEcCAFcqtAAExgA6EhAqtAAEtgAvtgAwmgAruwCUWbcAlU4tEkkSX7kAlgMAVy0SQCq0AAS5AJYDAFcsLbkARwIAVyq0AAnGAFASECq0AAm2AC+2ADCaAEEqtAAFxgA6EhAqtAAFtgAvtgAwmgAruwCUWbcAlU4tEkkSYrkAlgMAVy0SQCq0AAW5AJYDAFcsLbkARwIAVyq0AArGAFASECq0AAq2AC+2ADCaAEEqtAAGxgA6EhAqtAAGtgAvtgAwmgAruwCUWbcAlU4tEkkSZLkAlgMAVy0SQCq0AAa5AJYDAFcsLbkARwIAVyq0AAvGAFASECq0AAu2AC+2ADCaAEEqtAAHxgA6EhAqtAAHtgAvtgAwmgAruwCUWbcAlU4tEkkSYLkAlgMAVy0SQCq0AAe5AJYDAFcsLbkARwIAVyq0AAzGAFASECq0AAy2AC+2ADCaAEEqtAAIxgA6EhAqtAAItgAvtgAwmgAruwCUWbcAlU4tEkkSZrkAlgMAVy0SQCq0AAi5AJYDAFcsLbkARwIAV7EAAAACAKwAAACeACcAAAHfABYB4AAfAeMANQHkAD4B5wBUAegAXQHrAHMB7AB8AfEAkgHyAJoB8wClAfQAsgH1ALoB+ADQAfkA2AH6AOMB+wDwAfwA+AH/ASQCAAEsAgEBNwICAUQCAwFMAgYBeAIHAYACCAGLAgkBmAIKAaACDQHMAg4B1AIPAd8CEAHsAhEB9AIUAiACFQIoAhYCMwIXAkACGAJIAhwA0AAAABQACh8eHh49PfsAU/sAU/sAU/sAUwDdAAAAAgDhAAIA4gAAAAIA4wCZAAAACgABAI8AAAAAAAA=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:endDate">
+                    <endDate>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:endDate"/>
+                    </endDate>
+                </xsl:if>
+                <xsl:if test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:productName) and &quot;&quot;!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:productName)">
+                    <productIds>
+                        <xsl:value-of select="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:productIds"/>
+                    </productIds>
+                </xsl:if>
+                <xsl:if test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adPlanName) and &quot;&quot;!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adPlanName)">
+                    <xsl:if test="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:adPlanIds">
+                        <adPlanIds>
+                            <xsl:value-of select="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:adPlanIds"/>
+                        </adPlanIds>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isCreative) and &quot;&quot;!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isCreative)">
+                    <xsl:if test="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:creativeIds">
+                        <creativeIds>
+                            <xsl:value-of select="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:creativeIds"/>
+                        </creativeIds>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isTracklink) and &quot;&quot;!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isTracklink)">
+                    <xsl:if test="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:tracklinkIds">
+                        <tracklinkIds>
+                            <xsl:value-of select="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:tracklinkIds"/>
+                        </tracklinkIds>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdgroup) and &quot;&quot;!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdgroup)">
+                    <adgroupIds>
+                        <xsl:value-of select="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:adgroupIds"/>
+                    </adgroupIds>
+                </xsl:if>
+                <xsl:if test="exists($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdPositionIds) and &quot;&quot;!=tib:trim($Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdPositionIds)">
+                    <xsl:if test="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:adPositionIds">
+                        <adPositionIds>
+                            <xsl:value-of select="$IdsForMongoDBQuery/pfx3:reportCondIdsVOResults/pfx3:reportCondIdsVO[1]/pfx3:adPositionIds"/>
+                        </adPositionIds>
+                    </xsl:if>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isCreative">
+                    <isCreative>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isCreative"/>
+                    </isCreative>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isTracklink">
+                    <isTracklink>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isTracklink"/>
+                    </isTracklink>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdgroup">
+                    <isAdgroup>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdgroup"/>
+                    </isAdgroup>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdPositionIds">
+                    <isAdPositionIds>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:isAdPositionIds"/>
+                    </isAdPositionIds>
+                </xsl:if>
+                <dateSearchType>
+                    <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:dateSearchType"/>
+                </dateSearchType>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="IdsForMongoDBQuery">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <processName>/reportsMg/reportsDao/IdsForMongoDBQuery.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx3:reportCondNameVO>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:productName">
+                    <pfx3:productName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:productName"/>
+                    </pfx3:productName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adPlanName">
+                    <pfx3:adPlanName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adPlanName"/>
+                    </pfx3:adPlanName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:creativeName">
+                    <pfx3:creativeName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:creativeName"/>
+                    </pfx3:creativeName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:tracklinkName">
+                    <pfx3:tracklinkName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:tracklinkName"/>
+                    </pfx3:tracklinkName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adgroupIName">
+                    <pfx3:adgroupIName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adgroupIName"/>
+                    </pfx3:adgroupIName>
+                </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adPositionName">
+                    <pfx3:adPositionName>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx3:reportCondNameVO/pfx3:adPositionName"/>
+                    </pfx3:adPositionName>
+                </xsl:if>
+            </pfx3:reportCondNameVO>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>IdsForMongoDBQuery</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>IdsForMongoDBQuery</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

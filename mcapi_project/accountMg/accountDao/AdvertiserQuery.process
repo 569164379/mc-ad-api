@@ -37,23 +37,18 @@
                         </pfx2:accountStatus>
                     </xsl:if>
                     <xsl:if test="not((column[6]/value/@xsi:nil=(&quot;true&quot;)) or (column[6]/value/@xsi:nil=(&quot;1&quot;)))">
-                        <pfx2:accountRoleId>
-                            <xsl:value-of select="column[6]/value"/>
-                        </pfx2:accountRoleId>
-                    </xsl:if>
-                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
                         <pfx2:createTime>
-                            <xsl:value-of select="column[7]/value"/>
+                            <xsl:value-of select="column[6]/value"/>
                         </pfx2:createTime>
                     </xsl:if>
-                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
+                    <xsl:if test="not((column[7]/value/@xsi:nil=(&quot;true&quot;)) or (column[7]/value/@xsi:nil=(&quot;1&quot;)))">
                         <pfx2:updateTime>
-                            <xsl:value-of select="column[8]/value"/>
+                            <xsl:value-of select="column[7]/value"/>
                         </pfx2:updateTime>
                     </xsl:if>
-                    <xsl:if test="not((column[9]/value/@xsi:nil=(&quot;true&quot;)) or (column[9]/value/@xsi:nil=(&quot;1&quot;)))">
+                    <xsl:if test="not((column[8]/value/@xsi:nil=(&quot;true&quot;)) or (column[8]/value/@xsi:nil=(&quot;1&quot;)))">
                         <pfx2:mcVersion>
-                            <xsl:value-of select="column[9]/value"/>
+                            <xsl:value-of select="column[8]/value"/>
                         </pfx2:mcVersion>
                     </xsl:if>
                     <ns:advertiserObj>
@@ -123,7 +118,7 @@
             <timeout>10</timeout>
             <commit>false</commit>
             <maxRows>100</maxRows>
-            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
         </config>
         <pd:inputBindings>
             <jdbcGeneralActivityInput>

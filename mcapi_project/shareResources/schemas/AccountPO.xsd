@@ -16,6 +16,7 @@
 	<xs:element name="createTime" type="xs:string"/>
 	<xs:element name="updateTime" type="xs:string"/>
 	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="pwdRandom" type="xs:string"/>
 	<xs:element name="accountRoleName" type="xs:string"/>
 	<xs:element name="accIdNameSearchVal" type="xs:string"/>
 	<xs:element name="accNameSearchVal" type="xs:string"/>
@@ -31,10 +32,10 @@
 				<xs:element ref="accountName" minOccurs="0"/>
 				<xs:element ref="accountPwd" minOccurs="0"/>
 				<xs:element ref="accountStatus" minOccurs="0"/>
-				<xs:element ref="accountRoleId" minOccurs="0"/>
 				<xs:element ref="createTime" minOccurs="0"/>
 				<xs:element ref="updateTime" minOccurs="0"/>
 				<xs:element ref="mcVersion" minOccurs="0"/>
+				<xs:element ref="pwdRandom" minOccurs="0"/>
 				<xs:element ref="accountRoleName" minOccurs="0"/>
 				<xs:element ref="accIdNameSearchVal" minOccurs="0"/>
 				<xs:element ref="accNameSearchVal" minOccurs="0"/>

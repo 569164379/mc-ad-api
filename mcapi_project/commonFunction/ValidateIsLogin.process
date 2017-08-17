@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <xsd:import namespace="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd12" schemaLocation="/share_resources/schema_resources/ConditionsSchema.xsd"/>
+    <pd:name>commonFunction/ValidateIsLogin.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="tokenInfo" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <isLogin>
+            <xsl:value-of select="$Java-Code/javaCodeActivityOutput/isLogin"/>
+        </isLogin>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="isLogin" type="xsd:boolean"/>
+    </pd:endType>
+    <pd:endX>684</pd:endX>
+    <pd:endY>79</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1491411211130</pd:targetNamespace>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>405</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <fileName>ValidateIsLoginJavaCode</fileName>
+            <packageName>commonFunction.ValidateIsLogin</packageName>
+            <fullsource>package commonFunction.ValidateIsLogin;
+import java.util.*;
+import java.io.*;
+import com.tm.mc.redis.MCRedisInstance;
+import redis.clients.jedis.Jedis;
+
+public class ValidateIsLoginJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String tokenInfo = "";
+	protected boolean isLogin = false;
+	public String gettokenInfo() {
+		return tokenInfo;
+	}
+	public void settokenInfo(String val) {
+		tokenInfo = val;
+	}
+	public boolean getisLogin() {
+		return isLogin;
+	}
+	public void setisLogin(boolean val) {
+		isLogin = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ValidateIsLoginJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String tokenInfo
+	Out : boolean isLogin
+* Available Variables: DO NOT MODIFY *****/
+               boolean flag = false;
+		Map&lt;String,String&gt; m = null;
+		String tokenInfoTrim = "";
+		Jedis jedis = MCRedisInstance.getInstance().getJedis();
+		if(tokenInfo!=null &amp;&amp; !tokenInfo.trim().equals("")){
+			/*String userId = jedis.hget(tokenInfo, "userId");
+			String userName = jedis.hget(tokenInfo, "userName");
+			String validateRepeat = jedis.hget(validateRepeat, "validateRepeat");*/
+			tokenInfoTrim = tokenInfo.trim();
+			if(jedis.exists(tokenInfoTrim)){
+				m = jedis.hgetAll(tokenInfoTrim);
+				flag = true;
+				jedis.hmset(tokenInfoTrim, m);
+				jedis.expire(tokenInfoTrim, 10800);
+			}
+		
+		}
+			
+		isLogin =  flag;
+		jedis.close();
+
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>tokenInfo</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>isLogin</fieldName>
+                    <fieldType>boolean</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>ValidateIsLoginJavaCode</name>
+                    <byteCode>yv66vgAAADQAVgkADwArCQAPACwKABAALQgALgoALwAwCgAvADEKADIAMwoAMgA0CgA1ADYKADcAOAoANQA5CgA1ADoKADUAOwoANQA8BwA9BwA+AQAJdG9rZW5JbmZvAQASTGphdmEvbGFuZy9TdHJpbmc7AQAHaXNMb2dpbgEAAVoBAAxnZXR0b2tlbkluZm8BABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAxzZXR0b2tlbkluZm8BABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAApnZXRpc0xvZ2luAQADKClaAQAKc2V0aXNMb2dpbgEABChaKVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAA1TdGFja01hcFRhYmxlBwA9BwA/BwBABwBBAQAKRXhjZXB0aW9ucwcAQgEAClNvdXJjZUZpbGUBABxWYWxpZGF0ZUlzTG9naW5KYXZhQ29kZS5qYXZhDAARABIMABMAFAwAHwAgAQAABwBDDABEAEUMAEYARwcAQAwASAAWDABJAEoHAEEMAEsATAcATQwATgAcDABPAFAMAFEAUgwAUwBUDABVACABADZjb21tb25GdW5jdGlvbi9WYWxpZGF0ZUlzTG9naW4vVmFsaWRhdGVJc0xvZ2luSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQANamF2YS91dGlsL01hcAEAEGphdmEvbGFuZy9TdHJpbmcBABlyZWRpcy9jbGllbnRzL2plZGlzL0plZGlzAQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAH2NvbS90bS9tYy9yZWRpcy9NQ1JlZGlzSW5zdGFuY2UBAAtnZXRJbnN0YW5jZQEAIygpTGNvbS90bS9tYy9yZWRpcy9NQ1JlZGlzSW5zdGFuY2U7AQAIZ2V0SmVkaXMBAB0oKUxyZWRpcy9jbGllbnRzL2plZGlzL0plZGlzOwEABHRyaW0BAAZlcXVhbHMBABUoTGphdmEvbGFuZy9PYmplY3Q7KVoBAAZleGlzdHMBACcoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvQm9vbGVhbjsBABFqYXZhL2xhbmcvQm9vbGVhbgEADGJvb2xlYW5WYWx1ZQEAB2hnZXRBbGwBACMoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL3V0aWwvTWFwOwEABWhtc2V0AQA1KExqYXZhL2xhbmcvU3RyaW5nO0xqYXZhL3V0aWwvTWFwOylMamF2YS9sYW5nL1N0cmluZzsBAAZleHBpcmUBACUoTGphdmEvbGFuZy9TdHJpbmc7SSlMamF2YS9sYW5nL0xvbmc7AQAFY2xvc2UAIQAPABAAAAACAAQAEQASAAAABAATABQAAAAGAAEAFQAWAAEAFwAAAB0AAQABAAAABSq0AAGwAAAAAQAYAAAABgABAAAADAABABkAGgABABcAAAAiAAIAAgAAAAYqK7UAAbEAAAABABgAAAAKAAIAAAAPAAUAEAABABsAHAABABcAAAAdAAEAAQAAAAUqtAACrAAAAAEAGAAAAAYAAQAAABIAAQAdAB4AAQAXAAAAIgACAAIAAAAGKhu1AAKxAAAAAQAYAAAACgACAAAAFQAFABYAAQAfACAAAQAXAAAANAACAAEAAAAQKrcAAyoSBLUAASoDtQACsQAAAAEAGAAAABIABAAAABgABAAJAAoACgAPABkAAQAhACAAAgAXAAAAxwADAAUAAABfAzwBTRIETrgABbYABjoEKrQAAcYAQSq0AAG2AAcSBLYACJoAMiq0AAG2AAdOGQQttgAJtgAKmQAeGQQttgALTQQ8GQQtLLYADFcZBC0RKjC2AA1XKhu1AAIZBLYADrEAAAACABgAAAA6AA4AAAAfAAIAIAAEACEABwAiAA8AIwAlACcALQAoADkAKQBAACoAQgArAEoALABUADEAWQAyAF4ANAAiAAAAFgAB/wBUAAUHACMBBwAkBwAlBwAmAAAAJwAAAAQAAQAoAAEAKQAAAAIAKg==</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <tokenInfo>
+                    <xsl:value-of select="$Start/tokenInfo"/>
+                </tokenInfo>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

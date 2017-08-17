@@ -37,12 +37,12 @@
             <timeout>10</timeout>
             <commit>false</commit>
             <maxRows>100</maxRows>
-            <jdbcSharedConfig>/shareResources/connections/JDBC Connection_Test.sharedjdbc</jdbcSharedConfig>
+            <jdbcSharedConfig>/shareResources/connections/JDBC Connection.sharedjdbc</jdbcSharedConfig>
         </config>
         <pd:inputBindings>
             <jdbcGeneralActivityInput>
                 <statement>
-                    <xsl:value-of select="concat(&quot;insert into tab_account values(&quot;,$Start/pfx:accountObj/pfx:accountId, &quot;,'&quot;, $Start/pfx:accountObj/pfx:accountEmail, &quot;','&quot;, $Start/pfx:accountObj/pfx:accountName, &quot;','&quot;, $Start/pfx:accountObj/pfx:accountPwd, &quot;','&quot;, $Start/pfx:accountObj/pfx:accountStatus, &quot;',&quot;, $Start/pfx:accountObj/pfx:accountRoleId,&quot;,'&quot;, $Start/pfx:accountObj/pfx:createTime, &quot;','&quot;, $Start/pfx:accountObj/pfx:updateTime, &quot;','&quot;, $Start/pfx:accountObj/pfx:mcVersion, &quot;')&quot;)"/>
+                    <xsl:value-of select="concat(&quot;insert into tab_account values(&quot;,$Start/pfx:accountObj/pfx:accountId, &quot;,'&quot;, $Start/pfx:accountObj/pfx:accountEmail, &quot;','&quot;, $Start/pfx:accountObj/pfx:accountName, &quot;','&quot;, $Start/pfx:accountObj/pfx:accountPwd, &quot;','&quot;, $Start/pfx:accountObj/pfx:accountStatus, &quot;','&quot;, $Start/pfx:accountObj/pfx:createTime, &quot;','&quot;, $Start/pfx:accountObj/pfx:updateTime, &quot;','&quot;, $Start/pfx:accountObj/pfx:mcVersion, &quot;','&quot;,$Start/pfx:accountObj/pfx:pwdRandom,&quot;')&quot;)"/>
                 </statement>
             </jdbcGeneralActivityInput>
         </pd:inputBindings>

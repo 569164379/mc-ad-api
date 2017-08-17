@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd26"
+	 xmlns:account="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9"
+	 xmlns:role="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd16"
+	 xmlns:funcSelf="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd26"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd26"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9"/>
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd16"/>
+	<xs:element name="functionId" type="xs:string"/>
+	<xs:element name="functionName" type="xs:string"/>
+	<xs:element name="displayOrder" type="xs:string"/>
+	<xs:element name="parentFunctionId" type="xs:string"/>
+	<xs:element name="functionUrl" type="xs:string"/>
+	<xs:element name="iconUrl" type="xs:string"/>
+	<xs:element name="isMemu" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="tokenInfo" type="xs:string"/>
+	<xs:element name="functionNestedObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="funcSelf:functionId" minOccurs="0"/>
+				<xs:element ref="funcSelf:functionName" minOccurs="0"/>
+				<xs:element ref="funcSelf:functionUrl" minOccurs="0"/>
+				<xs:element ref="funcSelf:iconUrl" minOccurs="0"/>
+				<xs:element ref="funcSelf:parentFunctionId" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="functionObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="funcSelf:functionId" minOccurs="0"/>
+				<xs:element ref="funcSelf:functionName" minOccurs="0"/>
+				<xs:element ref="funcSelf:displayOrder" minOccurs="0"/>
+				<xs:element ref="funcSelf:parentFunctionId" minOccurs="0"/>
+				<xs:element ref="funcSelf:functionUrl" minOccurs="0"/>
+				<xs:element ref="funcSelf:iconUrl" minOccurs="0"/>
+				<xs:element ref="funcSelf:isMemu" minOccurs="0"/>
+				<xs:element ref="funcSelf:createTime" minOccurs="0"/>
+				<xs:element ref="funcSelf:updateTime" minOccurs="0"/>
+				<xs:element ref="funcSelf:mcVersion" minOccurs="0"/>
+				<xs:element ref="account:accountId" minOccurs="0"/>
+				<xs:element ref="account:accountName" minOccurs="0"/>
+				<xs:element ref="role:roleId" minOccurs="0"/>
+				<xs:element ref="role:roleName" minOccurs="0"/>
+				<xs:element ref="funcSelf:functionNestedObj" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element ref="funcSelf:tokenInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="functionResults">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="funcSelf:functionObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

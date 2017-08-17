@@ -9,8 +9,8 @@
     <pd:starter name="HTTP Receiver">
         <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
         <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
-        <pd:x>165</pd:x>
-        <pd:y>82</pd:y>
+        <pd:x>102</pd:x>
+        <pd:y>231</pd:y>
         <config>
             <outputMode>String</outputMode>
             <defaultEncoding>ISO8859_1</defaultEncoding>
@@ -46,7 +46,7 @@
         <pd:inputBindings/>
     </pd:starter>
     <pd:endName>End</pd:endName>
-    <pd:endX>812</pd:endX>
+    <pd:endX>845</pd:endX>
     <pd:endY>64</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
@@ -54,8 +54,8 @@
     <pd:activity name="Dynamic Call Process">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>411</pd:x>
-        <pd:y>89</pd:y>
+        <pd:x>481</pd:x>
+        <pd:y>69</pd:y>
         <config>
             <processNameXPath>concat(
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/creativeMsg/addMaterialText") ) then "/creativeMsg/creativeService/AddMaterial" else
@@ -96,8 +96,12 @@ if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/updateA
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/queryAdvertiser") ) then "/accountMg/accountService/QueryAdvertiser" else
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/checkAccountPWD") ) then "/accountMg/accountService/CheckAccountPWD" else
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/queryRole") ) then "/accountMg/accountService/QueryRole" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/queryFunctions") ) then "/accountMg/accountService/QueryFunctions" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/loginOut")) then "/accountMg/accountService/LoginOut" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/queryMenus")) then "/accountMg/accountService/QueryMemus" else
 
 
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adplanOfferMsg/adplanOfferList") ) then "/adplanOfferMsg/adplanOfferService/adplanOfferList" else
 
 
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/AdvertisingPlanMg/adPlanList") ) then "/AdvertisingPlanMg/advertisingPlanService/QueryAdPlan" else
@@ -132,6 +136,11 @@ if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/batchUp
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/updateAdgroup") ) then "/adgroupMg/adgroupService/UpdateAdgroup" else
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/queryAdgpByAdp") ) then "/adgroupMg/adgroupService/QueryAdgpByAdp" else
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/adgroupMg/importPositionExcel") ) then "/adgroupMg/adgroupService/ImportPositionExcel" else
+
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/reportsMg/searchReports") ) then "/reportsMg/reportsService/QueryReports" else
+if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/reportsMg/exportReport") ) then "/reportsMg/reportsService/ExportReport" else
+
+
 
 
 if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/toPageTokenInfo")) then "/commonFunction/ToPageTokenInfo" else
@@ -270,8 +279,8 @@ if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/loginOu
     <pd:activity name="Send HTTP Response">
         <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
         <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
-        <pd:x>636</pd:x>
-        <pd:y>89</pd:y>
+        <pd:x>686</pd:x>
+        <pd:y>65</pd:y>
         <config>
             <closeConnection>true</closeConnection>
             <eventSource>HTTP Receiver</eventSource>
@@ -301,6 +310,116 @@ if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/loginOu
                     </Access-Control-Allow-Origin>
                     <Content-Type>
                         <xsl:value-of select="&quot;text/json; charset=utf-8&quot;"/>
+                    </Content-Type>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="isLogin">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>278</pd:x>
+        <pd:y>147</pd:y>
+        <config>
+            <processName>/commonFunction/ValidateIsLogin.process</processName>
+        </config>
+        <pd:inputBindings>
+            <tokenInfo>
+                <xsl:value-of select="substring-before(substring-after(tib:trim($HTTP-Receiver/ProcessStarterOutput/PostData), 'tokenInfo&quot;:&quot;'), '&quot;')"/>
+            </tokenInfo>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="ValidateUserPwd">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>316</pd:x>
+        <pd:y>290</pd:y>
+        <config>
+            <processName>/accountMg/accountService/ValidateUser.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx:requestParams>
+                <xsl:if test="$HTTP-Receiver/ProcessStarterOutput/PostData">
+                    <pfx:jsonPostData>
+                        <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/PostData"/>
+                    </pfx:jsonPostData>
+                </xsl:if>
+            </pfx:requestParams>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send-HTTP-Response-3">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>512</pd:x>
+        <pd:y>197</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="root">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Access-Control-Allow-Origin" type="xsd:string"/>
+                            <xs:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="' {&quot;isLogin&quot;:&quot;false&quot;}'"/>
+                </asciiContent>
+                <Headers>
+                    <Access-Control-Allow-Origin>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;*&quot;"/>
+                    </Access-Control-Allow-Origin>
+                    <Content-Type>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;text/json; charset=utf-8&quot;"/>
+                    </Content-Type>
+                </Headers>
+            </ResponseActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Send-HTTP-Response-2">
+        <pd:type>com.tibco.plugin.http.HTTPResponseActivity</pd:type>
+        <pd:resourceType>httppalette.httpWebResponse</pd:resourceType>
+        <pd:x>526</pd:x>
+        <pd:y>351</pd:y>
+        <config>
+            <closeConnection>true</closeConnection>
+            <eventSource>HTTP Receiver</eventSource>
+            <Headers>
+                <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="root">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="Access-Control-Allow-Origin" type="xsd:string"/>
+                            <xs:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                            <xs:element name="Location" type="xsd:string" minOccurs="0"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </Headers>
+        </config>
+        <pd:inputBindings>
+            <ResponseActivityInput>
+                <asciiContent>
+                    <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$ValidateUserPwd/responseJsonStr"/>
+                </asciiContent>
+                <Headers>
+                    <Access-Control-Allow-Origin>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;*&quot;"/>
+                    </Access-Control-Allow-Origin>
+                    <Content-Type>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="&quot;text/json; charset=utf-8&quot;"/>
                     </Content-Type>
                 </Headers>
             </ResponseActivityInput>
@@ -343,7 +462,55 @@ if (contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "/accountMg/loginOu
     </pd:transition>
     <pd:transition>
         <pd:from>HTTP Receiver</pd:from>
+        <pd:to>isLogin</pd:to>
+        <pd:xpathDescription>UnLoginRequest</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>ValidateUserPwd</pd:to>
+        <pd:xpathDescription>LoginRequest</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>contains($HTTP-Receiver/ProcessStarterOutput/RequestURI, "accountMg/userLogin")</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>isLogin</pd:from>
         <pd:to>Dynamic Call Process</pd:to>
+        <pd:xpathDescription>true</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$isLogin/isLogin="true"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>isLogin</pd:from>
+        <pd:to>Send-HTTP-Response-3</pd:to>
+        <pd:xpathDescription>false</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send-HTTP-Response-3</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>ValidateUserPwd</pd:from>
+        <pd:to>Send-HTTP-Response-2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Send-HTTP-Response-2</pd:from>
+        <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

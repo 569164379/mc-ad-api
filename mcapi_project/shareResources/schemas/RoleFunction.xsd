@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 xmlns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd27"
+	 xmlns:func="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd26"
+	 targetNamespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd27"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd26"/>
+	<xs:element name="roleFunctionId" type="xs:string"/>
+	<xs:element name="roleId" type="xs:string"/>
+	<xs:element name="functionId" type="xs:string"/>
+	<xs:element name="createTime" type="xs:string"/>
+	<xs:element name="updateTime" type="xs:string"/>
+	<xs:element name="mcVersion" type="xs:string"/>
+	<xs:element name="roleIds" type="xs:string"/>
+	<xs:element name="roleFunctionObj">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="roleFunctionId" minOccurs="0"/>
+				<xs:element ref="roleId" minOccurs="0"/>
+				<xs:element ref="functionId" minOccurs="0"/>
+				<xs:element ref="func:functionName" minOccurs="0"/>
+				<xs:element ref="func:displayOrder" minOccurs="0"/>
+				<xs:element ref="func:parentFunctionId" minOccurs="0"/>
+				<xs:element ref="func:functionUrl" minOccurs="0"/>
+				<xs:element ref="func:iconUrl" minOccurs="0"/>
+				<xs:element ref="roleIds" minOccurs="0"/>
+				<xs:element ref="func:isMemu" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="foleFunctionResutls">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="roleFunctionObj" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>
