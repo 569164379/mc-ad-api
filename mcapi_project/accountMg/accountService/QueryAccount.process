@@ -46,6 +46,11 @@
                         <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:createTime"/>
                     </ns:createTime>
                 </xsl:if>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountRoleId">
+                    <ns:accountRoleId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accountRoleId"/>
+                    </ns:accountRoleId>
+                </xsl:if>
                 <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accIdNameSearchVal">
                     <ns:accIdNameSearchVal>
                         <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/ns:accountObj/ns:accIdNameSearchVal"/>
