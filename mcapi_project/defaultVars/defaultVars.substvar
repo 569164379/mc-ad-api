@@ -90,12 +90,76 @@
 			<modTime>1497268503096</modTime>
 		</globalVariable>
 		<globalVariable>
+			<name>NewItem</name>
+			<value>no value</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503286614418</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>OSSAccessKeyId</name>
+			<value>LTAIvALTDnwW0qv6</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503286660280</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>OSSAccessKeySecret</name>
+			<value>QYe4gcGxUZI2HLmb39YW0y4sTDdo4s</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503286698880</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>OSSBucketName</name>
+			<value>mc-first-oss</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503286727857</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>OSSEndpoint</name>
+			<value>oss.mobcastlead.com</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503286614408</modTime>
+		</globalVariable>
+		<globalVariable>
 			<name>ProductIconFolder</name>
 			<value>productIcon</value>
 			<deploymentSettable>false</deploymentSettable>
 			<serviceSettable>false</serviceSettable>
 			<type>String</type>
 			<modTime>1499298566231</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>RedisHost</name>
+			<value>91mobcastle.com</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503298039798</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>RedisPort</name>
+			<value>18520</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503298068670</modTime>
+		</globalVariable>
+		<globalVariable>
+			<name>RedisPwd</name>
+			<value>!VMD1kult18520</value>
+			<deploymentSettable>true</deploymentSettable>
+			<serviceSettable>false</serviceSettable>
+			<type>String</type>
+			<modTime>1503298177277</modTime>
 		</globalVariable>
 		<globalVariable>
 			<name>RemoteRvDaemon</name>

@@ -144,20 +144,20 @@
     <pd:activity name="AddMaterial">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>1125</pd:x>
-        <pd:y>237</pd:y>
+        <pd:x>1124</pd:x>
+        <pd:y>238</pd:y>
         <config>
             <processName>/creativeMsg/creativeService/AddMaterial.process</processName>
         </config>
         <pd:inputBindings>
             <pfx4:requestParams>
                 <pfx4:jsonPostData>
-                    <xsl:value-of select="$RenameUploadFile/imageMaterialJson"/>
+                    <xsl:value-of select="$PutFileOSS/imageMaterialJson"/>
                 </pfx4:jsonPostData>
             </pfx4:requestParams>
         </pd:inputBindings>
     </pd:activity>
-    <pd:activity name="RenameUploadFile">
+    <pd:activity name="PutFileOSS">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
         <pd:x>955</pd:x>
@@ -326,7 +326,7 @@ Jedis jedis = MCRedisInstance.getInstance().getJedis();
 		//传递pageValidateRepeatVal 到页面
 		validateRepeatSubmit = pageValidateRepeatVal;
 
-	System.out.println("to  page get and set  validateRepeat as：==============:"+validateRepeatSubmit);
+	//System.out.println("to  page get and set  validateRepeat as：==============:"+validateRepeatSubmit);
 	jedis.close();
 	}
 }
@@ -350,7 +350,7 @@ Jedis jedis = MCRedisInstance.getInstance().getJedis();
             <byteCode>
                 <class>
                     <name>UploadMaterialImageJavaCode</name>
-                    <byteCode>yv66vgAAADQAVgkAEwAnCQATACgKABQAKQgAKgoAKwAsCgArAC0KAC4ALwoAMAAxCAAyCgAzADQJAC4ANQcANgoADAApCAA3CgAMADgKAAwAOQoAOgA7CgAzADwHAD0HAD4BAAl0b2tlbkluZm8BABJMamF2YS9sYW5nL1N0cmluZzsBABR2YWxpZGF0ZVJlcGVhdFN1Ym1pdAEADGdldHRva2VuSW5mbwEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADHNldHRva2VuSW5mbwEAFShMamF2YS9sYW5nL1N0cmluZzspVgEAF2dldHZhbGlkYXRlUmVwZWF0U3VibWl0AQAXc2V0dmFsaWRhdGVSZXBlYXRTdWJtaXQBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwA/AQAKU291cmNlRmlsZQEAIFVwbG9hZE1hdGVyaWFsSW1hZ2VKYXZhQ29kZS5qYXZhDAAVABYMABcAFgwAIAAhAQAABwBADABBAEIMAEMARAcARQwARgBHBwBIDABJAEoBAA52YWxpZGF0ZVJlcGVhdAcASwwATABNDABOAE8BABdqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcgEAN3RvICBwYWdlIGdldCBhbmQgc2V0ICB2YWxpZGF0ZVJlcGVhdCBhcz89PT09PT09PT09PT09PToMAFAAUQwAUgAZBwBTDABUAB0MAFUAIQEAS2NyZWF0aXZlTXNnL2NyZWF0aXZlU2VydmljZS9VcGxvYWRNYXRlcmlhbEltYWdlL1VwbG9hZE1hdGVyaWFsSW1hZ2VKYXZhQ29kZQEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAfY29tL3RtL21jL3JlZGlzL01DUmVkaXNJbnN0YW5jZQEAC2dldEluc3RhbmNlAQAjKClMY29tL3RtL21jL3JlZGlzL01DUmVkaXNJbnN0YW5jZTsBAAhnZXRKZWRpcwEAHSgpTHJlZGlzL2NsaWVudHMvamVkaXMvSmVkaXM7AQAQamF2YS9sYW5nL1N5c3RlbQEAEWN1cnJlbnRUaW1lTWlsbGlzAQADKClKAQAQamF2YS9sYW5nL1N0cmluZwEAB3ZhbHVlT2YBABUoSilMamF2YS9sYW5nL1N0cmluZzsBABlyZWRpcy9jbGllbnRzL2plZGlzL0plZGlzAQAEaHNldAEASChMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9Mb25nOwEAA291dAEAFUxqYXZhL2lvL1ByaW50U3RyZWFtOwEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEACHRvU3RyaW5nAQATamF2YS9pby9QcmludFN0cmVhbQEAB3ByaW50bG4BAAVjbG9zZQAhABMAFAAAAAIABAAVABYAAAAEABcAFgAAAAYAAQAYABkAAQAaAAAAHQABAAEAAAAFKrQAAbAAAAABABsAAAAGAAEAAAALAAEAHAAdAAEAGgAAACIAAgACAAAABiortQABsQAAAAEAGwAAAAoAAgAAAA4ABQAPAAEAHgAZAAEAGgAAAB0AAQABAAAABSq0AAKwAAAAAQAbAAAABgABAAAAEQABAB8AHQABABoAAAAiAAIAAgAAAAYqK7UAArEAAAABABsAAAAKAAIAAAAUAAUAFQABACAAIQABABoAAAA1AAIAAQAAABEqtwADKhIEtQABKhIEtQACsQAAAAEAGwAAABIABAAAABcABAAIAAoACQAQABgAAQAiACEAAgAaAAAAcAAEAAMAAABAuAAFtgAGTLgAB7gACE0rKrQAARIJLLYAClcqLLUAArIAC7sADFm3AA0SDrYADyq0AAK2AA+2ABC2ABErtgASsQAAAAEAGwAAAB4ABwAAAB8ABwAgAA4AIQAaACQAHwAmADsAJwA/ACgAIwAAAAQAAQAkAAEAJQAAAAIAJg==</byteCode>
+                    <byteCode>yv66vgAAADQAQQkADAAgCQAMACEKAA0AIggAIwoAJAAlCgAkACYKACcAKAoAKQAqCAArCgAsAC0KACwALgcALwcAMAEACXRva2VuSW5mbwEAEkxqYXZhL2xhbmcvU3RyaW5nOwEAFHZhbGlkYXRlUmVwZWF0U3VibWl0AQAMZ2V0dG9rZW5JbmZvAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAMc2V0dG9rZW5JbmZvAQAVKExqYXZhL2xhbmcvU3RyaW5nOylWAQAXZ2V0dmFsaWRhdGVSZXBlYXRTdWJtaXQBABdzZXR2YWxpZGF0ZVJlcGVhdFN1Ym1pdAEABjxpbml0PgEAAygpVgEABmludm9rZQEACkV4Y2VwdGlvbnMHADEBAApTb3VyY2VGaWxlAQAgVXBsb2FkTWF0ZXJpYWxJbWFnZUphdmFDb2RlLmphdmEMAA4ADwwAEAAPDAAZABoBAAAHADIMADMANAwANQA2BwA3DAA4ADkHADoMADsAPAEADnZhbGlkYXRlUmVwZWF0BwA9DAA+AD8MAEAAGgEAS2NyZWF0aXZlTXNnL2NyZWF0aXZlU2VydmljZS9VcGxvYWRNYXRlcmlhbEltYWdlL1VwbG9hZE1hdGVyaWFsSW1hZ2VKYXZhQ29kZQEAEGphdmEvbGFuZy9PYmplY3QBABNqYXZhL2xhbmcvRXhjZXB0aW9uAQAfY29tL3RtL21jL3JlZGlzL01DUmVkaXNJbnN0YW5jZQEAC2dldEluc3RhbmNlAQAjKClMY29tL3RtL21jL3JlZGlzL01DUmVkaXNJbnN0YW5jZTsBAAhnZXRKZWRpcwEAHSgpTHJlZGlzL2NsaWVudHMvamVkaXMvSmVkaXM7AQAQamF2YS9sYW5nL1N5c3RlbQEAEWN1cnJlbnRUaW1lTWlsbGlzAQADKClKAQAQamF2YS9sYW5nL1N0cmluZwEAB3ZhbHVlT2YBABUoSilMamF2YS9sYW5nL1N0cmluZzsBABlyZWRpcy9jbGllbnRzL2plZGlzL0plZGlzAQAEaHNldAEASChMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9Mb25nOwEABWNsb3NlACEADAANAAAAAgAEAA4ADwAAAAQAEAAPAAAABgABABEAEgABABMAAAAdAAEAAQAAAAUqtAABsAAAAAEAFAAAAAYAAQAAAAsAAQAVABYAAQATAAAAIgACAAIAAAAGKiu1AAGxAAAAAQAUAAAACgACAAAADgAFAA8AAQAXABIAAQATAAAAHQABAAEAAAAFKrQAArAAAAABABQAAAAGAAEAAAARAAEAGAAWAAEAEwAAACIAAgACAAAABiortQACsQAAAAEAFAAAAAoAAgAAABQABQAVAAEAGQAaAAEAEwAAADUAAgABAAAAESq3AAMqEgS1AAEqEgS1AAKxAAAAAQAUAAAAEgAEAAAAFwAEAAgACgAJABAAGAABABsAGgACABMAAABQAAQAAwAAACS4AAW2AAZMuAAHuAAITSsqtAABEgkstgAKVyostQACK7YAC7EAAAABABQAAAAaAAYAAAAfAAcAIAAOACEAGgAkAB8AJwAjACgAHAAAAAQAAQAdAAEAHgAAAAIAHw==</byteCode>
                 </class>
             </byteCode>
         </config>
@@ -384,7 +384,7 @@ Jedis jedis = MCRedisInstance.getInstance().getJedis();
         <pd:conditionType>always</pd:conditionType>
     </pd:transition>
     <pd:transition>
-        <pd:from>RenameUploadFile</pd:from>
+        <pd:from>PutFileOSS</pd:from>
         <pd:to>AddMaterial</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
@@ -430,7 +430,7 @@ Jedis jedis = MCRedisInstance.getInstance().getJedis();
     </pd:transition>
     <pd:transition>
         <pd:from>Java Code</pd:from>
-        <pd:to>RenameUploadFile</pd:to>
+        <pd:to>PutFileOSS</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>

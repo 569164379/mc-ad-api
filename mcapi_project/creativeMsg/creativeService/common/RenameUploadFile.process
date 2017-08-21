@@ -41,20 +41,18 @@
             <packageName>creativeMsg.creativeService.common.RenameUploadFile</packageName>
             <fullsource>package creativeMsg.creativeService.common.RenameUploadFile;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Iterator;
+import java.sql.SQLException;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.FileImageInputStream;
-import javax.imageio.stream.ImageInputStream;
-import java.awt.image.BufferedImage;
-import java.io.FilenameFilter;
 
+import com.aliyun.oss.OSSClient;
+import com.tm.mc.util.module.CreativeUtil;
 public class RenameUploadFileJavaCode{
 /****** START SET/GET METHOD, DO NOT MODIFY *****/
 	protected String creativeDirPath = "";
@@ -62,6 +60,10 @@ public class RenameUploadFileJavaCode{
 	protected String creativeName = "";
 	protected String tokenInfo = "";
 	protected String validateRepeat = "";
+	protected String endpoint = "";
+	protected String accessKeyId = "";
+	protected String accessKeySecret = "";
+	protected String bucketName = "";
 	protected String imageMaterialJson = "";
 	public String getcreativeDirPath() {
 		return creativeDirPath;
@@ -93,6 +95,30 @@ public class RenameUploadFileJavaCode{
 	public void setvalidateRepeat(String val) {
 		validateRepeat = val;
 	}
+	public String getendpoint() {
+		return endpoint;
+	}
+	public void setendpoint(String val) {
+		endpoint = val;
+	}
+	public String getaccessKeyId() {
+		return accessKeyId;
+	}
+	public void setaccessKeyId(String val) {
+		accessKeyId = val;
+	}
+	public String getaccessKeySecret() {
+		return accessKeySecret;
+	}
+	public void setaccessKeySecret(String val) {
+		accessKeySecret = val;
+	}
+	public String getbucketName() {
+		return bucketName;
+	}
+	public void setbucketName(String val) {
+		bucketName = val;
+	}
 	public String getimageMaterialJson() {
 		return imageMaterialJson;
 	}
@@ -110,15 +136,19 @@ public class RenameUploadFileJavaCode{
 	In  : String creativeName
 	In  : String tokenInfo
 	In  : String validateRepeat
+	In  : String endpoint
+	In  : String accessKeyId
+	In  : String accessKeySecret
+	In  : String bucketName
 	Out : String imageMaterialJson
 * Available Variables: DO NOT MODIFY *****/
-       imageMaterialJson= renameFileName();
+       imageMaterialJson= FilePutOss();
 
 }
-	/*
-	 * 重命名创意文件夹下文件名称
+		/*
+	 * 重命名创意文件夹下文件名称并上传OSS
 	 */
-public String renameFileName() throws FileNotFoundException, IOException{
+public String FilePutOss() throws FileNotFoundException, IOException, SQLException{
 		StringBuffer imageJsonBuf= new StringBuffer();
 		//imageJsonBuf.append("{\"materialResults\":{ \"materialObj\":[");
 		imageJsonBuf.append("{\"materialResults\":{ \"creativeId\":\""+creativeId+"\",\"materialObj\":[");
@@ -153,54 +183,32 @@ public String renameFileName() throws FileNotFoundException, IOException{
 					    	
 					    }
 					*/
+						//获取图片尺寸
 					    BufferedImage sourceImg =ImageIO.read(inputstream);  
 						final int width= sourceImg.getWidth();
 						final int height= sourceImg.getHeight();
 					
 					    
-						
-						String creativeSize=width+"x"+height+"."+suffixName;
-						//String creativeSize=sourceImg.getWidth()+"x"+sourceImg.getHeight()+"."+suffixName;
-						File toFile = new File(dirPath+"/"+creativeSize);
+						//获取素材编号
+						int maxMid = CreativeUtil.getMaxMaterialId();
+						String mno = CreativeUtil.getMaterialNo("pic", "", "", width+"", height+"", "", maxMid+"");
+//						String creativeSize=width+"x"+height+"."+suffixName;
+						String creativeSize=mno+"."+suffixName;
+						String creativeSize2 = creativeSize.replace("+", "%2B");
+						File toFile = new File(dirPath+"/"+creativeSize2);
 						
 						inputstream.close();
 						
+						//图片重名(这里图片名称将由尺寸 改为素材no)
+						fromFile.renameTo(toFile);
 						
 						
-						if(!toFile.exists()){
-							
-							fromFile.renameTo(toFile);
+						OSSClient client = new OSSClient(endpoint, accessKeyId, accessKeySecret);
+						client.putObject(bucketName, creativeSize, toFile);
 						
-						//}else if(toFile.exists() &amp;&amp; !fromFile.getName().equals(toFile.getName())){
-						}else if(toFile.exists()){
-							
-							FilenameFilter filenameFilter = new FilenameFilter() {
-								
-								@Override
-								public boolean accept(File dir, String name) {
-									// TODO Auto-generated method stub
-									if(name.indexOf(width+"x"+height)&gt;=0){
-										return true;
-									}
-									return false;
-								}
-							};
-							
-							File[] subfiles = file.listFiles(filenameFilter);
-							if(subfiles!=null &amp;&amp; subfiles.length&gt;0){
-								int n=subfiles.length;
-								
-								
-								creativeSize=width+"x"+height+"("+n+")"+"."+suffixName;
-								
-								//creativeSize=width+"x"+height+"("+n+")"+"."+suffixName;
-								toFile = new File(dirPath+"/"+creativeSize);
-								fromFile.renameTo(toFile);	
-							}
-							
-						}
-						imageJsonBuf.append("{\"creativeId\":\""+creativeId+"\",\"materialWidth\":\""+width+"\",\"materialHeight\":\""+height+"\",\"materialType\":\"pic\",\"materialUrl\":\"/"+creativeName+"/"+creativeSize+"\"},");
-												
+						System.out.println("key value :"+creativeSize);
+						imageJsonBuf.append("{\"materialId\":\""+(maxMid+1)+"\",\"creativeId\":\""+creativeId+"\",\"materialNo\":\""+mno+"\",\"materialWidth\":\""+width+"\",\"materialHeight\":\""+height+"\",\"materialType\":\"pic\",\"materialUrl\":\""+endpoint+"/"+creativeSize2+"\"},");
+													
 						
 						
 					}
@@ -216,12 +224,10 @@ public String renameFileName() throws FileNotFoundException, IOException{
 			imageMaterialJson = imageMaterialJson.substring(0, imageMaterialJson.length()-1);
 		}
 		imageJsonBuf.deleteCharAt(imageMaterialJson.length());
-		//imageJsonBuf.append("]}}");
 		imageJsonBuf.append("],"+"\"validateRepeat\":\""+validateRepeat+"\","+"\"tokenInfo\":\""+tokenInfo+"\"}}");
 		
 	    return imageJsonBuf.toString();
 	}
-
 }
 </fullsource>
             <outputData>
@@ -257,15 +263,31 @@ public String renameFileName() throws FileNotFoundException, IOException{
                     <fieldType>string</fieldType>
                     <fieldRequired>optional</fieldRequired>
                 </row>
+                <row>
+                    <fieldName>endpoint</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>accessKeyId</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>accessKeySecret</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>bucketName</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
             </inputData>
             <byteCode>
                 <class>
-                    <name>RenameUploadFileJavaCode$1</name>
-                    <byteCode>yv66vgAAADQAOgkADAAgCQAMACEJAAwAIgoADQAjBwAkCgAFACMKAAUAJQgAJgoABQAnCgAFACgKACkAKgcAKwcALQcALgEACXZhbCR3aWR0aAEAAUkBAAp2YWwkaGVpZ2h0AQAGdGhpcyQwAQBOTGNyZWF0aXZlTXNnL2NyZWF0aXZlU2VydmljZS9jb21tb24vUmVuYW1lVXBsb2FkRmlsZS9SZW5hbWVVcGxvYWRGaWxlSmF2YUNvZGU7AQAGPGluaXQ+AQBTKExjcmVhdGl2ZU1zZy9jcmVhdGl2ZVNlcnZpY2UvY29tbW9uL1JlbmFtZVVwbG9hZEZpbGUvUmVuYW1lVXBsb2FkRmlsZUphdmFDb2RlO0lJKVYBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAGYWNjZXB0AQAjKExqYXZhL2lvL0ZpbGU7TGphdmEvbGFuZy9TdHJpbmc7KVoBAA1TdGFja01hcFRhYmxlAQAKU291cmNlRmlsZQEAHVJlbmFtZVVwbG9hZEZpbGVKYXZhQ29kZS5qYXZhAQAPRW5jbG9zaW5nTWV0aG9kBwAvDAAwADEMABIAEwwADwAQDAARABAMABQAMgEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyDAAzADQBAAF4DAAzADUMADYAMQcANwwAOAA5AQBOY3JlYXRpdmVNc2cvY3JlYXRpdmVTZXJ2aWNlL2NvbW1vbi9SZW5hbWVVcGxvYWRGaWxlL1JlbmFtZVVwbG9hZEZpbGVKYXZhQ29kZSQxAQAMSW5uZXJDbGFzc2VzAQAQamF2YS9sYW5nL09iamVjdAEAFmphdmEvaW8vRmlsZW5hbWVGaWx0ZXIBAExjcmVhdGl2ZU1zZy9jcmVhdGl2ZVNlcnZpY2UvY29tbW9uL1JlbmFtZVVwbG9hZEZpbGUvUmVuYW1lVXBsb2FkRmlsZUphdmFDb2RlAQAOcmVuYW1lRmlsZU5hbWUBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEAAygpVgEABmFwcGVuZAEAHChJKUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAAh0b1N0cmluZwEAEGphdmEvbGFuZy9TdHJpbmcBAAdpbmRleE9mAQAVKExqYXZhL2xhbmcvU3RyaW5nOylJACAADAANAAEADgADEBAADwAQAAAQEAARABAAABAQABIAEwAAAAIAAAAUABUAAQAWAAAALAACAAQAAAAUKiu1AAEqHLUAAiodtQADKrcABLEAAAABABcAAAAGAAEAAACIAAEAGAAZAAEAFgAAAFEAAwADAAAAKCy7AAVZtwAGKrQAArYABxIItgAJKrQAA7YAB7YACrYAC5sABQSsA6wAAAACABcAAAAOAAMAAACNACQAjgAmAJAAGgAAAAMAASYAAwAbAAAAAgAcAB0AAAAEAB4AHwAsAAAACgABAAwAAAAAAAA=</byteCode>
-                </class>
-                <class>
                     <name>RenameUploadFileJavaCode</name>
-                    <byteCode>yv66vgAAADQA4gkAQgBuCQBCAG8JAEIAcAkAQgBxCQBCAHIJAEIAcwoAQwB0CAB1CgBCAHYHAHcKAAoAdAcAeAoADAB0CAB5CgAMAHoIAHsKAAwAfAoACgB9BwB+CgATAH8KABMAgAkAgQCCCACDCgCEAIUKABMAhgoAEwCHCgATAIgIAIkKAIoAiwgAjAoAigCNCACOCACPCACQCgCKAJEKAIoAkgoAigCTBwCUCgAmAJUKAJYAlwoAmACZCgCYAJoKAAwAmwgAnAgAnQgAngoAnwCgCgATAKEKABMAogcAowoAMgCkCgATAKUIAKYIAKcIAKgIAKkIAKoIAKsIAKwKAAoAfAoACgCtCACuCACvCACwCACxBwCyBwCzAQAMSW5uZXJDbGFzc2VzAQAPY3JlYXRpdmVEaXJQYXRoAQASTGphdmEvbGFuZy9TdHJpbmc7AQAKY3JlYXRpdmVJZAEADGNyZWF0aXZlTmFtZQEACXRva2VuSW5mbwEADnZhbGlkYXRlUmVwZWF0AQARaW1hZ2VNYXRlcmlhbEpzb24BABJnZXRjcmVhdGl2ZURpclBhdGgBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBABJzZXRjcmVhdGl2ZURpclBhdGgBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAA1nZXRjcmVhdGl2ZUlkAQANc2V0Y3JlYXRpdmVJZAEAD2dldGNyZWF0aXZlTmFtZQEAD3NldGNyZWF0aXZlTmFtZQEADGdldHRva2VuSW5mbwEADHNldHRva2VuSW5mbwEAEWdldHZhbGlkYXRlUmVwZWF0AQARc2V0dmFsaWRhdGVSZXBlYXQBABRnZXRpbWFnZU1hdGVyaWFsSnNvbgEAFHNldGltYWdlTWF0ZXJpYWxKc29uAQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcAtAEADnJlbmFtZUZpbGVOYW1lAQANU3RhY2tNYXBUYWJsZQcAsgcAdwcAfgcAtQcAtgcAtwcAuAcAuQcAugEAClNvdXJjZUZpbGUBAB1SZW5hbWVVcGxvYWRGaWxlSmF2YUNvZGUuamF2YQwARQBGDABHAEYMAEgARgwASQBGDABKAEYMAEsARgwAXABdAQAADABhAE0BABZqYXZhL2xhbmcvU3RyaW5nQnVmZmVyAQAXamF2YS9sYW5nL1N0cmluZ0J1aWxkZXIBACN7Im1hdGVyaWFsUmVzdWx0cyI6eyAiY3JlYXRpdmVJZCI6IgwAuwC8AQARIiwibWF0ZXJpYWxPYmoiOlsMAL0ATQwAuwC+AQAMamF2YS9pby9GaWxlDABcAFEMAL8ATQcAwAwAwQDCAQAIZGlyUGF0aDoHAMMMAMQAUQwAxQDGDADHAMgMAMkATQEADWZyb21GaWxlTmFtZToHALUMAMoATQEABWpwZ190DADLAMwBAAZqcGVnX3QBAAVwbmdfdAEAAlwuDADNAM4MAM8A0AwA0QDSAQAXamF2YS9pby9GaWxlSW5wdXRTdHJlYW0MAFwA0wcA1AwA1QDWBwC4DADXANAMANgA0AwAuwDZAQABeAEAAS4BAAEvBwC3DADaAF0MANsAxgwA3ADdAQBOY3JlYXRpdmVNc2cvY3JlYXRpdmVTZXJ2aWNlL2NvbW1vbi9SZW5hbWVVcGxvYWRGaWxlL1JlbmFtZVVwbG9hZEZpbGVKYXZhQ29kZSQxDABcAN4MAMcA3wEAASgBAAEpAQAPeyJjcmVhdGl2ZUlkIjoiAQATIiwibWF0ZXJpYWxXaWR0aCI6IgEAFCIsIm1hdGVyaWFsSGVpZ2h0IjoiAQAnIiwibWF0ZXJpYWxUeXBlIjoicGljIiwibWF0ZXJpYWxVcmwiOiIvAQADIn0sDADgAOEBABRdLCJ2YWxpZGF0ZVJlcGVhdCI6IgEAAiIsAQANInRva2VuSW5mbyI6IgEAAyJ9fQEATGNyZWF0aXZlTXNnL2NyZWF0aXZlU2VydmljZS9jb21tb24vUmVuYW1lVXBsb2FkRmlsZS9SZW5hbWVVcGxvYWRGaWxlSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAEGphdmEvbGFuZy9TdHJpbmcBAA9bTGphdmEvaW8vRmlsZTsBABNqYXZhL2lvL0lucHV0U3RyZWFtAQAcamF2YS9hd3QvaW1hZ2UvQnVmZmVyZWRJbWFnZQEAHWphdmEvaW8vRmlsZU5vdEZvdW5kRXhjZXB0aW9uAQATamF2YS9pby9JT0V4Y2VwdGlvbgEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEACHRvU3RyaW5nAQAsKExqYXZhL2xhbmcvU3RyaW5nOylMamF2YS9sYW5nL1N0cmluZ0J1ZmZlcjsBAA9nZXRBYnNvbHV0ZVBhdGgBABBqYXZhL2xhbmcvU3lzdGVtAQADb3V0AQAVTGphdmEvaW8vUHJpbnRTdHJlYW07AQATamF2YS9pby9QcmludFN0cmVhbQEAB3ByaW50bG4BAAtpc0RpcmVjdG9yeQEAAygpWgEACWxpc3RGaWxlcwEAESgpW0xqYXZhL2lvL0ZpbGU7AQAHZ2V0TmFtZQEAC3RvTG93ZXJDYXNlAQAIZW5kc1dpdGgBABUoTGphdmEvbGFuZy9TdHJpbmc7KVoBAAVzcGxpdAEAJyhMamF2YS9sYW5nL1N0cmluZzspW0xqYXZhL2xhbmcvU3RyaW5nOwEABmxlbmd0aAEAAygpSQEACXN1YnN0cmluZwEAFihJSSlMamF2YS9sYW5nL1N0cmluZzsBABEoTGphdmEvaW8vRmlsZTspVgEAFWphdmF4L2ltYWdlaW8vSW1hZ2VJTwEABHJlYWQBADUoTGphdmEvaW8vSW5wdXRTdHJlYW07KUxqYXZhL2F3dC9pbWFnZS9CdWZmZXJlZEltYWdlOwEACGdldFdpZHRoAQAJZ2V0SGVpZ2h0AQAcKEkpTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEABWNsb3NlAQAGZXhpc3RzAQAIcmVuYW1lVG8BABEoTGphdmEvaW8vRmlsZTspWgEAUyhMY3JlYXRpdmVNc2cvY3JlYXRpdmVTZXJ2aWNlL2NvbW1vbi9SZW5hbWVVcGxvYWRGaWxlL1JlbmFtZVVwbG9hZEZpbGVKYXZhQ29kZTtJSSlWAQApKExqYXZhL2lvL0ZpbGVuYW1lRmlsdGVyOylbTGphdmEvaW8vRmlsZTsBAAxkZWxldGVDaGFyQXQBABsoSSlMamF2YS9sYW5nL1N0cmluZ0J1ZmZlcjsAIQBCAEMAAAAGAAQARQBGAAAABABHAEYAAAAEAEgARgAAAAQASQBGAAAABABKAEYAAAAEAEsARgAAAA8AAQBMAE0AAQBOAAAAHQABAAEAAAAFKrQAAbAAAAABAE8AAAAGAAEAAAAaAAEA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</byteCode>
+                    <byteCode>yv66vgAAADQBBgkASwCBCQBLAIIJAEsAgwkASwCECQBLAIUJAEsAhgkASwCHCQBLAIgJAEsAiQkASwCKCgBMAIsIAIwKAEsAjQcAjgoADgCLBwCPCgAQAIsIAJAKABAAkQgAkgoAEACTCgAOAJQHAJUKABcAlgoAFwCXCQCYAJkIAJoKAJsAnAoAFwCdCgAXAJ4KABcAnwgAoAoAoQCiCACjCgChAKQIAKUIAKYIAKcKAKEAqAoAoQCpCgChAKoHAKsKACoArAoArQCuCgCvALAKAK8AsQoAsgCzCAC0CgAQALUKALIAtggAtwgAuAgAuQoAoQC6CAC7CgC8AL0KABcAvgcAvwoAOgDACgA6AMEIAMIIAMMIAMQIAMUIAMYIAMcIAMgIAMkKAA4AkwoADgDKCADLCADMCADNCADOBwDPBwDQAQAPY3JlYXRpdmVEaXJQYXRoAQASTGphdmEvbGFuZy9TdHJpbmc7AQAKY3JlYXRpdmVJZAEADGNyZWF0aXZlTmFtZQEACXRva2VuSW5mbwEADnZhbGlkYXRlUmVwZWF0AQAIZW5kcG9pbnQBAAthY2Nlc3NLZXlJZAEAD2FjY2Vzc0tleVNlY3JldAEACmJ1Y2tldE5hbWUBABFpbWFnZU1hdGVyaWFsSnNvbgEAEmdldGNyZWF0aXZlRGlyUGF0aAEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEAEnNldGNyZWF0aXZlRGlyUGF0aAEAFShMamF2YS9sYW5nL1N0cmluZzspVgEADWdldGNyZWF0aXZlSWQBAA1zZXRjcmVhdGl2ZUlkAQAPZ2V0Y3JlYXRpdmVOYW1lAQAPc2V0Y3JlYXRpdmVOYW1lAQAMZ2V0dG9rZW5JbmZvAQAMc2V0dG9rZW5JbmZvAQARZ2V0dmFsaWRhdGVSZXBlYXQBABFzZXR2YWxpZGF0ZVJlcGVhdAEAC2dldGVuZHBvaW50AQALc2V0ZW5kcG9pbnQBAA5nZXRhY2Nlc3NLZXlJZAEADnNldGFjY2Vzc0tleUlkAQASZ2V0YWNjZXNzS2V5U2VjcmV0AQASc2V0YWNjZXNzS2V5U2VjcmV0AQANZ2V0YnVja2V0TmFtZQEADXNldGJ1Y2tldE5hbWUBABRnZXRpbWFnZU1hdGVyaWFsSnNvbgEAFHNldGltYWdlTWF0ZXJpYWxKc29uAQAGPGluaXQ+AQADKClWAQAGaW52b2tlAQAKRXhjZXB0aW9ucwcA0QEACkZpbGVQdXRPc3MBAA1TdGFja01hcFRhYmxlBwDPBwCOBwCVBwDSBwDTBwDUBwDVBwDWAQAKU291cmNlRmlsZQEAHVJlbmFtZVVwbG9hZEZpbGVKYXZhQ29kZS5qYXZhDABNAE4MAE8ATgwAUABODABRAE4MAFIATgwAUwBODABUAE4MAFUATgwAVgBODABXAE4MAHAAcQEAAAwAdQBZAQAWamF2YS9sYW5nL1N0cmluZ0J1ZmZlcgEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyAQAjeyJtYXRlcmlhbFJlc3VsdHMiOnsgImNyZWF0aXZlSWQiOiIMANcA2AEAESIsIm1hdGVyaWFsT2JqIjpbDADZAFkMANcA2gEADGphdmEvaW8vRmlsZQwAcABdDADbAFkHANwMAN0A3gEACGRpclBhdGg6BwDfDADgAF0MAOEA4gwA4wDkDADlAFkBAA1mcm9tRmlsZU5hbWU6BwDSDADmAFkBAAVqcGdfdAwA5wDoAQAGanBlZ190AQAFcG5nX3QBAAJcLgwA6QDqDADrAOwMAO0A7gEAF2phdmEvaW8vRmlsZUlucHV0U3RyZWFtDABwAO8HAPAMAPEA8gcA8wwA9ADsDAD1AOwHAPYMAPcA7AEAA3BpYwwA1wD4DAD5APoBAAEuAQABKwEAAyUyQgwA+wD8AQABLwcA/QwA/gBxDAD/AQABABhjb20vYWxpeXVuL29zcy9PU1NDbGllbnQMAHABAQwBAgEDAQALa2V5IHZhbHVlIDoBAA97Im1hdGVyaWFsSWQiOiIBABAiLCJjcmVhdGl2ZUlkIjoiAQAQIiwibWF0ZXJpYWxObyI6IgEAEyIsIm1hdGVyaWFsV2lkdGgiOiIBABQiLCJtYXRlcmlhbEhlaWdodCI6IgEAJiIsIm1hdGVyaWFsVHlwZSI6InBpYyIsIm1hdGVyaWFsVXJsIjoiAQADIn0sDAEEAQUBABRdLCJ2YWxpZGF0ZVJlcGVhdCI6IgEAAiIsAQANInRva2VuSW5mbyI6IgEAAyJ9fQEATGNyZWF0aXZlTXNnL2NyZWF0aXZlU2VydmljZS9jb21tb24vUmVuYW1lVXBsb2FkRmlsZS9SZW5hbWVVcGxvYWRGaWxlSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAEGphdmEvbGFuZy9TdHJpbmcBAA9bTGphdmEvaW8vRmlsZTsBAB1qYXZhL2lvL0ZpbGVOb3RGb3VuZEV4Y2VwdGlvbgEAE2phdmEvaW8vSU9FeGNlcHRpb24BABVqYXZhL3NxbC9TUUxFeGNlcHRpb24BAAZhcHBlbmQBAC0oTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAAh0b1N0cmluZwEALChMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWZmZXI7AQAPZ2V0QWJzb2x1dGVQYXRoAQAQamF2YS9sYW5nL1N5c3RlbQEAA291dAEAFUxqYXZhL2lvL1ByaW50U3RyZWFtOwEAE2phdmEvaW8vUHJpbnRTdHJlYW0BAAdwcmludGxuAQALaXNEaXJlY3RvcnkBAAMoKVoBAAlsaXN0RmlsZXMBABEoKVtMamF2YS9pby9GaWxlOwEAB2dldE5hbWUBAAt0b0xvd2VyQ2FzZQEACGVuZHNXaXRoAQAVKExqYXZhL2xhbmcvU3RyaW5nOylaAQAFc3BsaXQBACcoTGphdmEvbGFuZy9TdHJpbmc7KVtMamF2YS9sYW5nL1N0cmluZzsBAAZsZW5ndGgBAAMoKUkBAAlzdWJzdHJpbmcBABYoSUkpTGphdmEvbGFuZy9TdHJpbmc7AQARKExqYXZhL2lvL0ZpbGU7KVYBABVqYXZheC9pbWFnZWlvL0ltYWdlSU8BAARyZWFkAQA1KExqYXZhL2lvL0lucHV0U3RyZWFtOylMamF2YS9hd3QvaW1hZ2UvQnVmZmVyZWRJbWFnZTsBABxqYXZhL2F3dC9pbWFnZS9CdWZmZXJlZEltYWdlAQAIZ2V0V2lkdGgBAAlnZXRIZWlnaHQBACJjb20vdG0vbWMvdXRpbC9tb2R1bGUvQ3JlYXRpdmVVdGlsAQAQZ2V0TWF4TWF0ZXJpYWxJZAEAHChJKUxqYXZhL2xhbmcvU3RyaW5nQnVpbGRlcjsBAA1nZXRNYXRlcmlhbE5vAQCSKExqYXZhL2xh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</byteCode>
                 </class>
             </byteCode>
         </config>
@@ -292,6 +314,18 @@ public String renameFileName() throws FileNotFoundException, IOException{
                         <xsl:value-of select="$Start/root/validateRepeat"/>
                     </validateRepeat>
                 </xsl:if>
+                <endpoint>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/OSSEndpoint"/>
+                </endpoint>
+                <accessKeyId>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/OSSAccessKeyId"/>
+                </accessKeyId>
+                <accessKeySecret>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/OSSAccessKeySecret"/>
+                </accessKeySecret>
+                <bucketName>
+                    <xsl:value-of select="$_globalVariables/ns:GlobalVariables/OSSBucketName"/>
+                </bucketName>
             </javaCodeActivityInput>
         </pd:inputBindings>
     </pd:activity>

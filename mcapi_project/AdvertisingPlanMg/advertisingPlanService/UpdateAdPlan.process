@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType">
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
@@ -17,8 +17,8 @@
     <pd:endType>
         <xsd:element name="responseJsonStr" type="xsd:string"/>
     </pd:endType>
-    <pd:endX>1203</pd:endX>
-    <pd:endY>297</pd:endY>
+    <pd:endX>1465</pd:endX>
+    <pd:endY>212</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
@@ -402,6 +402,126 @@
             </pd:inputBindings>
         </pd:activity>
     </pd:group>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>1490</pd:x>
+        <pd:y>334</pd:y>
+        <config>
+            <fileName>UpdateAdPlanJavaCode</fileName>
+            <packageName>AdvertisingPlanMg.advertisingPlanService.UpdateAdPlan</packageName>
+            <fullsource>package AdvertisingPlanMg.advertisingPlanService.UpdateAdPlan;
+import java.util.*;
+import java.io.*;
+import redis.clients.jedis.Jedis;
+public class UpdateAdPlanJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String redisHost = "";
+	protected int redisPort = 0;
+	protected String redisPwd = "";
+	protected String ids = "";
+	public String getredisHost() {
+		return redisHost;
+	}
+	public void setredisHost(String val) {
+		redisHost = val;
+	}
+	public int getredisPort() {
+		return redisPort;
+	}
+	public void setredisPort(int val) {
+		redisPort = val;
+	}
+	public String getredisPwd() {
+		return redisPwd;
+	}
+	public void setredisPwd(String val) {
+		redisPwd = val;
+	}
+	public String getids() {
+		return ids;
+	}
+	public void setids(String val) {
+		ids = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public UpdateAdPlanJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String redisHost
+	In  : int redisPort
+	In  : String redisPwd
+	In  : String ids
+* Available Variables: DO NOT MODIFY *****/
+
+Jedis jedis = new Jedis(redisHost, redisPort,100000);
+		jedis.auth(redisPwd);
+		jedis.select(4);
+		
+		jedis.publish("update", "{ \"ids\": ["+ids+" ]}");
+		jedis.close();
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>redisHost</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>redisPort</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>redisPwd</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>ids</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <redisHost>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RedisHost"/>
+                </redisHost>
+                <redisPort>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RedisPort"/>
+                </redisPort>
+                <redisPwd>
+                    <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RedisPwd"/>
+                </redisPwd>
+                <ids>
+                    <xsl:value-of select="$InformRedis/AdgroupIds"/>
+                </ids>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="InformRedis">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>1347</pd:x>
+        <pd:y>342</pd:y>
+        <config>
+            <processName>/adgroupMg/adgroupDao/adgroupIdsForInformRedis.process</processName>
+        </config>
+        <pd:inputBindings>
+            <pfx4:adgroupObj>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId">
+                    <pfx4:adplanId>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx2:adplanObj/pfx2:adplanId"/>
+                    </pfx4:adplanId>
+                </xsl:if>
+            </pfx4:adgroupObj>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>Parse JSON</pd:from>
         <pd:to>AdPlanQuery</pd:to>
@@ -425,6 +545,20 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Group</pd:from>
+        <pd:to>InformRedis</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>InformRedis</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
         <pd:to>End</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>

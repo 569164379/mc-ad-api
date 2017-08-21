@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13">
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:pfx4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:ns3="http://www.tibco.com/pe/DeployedVarsType">
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
@@ -18,8 +18,8 @@
     <pd:endType>
         <xsd:element name="responseJsonStr" type="xsd:string"/>
     </pd:endType>
-    <pd:endX>1153</pd:endX>
-    <pd:endY>304</pd:endY>
+    <pd:endX>1257</pd:endX>
+    <pd:endY>249</pd:endY>
     <pd:errorSchemas/>
     <pd:processVariables/>
     <pd:targetNamespace>http://xmlns.example.com/1499828932246</pd:targetNamespace>
@@ -46,7 +46,7 @@
         <pd:resourceType>ae.process.group</pd:resourceType>
         <pd:x>355</pd:x>
         <pd:y>77</pd:y>
-        <pd:width>604</pd:width>
+        <pd:width>855</pd:width>
         <pd:height>272</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
@@ -78,7 +78,7 @@
             <pd:conditionType>otherwise</pd:conditionType>
         </pd:transition>
         <pd:transition>
-            <pd:from>AdGroupLogAdd</pd:from>
+            <pd:from>Java Code</pd:from>
             <pd:to>end</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
@@ -96,6 +96,13 @@
         <pd:transition>
             <pd:from>AdGroupQuery</pd:from>
             <pd:to>AdGroupUpdate</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>AdGroupLogAdd</pd:from>
+            <pd:to>Java Code</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -198,6 +205,114 @@
                         </pfx4:adgroupStatus>
                     </xsl:if>
                 </pfx4:adgroupObj>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Java Code">
+            <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+            <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+            <pd:x>1038</pd:x>
+            <pd:y>152</pd:y>
+            <config>
+                <fileName>BatchUpdateAdGroupStatusJavaCode</fileName>
+                <packageName>adgroupMg.adgroupService.BatchUpdateAdGroupStatus</packageName>
+                <fullsource>package adgroupMg.adgroupService.BatchUpdateAdGroupStatus;
+import java.util.*;
+import java.io.*;
+import redis.clients.jedis.Jedis;
+public class BatchUpdateAdGroupStatusJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String redisHost = "";
+	protected int redisPort = 0;
+	protected String redisPwd = "";
+	protected String ids = "";
+	public String getredisHost() {
+		return redisHost;
+	}
+	public void setredisHost(String val) {
+		redisHost = val;
+	}
+	public int getredisPort() {
+		return redisPort;
+	}
+	public void setredisPort(int val) {
+		redisPort = val;
+	}
+	public String getredisPwd() {
+		return redisPwd;
+	}
+	public void setredisPwd(String val) {
+		redisPwd = val;
+	}
+	public String getids() {
+		return ids;
+	}
+	public void setids(String val) {
+		ids = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public BatchUpdateAdGroupStatusJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String redisHost
+	In  : int redisPort
+	In  : String redisPwd
+	In  : String ids
+* Available Variables: DO NOT MODIFY *****/
+
+Jedis jedis = new Jedis(redisHost, redisPort,100000);
+		jedis.auth(redisPwd);
+		jedis.select(4);
+		
+		jedis.publish("update", "{ \"ids\": ["+ids+" ]}");
+		jedis.close();
+}
+}
+</fullsource>
+                <inputData>
+                    <row>
+                        <fieldName>redisHost</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>redisPort</fieldName>
+                        <fieldType>int</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>redisPwd</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                    <row>
+                        <fieldName>ids</fieldName>
+                        <fieldType>string</fieldType>
+                        <fieldRequired>optional</fieldRequired>
+                    </row>
+                </inputData>
+                <byteCode>
+                    <class>
+                        <name>BatchUpdateAdGroupStatusJavaCode</name>
+                        <byteCode>yv66vgAAADQAUgkAFQAyCQAVADMJABUANAkAFQA1CgAWADYIADcHADgDAAGGoAoABwA5CgAHADoKAAcAOwgAPAcAPQoADQA2CAA+CgANAD8IAEAKAA0AQQoABwBCCgAHAEMHAEQHAEUBAAlyZWRpc0hvc3QBABJMamF2YS9sYW5nL1N0cmluZzsBAAlyZWRpc1BvcnQBAAFJAQAIcmVkaXNQd2QBAANpZHMBAAxnZXRyZWRpc0hvc3QBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAxzZXRyZWRpc0hvc3QBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAxnZXRyZWRpc1BvcnQBAAMoKUkBAAxzZXRyZWRpc1BvcnQBAAQoSSlWAQALZ2V0cmVkaXNQd2QBAAtzZXRyZWRpc1B3ZAEABmdldGlkcwEABnNldGlkcwEABjxpbml0PgEAAygpVgEABmludm9rZQEACkV4Y2VwdGlvbnMHAEYBAApTb3VyY2VGaWxlAQAlQmF0Y2hVcGRhdGVBZEdyb3VwU3RhdHVzSmF2YUNvZGUuamF2YQwAFwAYDAAZABoMABsAGAwAHAAYDAArACwBAAABABlyZWRpcy9jbGllbnRzL2plZGlzL0plZGlzDAArAEcMAEgASQwASgBLAQAGdXBkYXRlAQAXamF2YS9sYW5nL1N0cmluZ0J1aWxkZXIBAAp7ICJpZHMiOiBbDABMAE0BAAMgXX0MAE4AHgwATwBQDABRACwBAFJhZGdyb3VwTWcvYWRncm91cFNlcnZpY2UvQmF0Y2hVcGRhdGVBZEdyb3VwU3RhdHVzL0JhdGNoVXBkYXRlQWRHcm91cFN0YXR1c0phdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABcoTGphdmEvbGFuZy9TdHJpbmc7SUkpVgEABGF1dGgBACYoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nOwEABnNlbGVjdAEAFShJKUxqYXZhL2xhbmcvU3RyaW5nOwEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEACHRvU3RyaW5nAQAHcHVibGlzaAEANihMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9Mb25nOwEABWNsb3NlACEAFQAWAAAABAAEABcAGAAAAAQAGQAaAAAABAAbABgAAAAEABwAGAAAAAoAAQAdAB4AAQAfAAAAHQABAAEAAAAFKrQAAbAAAAABACAAAAAGAAEAAAAMAAEAIQAiAAEAHwAAACIAAgACAAAABiortQABsQAAAAEAIAAAAAoAAgAAAA8ABQAQAAEAIwAkAAEAHwAAAB0AAQABAAAABSq0AAKsAAAAAQAgAAAABgABAAAAEgABACUAJgABAB8AAAAiAAIAAgAAAAYqG7UAArEAAAABACAAAAAKAAIAAAAVAAUAFgABACcAHgABAB8AAAAdAAEAAQAAAAUqtAADsAAAAAEAIAAAAAYAAQAAABgAAQAoACIAAQAfAAAAIgACAAIAAAAGKiu1AAOxAAAAAQAgAAAACgACAAAAGwAFABwAAQApAB4AAQAfAAAAHQABAAEAAAAFKrQABLAAAAABACAAAAAGAAEAAAAeAAEAKgAiAAEAHwAAACIAAgACAAAABiortQAEsQAAAAEAIAAAAAoAAgAAACEABQAiAAEAKwAsAAEAHwAAAEgAAgABAAAAHCq3AAUqEga1AAEqA7UAAioSBrUAAyoSBrUABLEAAAABACAAAAAaAAYAAAAkAAQABwAKAAgADwAJABUACgAbACUAAQAtACwAAgAfAAAAdAAFAAIAAABIuwAHWSq0AAEqtAACEgi3AAlMKyq0AAO2AApXKwe2AAtXKxIMuwANWbcADhIPtgAQKrQABLYAEBIRtgAQtgAStgATVyu2ABSxAAAAAQAgAAAAGgAGAAAALgASAC8AGwAwACEAMgBDADMARwA0AC4AAAAEAAEALwABADAAAAACADE=</byteCode>
+                    </class>
+                </byteCode>
+            </config>
+            <pd:inputBindings>
+                <javaCodeActivityInput>
+                    <redisHost>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RedisHost"/>
+                    </redisHost>
+                    <redisPort>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RedisPort"/>
+                    </redisPort>
+                    <redisPwd>
+                        <xsl:value-of select="$_globalVariables/ns3:GlobalVariables/RedisPwd"/>
+                    </redisPwd>
+                    <ids>
+                        <xsl:value-of select="$adgItem/pfx4:adgroupObj/pfx4:adgroupId"/>
+                    </ids>
+                </javaCodeActivityInput>
             </pd:inputBindings>
         </pd:activity>
     </pd:group>

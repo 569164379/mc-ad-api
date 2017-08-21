@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:pfx7="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22" xmlns:pfx8="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pfx9="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:pfx4="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:ns4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd23" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx10="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20">
+<pd:ProcessDefinition xmlns:pfx6="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd18" xmlns:pfx7="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd22" xmlns:pfx8="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd21" xmlns:pfx="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" xmlns:pfx9="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd19" xmlns:pfx2="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" xmlns:ns="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" xmlns:pfx3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd11" xmlns:pfx4="http://www.tibco.com/schemas/mc_project/share_resources/schema_resources/Schema.xsd2" xmlns:pfx5="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd17" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:ns1="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd13" xmlns:ns4="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns3="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd23" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns5="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx10="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd20">
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd5" schemaLocation="/shareResources/schemas/ConditionsSchema.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd9" schemaLocation="/shareResources/schemas/AccountPO.xsd"/>
     <xsd:import namespace="http://www.tibco.com/schemas/mcapi_project/shareResources/schemas/Schema.xsd10" schemaLocation="/shareResources/schemas/AdPlanPO.xsd"/>
@@ -697,6 +697,116 @@
             <pd:inputBindings/>
         </pd:activity>
     </pd:group>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>1665</pd:x>
+        <pd:y>155</pd:y>
+        <config>
+            <fileName>UpdateAdgroupJavaCode</fileName>
+            <packageName>adgroupMg.adgroupService.UpdateAdgroup</packageName>
+            <fullsource>package adgroupMg.adgroupService.UpdateAdgroup;
+import java.util.*;
+import java.io.*;
+import redis.clients.jedis.Jedis;
+public class UpdateAdgroupJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String redisHost = "";
+	protected int redisPort = 0;
+	protected String redisPwd = "";
+	protected String ids = "";
+	public String getredisHost() {
+		return redisHost;
+	}
+	public void setredisHost(String val) {
+		redisHost = val;
+	}
+	public int getredisPort() {
+		return redisPort;
+	}
+	public void setredisPort(int val) {
+		redisPort = val;
+	}
+	public String getredisPwd() {
+		return redisPwd;
+	}
+	public void setredisPwd(String val) {
+		redisPwd = val;
+	}
+	public String getids() {
+		return ids;
+	}
+	public void setids(String val) {
+		ids = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public UpdateAdgroupJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String redisHost
+	In  : int redisPort
+	In  : String redisPwd
+	In  : String ids
+* Available Variables: DO NOT MODIFY *****/
+
+Jedis jedis = new Jedis(redisHost, redisPort,100000);
+		jedis.auth(redisPwd);
+		jedis.select(4);
+		
+		jedis.publish("update", "{ \"ids\": ["+ids+" ]}");
+		jedis.close();
+}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>redisHost</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>redisPort</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>redisPwd</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>ids</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>UpdateAdgroupJavaCode</name>
+                    <byteCode>yv66vgAAADQAUgkAFQAyCQAVADMJABUANAkAFQA1CgAWADYIADcHADgDAAGGoAoABwA5CgAHADoKAAcAOwgAPAcAPQoADQA2CAA+CgANAD8IAEAKAA0AQQoABwBCCgAHAEMHAEQHAEUBAAlyZWRpc0hvc3QBABJMamF2YS9sYW5nL1N0cmluZzsBAAlyZWRpc1BvcnQBAAFJAQAIcmVkaXNQd2QBAANpZHMBAAxnZXRyZWRpc0hvc3QBABQoKUxqYXZhL2xhbmcvU3RyaW5nOwEABENvZGUBAA9MaW5lTnVtYmVyVGFibGUBAAxzZXRyZWRpc0hvc3QBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAxnZXRyZWRpc1BvcnQBAAMoKUkBAAxzZXRyZWRpc1BvcnQBAAQoSSlWAQALZ2V0cmVkaXNQd2QBAAtzZXRyZWRpc1B3ZAEABmdldGlkcwEABnNldGlkcwEABjxpbml0PgEAAygpVgEABmludm9rZQEACkV4Y2VwdGlvbnMHAEYBAApTb3VyY2VGaWxlAQAaVXBkYXRlQWRncm91cEphdmFDb2RlLmphdmEMABcAGAwAGQAaDAAbABgMABwAGAwAKwAsAQAAAQAZcmVkaXMvY2xpZW50cy9qZWRpcy9KZWRpcwwAKwBHDABIAEkMAEoASwEABnVwZGF0ZQEAF2phdmEvbGFuZy9TdHJpbmdCdWlsZGVyAQAKeyAiaWRzIjogWwwATABNAQADIF19DABOAB4MAE8AUAwAUQAsAQA8YWRncm91cE1nL2FkZ3JvdXBTZXJ2aWNlL1VwZGF0ZUFkZ3JvdXAvVXBkYXRlQWRncm91cEphdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABcoTGphdmEvbGFuZy9TdHJpbmc7SUkpVgEABGF1dGgBACYoTGphdmEvbGFuZy9TdHJpbmc7KUxqYXZhL2xhbmcvU3RyaW5nOwEABnNlbGVjdAEAFShJKUxqYXZhL2xhbmcvU3RyaW5nOwEABmFwcGVuZAEALShMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9TdHJpbmdCdWlsZGVyOwEACHRvU3RyaW5nAQAHcHVibGlzaAEANihMamF2YS9sYW5nL1N0cmluZztMamF2YS9sYW5nL1N0cmluZzspTGphdmEvbGFuZy9Mb25nOwEABWNsb3NlACEAFQAWAAAABAAEABcAGAAAAAQAGQAaAAAABAAbABgAAAAEABwAGAAAAAoAAQAdAB4AAQAfAAAAHQABAAEAAAAFKrQAAbAAAAABACAAAAAGAAEAAAAMAAEAIQAiAAEAHwAAACIAAgACAAAABiortQABsQAAAAEAIAAAAAoAAgAAAA8ABQAQAAEAIwAkAAEAHwAAAB0AAQABAAAABSq0AAKsAAAAAQAgAAAABgABAAAAEgABACUAJgABAB8AAAAiAAIAAgAAAAYqG7UAArEAAAABACAAAAAKAAIAAAAVAAUAFgABACcAHgABAB8AAAAdAAEAAQAAAAUqtAADsAAAAAEAIAAAAAYAAQAAABgAAQAoACIAAQAfAAAAIgACAAIAAAAGKiu1AAOxAAAAAQAgAAAACgACAAAAGwAFABwAAQApAB4AAQAfAAAAHQABAAEAAAAFKrQABLAAAAABACAAAAAGAAEAAAAeAAEAKgAiAAEAHwAAACIAAgACAAAABiortQAEsQAAAAEAIAAAAAoAAgAAACEABQAiAAEAKwAsAAEAHwAAAEgAAgABAAAAHCq3AAUqEga1AAEqA7UAAioSBrUAAyoSBrUABLEAAAABACAAAAAaAAYAAAAkAAQABwAKAAgADwAJABUACgAbACUAAQAtACwAAgAfAAAAdAAFAAIAAABIuwAHWSq0AAEqtAACEgi3AAlMKyq0AAO2AApXKwe2AAtXKxIMuwANWbcADhIPtgAQKrQABLYAEBIRtgAQtgAStgATVyu2ABSxAAAAAQAgAAAAGgAGAAAALgASAC8AGwAwACEAMgBDADMARwA0AC4AAAAEAAEALwABADAAAAACADE=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <redisHost>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RedisHost"/>
+                </redisHost>
+                <redisPort>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RedisPort"/>
+                </redisPort>
+                <redisPwd>
+                    <xsl:value-of select="$_globalVariables/ns5:GlobalVariables/RedisPwd"/>
+                </redisPwd>
+                <xsl:if test="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId">
+                    <ids>
+                        <xsl:value-of select="$Parse-JSON/ns2:ActivityOutputClass/pfx9:adgroupObjVO/pfx9:adgroupObj/pfx9:adgroupId"/>
+                    </ids>
+                </xsl:if>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
     <pd:transition>
         <pd:from>AdGroupUpdate</pd:from>
         <pd:to>UpdateCreativeIdLog</pd:to>
@@ -728,7 +838,7 @@
     </pd:transition>
     <pd:transition>
         <pd:from>AdGroupLogAdd</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Java Code</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>always</pd:conditionType>
@@ -859,10 +969,17 @@
     </pd:transition>
     <pd:transition>
         <pd:from>Group (3)</pd:from>
-        <pd:to>End</pd:to>
+        <pd:to>Java Code</pd:to>
         <pd:lineType>Default</pd:lineType>
         <pd:lineColor>-16777216</pd:lineColor>
         <pd:conditionType>xpath</pd:conditionType>
         <pd:xpath>count($AdgAdpQuery/pfx8:adgAdpResults/pfx8:adgAdpObj)=$x/root and ""!=tib:trim($QueryAdpIds/adpIds)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
     </pd:transition>
 </pd:ProcessDefinition>

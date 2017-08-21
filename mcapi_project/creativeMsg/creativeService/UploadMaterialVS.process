@@ -304,8 +304,8 @@ public class UploadMaterialVSDecodeFileName{
     <pd:activity name="FilterMimeParts">
         <pd:type>com.tibco.plugin.mapper.MapperActivity</pd:type>
         <pd:resourceType>ae.activities.MapperActivity</pd:resourceType>
-        <pd:x>1033</pd:x>
-        <pd:y>317</pd:y>
+        <pd:x>982</pd:x>
+        <pd:y>378</pd:y>
         <config>
             <element ref="pfx3:materialResults"/>
         </config>
@@ -418,8 +418,8 @@ public class UploadMaterialVSDecodeCreativeName{
     <pd:activity name="ToGetValidatRepeat">
         <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
         <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
-        <pd:x>1210</pd:x>
-        <pd:y>416</pd:y>
+        <pd:x>1298</pd:x>
+        <pd:y>432</pd:y>
         <config>
             <fullsource>package creativeMsg.creativeService.UploadMaterialVS;
 import java.util.*;

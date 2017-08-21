@@ -25,9 +25,9 @@
         <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
         <pd:resourceType>ae.process.group</pd:resourceType>
         <pd:x>899</pd:x>
-        <pd:y>227</pd:y>
+        <pd:y>139</pd:y>
         <pd:width>453</pd:width>
-        <pd:height>150</pd:height>
+        <pd:height>318</pd:height>
         <pd:collapsedWidth>57</pd:collapsedWidth>
         <pd:collapsedHeight>70</pd:collapsedHeight>
         <pd:groupVariables/>
@@ -45,7 +45,7 @@
         <pd:expanded>true</pd:expanded>
         <pd:transition>
             <pd:from>start</pd:from>
-            <pd:to>MaterailIDMaxQuery</pd:to>
+            <pd:to>Null-1</pd:to>
             <pd:lineType>Default</pd:lineType>
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
@@ -71,25 +71,61 @@
             <pd:lineColor>-16777216</pd:lineColor>
             <pd:conditionType>always</pd:conditionType>
         </pd:transition>
+        <pd:transition>
+            <pd:from>Null-1</pd:from>
+            <pd:to>MaterialAdd</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Null-1</pd:from>
+            <pd:to>MaterailIDMaxQuery</pd:to>
+            <pd:xpathDescription>txtType</pd:xpathDescription>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Parse-JSON/ns:ActivityOutputClass/pfx:materialResults/pfx:materialObj[1]/pfx:materialType="txt"</pd:xpath>
+        </pd:transition>
         <pd:activity name="MaterialAdd">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>1267</pd:x>
-            <pd:y>292</pd:y>
+            <pd:x>1264</pd:x>
+            <pd:y>267</pd:y>
             <config>
                 <processName>/creativeMsg/creativeDao/MaterialAdd.process</processName>
             </config>
             <pd:inputBindings>
                 <pfx:materialObj>
-                    <pfx:materialId>
-                        <xsl:value-of select="$MaterailIDMaxQuery/root/maxMaterialId+1"/>
-                    </pfx:materialId>
+                    <xsl:choose>
+                        <xsl:when test="$Parse-JSON/ns:ActivityOutputClass/pfx:materialResults/pfx:materialObj[1]/pfx:materialType=&quot;txt&quot;">
+                            <pfx:materialId>
+                                <xsl:value-of select="$MaterailIDMaxQuery/root/maxMaterialId+1"/>
+                            </pfx:materialId>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:if test="$textItem/pfx:materialObj/pfx:materialId">
+                                <pfx:materialId>
+                                    <xsl:value-of select="$textItem/pfx:materialObj/pfx:materialId"/>
+                                </pfx:materialId>
+                            </xsl:if>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <pfx:creativeId>
                         <xsl:value-of select="if (exists($Parse-JSON/ns:ActivityOutputClass/pfx:materialResults/pfx:creativeId) and tib:trim($Parse-JSON/ns:ActivityOutputClass/pfx:materialResults/pfx:creativeId)!=&quot;&quot;) then tib:trim($Parse-JSON/ns:ActivityOutputClass/pfx:materialResults/pfx:creativeId) else &quot;null&quot;"/>
                     </pfx:creativeId>
-                    <pfx:materialNo>
-                        <xsl:value-of select="$GenerateMaterialNo/root/materailNo"/>
-                    </pfx:materialNo>
+                    <xsl:choose>
+                        <xsl:when test="$Parse-JSON/ns:ActivityOutputClass/pfx:materialResults/pfx:materialObj[1]/pfx:materialType=&quot;txt&quot;">
+                            <pfx:materialNo>
+                                <xsl:value-of select="$GenerateMaterialNo/root/materailNo"/>
+                            </pfx:materialNo>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <pfx:materialNo>
+                                <xsl:value-of select="$textItem/pfx:materialObj/pfx:materialNo"/>
+                            </pfx:materialNo>
+                        </xsl:otherwise>
+                    </xsl:choose>
                     <xsl:if test="$textItem/pfx:materialObj/pfx:materialType">
                         <pfx:materialType>
                             <xsl:value-of select="$textItem/pfx:materialObj/pfx:materialType"/>
@@ -114,7 +150,7 @@
                         </pfx:materialDuration>
                     </xsl:if>
                     <pfx:materialUrl>
-                        <xsl:value-of select="if (tib:trim($textItem/pfx:materialObj/pfx:materialType)=&quot;txt&quot;) then concat(&quot;/&quot;,$DecodeCreativeName/javaCodeActivityOutput/outCreativeName,&quot;/&quot;, &quot;txt&quot;) else $textItem/pfx:materialObj/pfx:materialUrl"/>
+                        <xsl:value-of select="$textItem/pfx:materialObj/pfx:materialUrl"/>
                     </pfx:materialUrl>
                     <pfx:materialDesc>
                         <xsl:value-of select="$textItem/pfx:materialObj/pfx:materialDesc"/>
@@ -134,8 +170,8 @@
         <pd:activity name="GenerateMaterialNo">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>1129</pd:x>
-            <pd:y>297</pd:y>
+            <pd:x>1150</pd:x>
+            <pd:y>204</pd:y>
             <config>
                 <processName>/creativeMsg/creativeService/common/GenerateMaterialNo.process</processName>
             </config>
@@ -174,11 +210,19 @@
         <pd:activity name="MaterailIDMaxQuery">
             <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
             <pd:resourceType>ae.process.subprocess</pd:resourceType>
-            <pd:x>979</pd:x>
-            <pd:y>301</pd:y>
+            <pd:x>1016</pd:x>
+            <pd:y>208</pd:y>
             <config>
                 <processName>/creativeMsg/creativeDao/MaterailMaxIDQuery.process</processName>
             </config>
+            <pd:inputBindings/>
+        </pd:activity>
+        <pd:activity name="Null-1">
+            <pd:type>com.tibco.plugin.timer.NullActivity</pd:type>
+            <pd:resourceType>ae.activities.null</pd:resourceType>
+            <pd:x>1089</pd:x>
+            <pd:y>356</pd:y>
+            <config/>
             <pd:inputBindings/>
         </pd:activity>
     </pd:group>
@@ -334,8 +378,8 @@ public class AddMaterialDecodeCreativeName{
     <pd:activity name="validateRepeatSubmit">
         <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
         <pd:resourceType>ae.process.subprocess</pd:resourceType>
-        <pd:x>374</pd:x>
-        <pd:y>310</pd:y>
+        <pd:x>457</pd:x>
+        <pd:y>137</pd:y>
         <config>
             <processName>/commonFunction/ValidateRepeatSubmit.process</processName>
         </config>
